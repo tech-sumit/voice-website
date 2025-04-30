@@ -258,46 +258,6 @@ export default function Hero() {
             className="flex justify-center lg:justify-end"
           >
             <div className="relative w-full max-w-[370px]">
-              {/* Floating Notifications */}
-              {animationStage >= 1 && (
-                <motion.div 
-                  key="notification"
-                  initial={{ opacity: 0, x: 100, y: -20 }}
-                  animate={{ opacity: 1, x: 0, y: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ type: "spring", damping: 20 }}
-                  className="absolute -right-8 -top-10 z-20 w-44 bg-white dark:bg-neutral-800 rounded-xl shadow-xl p-3 border border-neutral-200 dark:border-neutral-700"
-                >
-                  <div className="flex items-center mb-1">
-                    <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white">
-                        <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-2">
-                      <div className="text-xs font-semibold text-neutral-900 dark:text-white">Incoming call</div>
-                      <div className="text-xs text-neutral-500">{siteConfig.name}</div>
-                    </div>
-                  </div>
-                  <div className="flex space-x-2 mt-1">
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex-1 text-xs py-1 rounded-md bg-error-100 dark:bg-error-900/30 text-error-600 dark:text-error-400"
-                    >
-                      Decline
-                    </motion.button>
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex-1 text-xs py-1 rounded-md bg-success-100 dark:bg-success-900/30 text-success-600 dark:text-success-400"
-                    >
-                      Accept
-                    </motion.button>
-                  </div>
-                </motion.div>
-              )}
-
               {/* 3D Phone Device Frame */}
               <motion.div 
                 className="w-full bg-gradient-to-b from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 rounded-[40px] overflow-hidden shadow-2xl border border-neutral-400/20 dark:border-neutral-600/20"

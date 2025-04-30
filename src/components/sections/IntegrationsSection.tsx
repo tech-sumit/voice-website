@@ -212,10 +212,10 @@ export default function IntegrationsSection() {
           {/* Left Side - Animated WhatsApp Chat */}
           <div className="lg:col-span-3">
             <div className="max-w-md mx-auto">
-              <motion.div 
+        <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+          viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
                 className="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl overflow-hidden border border-neutral-200 dark:border-neutral-700"
               >
