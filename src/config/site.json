@@ -1,0 +1,316 @@
+{
+  "name": "VoiceAI",
+  "description": "Ultra-realistic AI Phone Calls for Business",
+  "url": "https://voiceai.example.com",
+  "logo": "/logo.svg",
+  "nav": [
+    { "name": "Home", "path": "/" },
+    { "name": "Features", "path": "/features" },
+    { "name": "Pricing", "path": "/pricing" },
+    { "name": "Contact", "path": "/contact" }
+  ],
+  "metadata": {
+    "title": "VoiceAI - Ultra-realistic AI Phone Calls for Business",
+    "description": "Voice AI phone agents that sound human, speak any language, and work 24/7. Integrate seamlessly with your CRM and business tools.",
+    "keywords": "voice ai, ai phone calls, ai agents, conversational ai, customer support ai, ai receptionist",
+    "authors": [{ "name": "VoiceAI Team" }],
+    "ogTitle": "VoiceAI - Ultra-realistic AI Phone Calls for Business",
+    "ogDescription": "Deploy AI phone agents that sound human and work 24/7",
+    "ogSiteName": "VoiceAI",
+    "themeColor": "#6366F1"
+  },
+  "company": {
+    "name": "VoiceAI Inc.",
+    "address": "123 AI Avenue, San Francisco, CA 94105",
+    "email": "contact@voiceai.example.com",
+    "phone": "+1 (555) 123-4567",
+    "social": {
+      "twitter": "https://twitter.com/voiceai",
+      "linkedin": "https://linkedin.com/company/voiceai",
+      "github": "https://github.com/voiceai"
+    }
+  },
+  "cta": {
+    "primary": {
+      "text": "Start Free Trial",
+      "url": "/signup"
+    },
+    "secondary": {
+      "text": "Contact Sales",
+      "url": "/contact"
+    },
+    "demo": {
+      "text": "See it in action",
+      "url": "#demo"
+    }
+  },
+  "logos": {
+    "title": "TRUSTED BY INNOVATIVE COMPANIES",
+    "companies": [
+      { "name": "Acme Corp", "logo": "/logos/logo1.svg" },
+      { "name": "Global Tech", "logo": "/logos/logo2.svg" },
+      { "name": "Future Systems", "logo": "/logos/logo3.svg" },
+      { "name": "Innovate AI", "logo": "/logos/logo4.svg" },
+      { "name": "CloudScale", "logo": "/logos/logo5.svg" },
+      { "name": "DataFlow", "logo": "/logos/logo6.svg" },
+      { "name": "SmartSync", "logo": "/logos/logo7.svg" },
+      { "name": "Quantum Inc", "logo": "/logos/logo8.svg" }
+    ]
+  },
+  "stats": {
+    "title": "Trusted by Businesses Worldwide",
+    "description": "Our AI voice agents are revolutionizing how businesses communicate",
+    "metrics": [
+      {
+        "name": "Calls Handled",
+        "value": "5,000,000+",
+        "description": "Monthly processed calls",
+        "color": "from-bright-500 to-primary-500"
+      },
+      {
+        "name": "Minutes Saved",
+        "value": "250,000+",
+        "description": "Hours of agent time saved",
+        "color": "from-primary-500 to-accent-500"
+      },
+      {
+        "name": "Languages",
+        "value": "100+",
+        "description": "Supported languages",
+        "color": "from-accent-500 to-bright-500"
+      },
+      {
+        "name": "Satisfaction",
+        "value": "99%",
+        "description": "Customer satisfaction rate",
+        "color": "from-primary-500 to-bright-500"
+      }
+    ]
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "description": "Get started in minutes, not months. Our platform makes it easy to deploy voice AI.",
+    "steps": [
+      {
+        "number": "01",
+        "title": "Design Your Agent",
+        "description": "Create your ideal AI voice agent using our intuitive builder. Choose voices, set guidelines, and define how conversations should flow.",
+        "color": "from-bright-500 to-bright-400"
+      },
+      {
+        "number": "02",
+        "title": "Connect Your Systems",
+        "description": "Integrate with your CRM, calendar, or business software. Our API makes it simple to connect with the tools you already use.",
+        "color": "from-primary-500 to-primary-400"
+      },
+      {
+        "number": "03",
+        "title": "Launch & Scale",
+        "description": "Deploy your AI agents to handle unlimited calls simultaneously. Monitor performance and scale effortlessly as your needs grow.",
+        "color": "from-accent-500 to-accent-400"
+      }
+    ]
+  },
+  "features": [
+    {
+      "title": "Ultra-Realistic Voice",
+      "description": "Our AI voices are indistinguishable from humans, providing natural conversations.",
+      "icon": "microphone",
+      "color": "from-bright-500 to-bright-600",
+      "bgColor": "bg-bright-50 dark:bg-bright-900/20"
+    },
+    {
+      "title": "24/7 Availability",
+      "description": "AI agents that never sleep, ensuring your business is always reachable.",
+      "icon": "clock",
+      "color": "from-primary-500 to-primary-600",
+      "bgColor": "bg-primary-50 dark:bg-primary-900/20"
+    },
+    {
+      "title": "Multi-Language Support",
+      "description": "Speak with customers in over 100 languages with natural fluency.",
+      "icon": "globe",
+      "color": "from-accent-500 to-accent-600",
+      "bgColor": "bg-accent-50 dark:bg-accent-900/20"
+    },
+    {
+      "title": "CRM Integration",
+      "description": "Seamlessly connects with your existing business tools and CRM systems.",
+      "icon": "connection",
+      "color": "from-primary-400 to-bright-500",
+      "bgColor": "bg-primary-50 dark:bg-primary-900/20"
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Customer Support",
+      "description": "Handle support tickets and answer frequent customer questions automatically.",
+      "icon": "support"
+    },
+    {
+      "title": "Appointment Scheduling",
+      "description": "Book, reschedule, and manage appointments without human intervention.",
+      "icon": "calendar"
+    },
+    {
+      "title": "Lead Qualification",
+      "description": "Qualify leads and gather information before routing to sales teams.",
+      "icon": "filter"
+    }
+  ],
+  "testimonials": {
+    "title": "What Our Customers Say",
+    "description": "Thousands of companies trust VoiceAI for their critical communications",
+    "items": [
+      {
+        "id": 1,
+        "content": "VoiceAI has completely transformed our customer support. We're able to handle 4x more calls while maintaining incredibly high satisfaction rates.",
+        "author": "Sarah Johnson",
+        "title": "Customer Support Director",
+        "company": "TechGrowth Solutions",
+        "avatarUrl": "/testimonials/avatar1.png",
+        "industry": "SaaS"
+      },
+      {
+        "id": 2,
+        "content": "The voice quality and conversation flow are indistinguishable from our human agents. Our customers often can't tell they're speaking with AI.",
+        "author": "Michael Chen",
+        "title": "CTO",
+        "company": "EcomForce",
+        "avatarUrl": "/testimonials/avatar2.png",
+        "industry": "E-commerce"
+      },
+      {
+        "id": 3,
+        "content": "Setting up AI voice agents was remarkably simple. In just one week, we were handling thousands of appointment bookings automatically.",
+        "author": "Emily Rodriguez",
+        "title": "Operations Manager",
+        "company": "HealthFirst",
+        "avatarUrl": "/testimonials/avatar3.png",
+        "industry": "Healthcare"
+      },
+      {
+        "id": 4,
+        "content": "The ROI speaks for itself – we've reduced our call center costs by 60% while expanding to 24/7 coverage. VoiceAI paid for itself in less than 2 months.",
+        "author": "David Wilson",
+        "title": "CEO",
+        "company": "Global Connect",
+        "avatarUrl": "/testimonials/avatar4.png",
+        "industry": "Telecommunications"
+      }
+    ]
+  },
+  "integrations": {
+    "title": "Seamless Integrations",
+    "description": "Connect VoiceAI with your favorite tools to create powerful automated workflows",
+    "viewAllUrl": "/integrations",
+    "categories": [
+      { "id": "all", "name": "All Integrations" },
+      { "id": "crm", "name": "CRM" },
+      { "id": "calendar", "name": "Calendar" },
+      { "id": "communication", "name": "Communication" },
+      { "id": "ai", "name": "AI Models" },
+      { "id": "automation", "name": "Automation" }
+    ],
+    "tools": [
+      { "name": "Salesforce", "category": "CRM", "icon": "salesforce.svg" },
+      { "name": "HubSpot", "category": "CRM", "icon": "hubspot.svg" },
+      { "name": "Zoho", "category": "CRM", "icon": "zoho.svg" },
+      { "name": "Google Calendar", "category": "Calendar", "icon": "google-calendar.svg" },
+      { "name": "Calendly", "category": "Calendar", "icon": "calendly.svg" },
+      { "name": "Microsoft Outlook", "category": "Calendar", "icon": "outlook.svg" },
+      { "name": "Twilio", "category": "Communication", "icon": "twilio.svg" },
+      { "name": "Slack", "category": "Communication", "icon": "slack.svg" },
+      { "name": "SendGrid", "category": "Communication", "icon": "sendgrid.svg" },
+      { "name": "OpenAI", "category": "AI", "icon": "openai.svg" },
+      { "name": "Anthropic", "category": "AI", "icon": "anthropic.svg" },
+      { "name": "ElevenLabs", "category": "AI", "icon": "elevenlabs.svg" },
+      { "name": "Zapier", "category": "Automation", "icon": "zapier.svg" },
+      { "name": "Make", "category": "Automation", "icon": "make.svg" },
+      { "name": "Stripe", "category": "Payment", "icon": "stripe.svg" }
+    ]
+  },
+  "pricing": [
+    {
+      "name": "Starter",
+      "price": 39,
+      "period": "mo",
+      "description": "Perfect for small businesses",
+      "color": "from-accent-500 to-accent-600",
+      "features": [
+        "1,000 minutes per month",
+        "Business hours availability",
+        "Basic CRM integration",
+        "Email support"
+      ],
+      "cta": "Start Free Trial",
+      "ctaUrl": "/signup"
+    },
+    {
+      "name": "Professional",
+      "price": 99,
+      "period": "mo",
+      "description": "For growing companies",
+      "color": "from-primary-500 to-primary-600",
+      "featured": true,
+      "features": [
+        "5,000 minutes per month",
+        "24/7 availability",
+        "Advanced CRM integration",
+        "Priority support",
+        "Custom voice training"
+      ],
+      "cta": "Start Trial",
+      "ctaUrl": "/signup"
+    },
+    {
+      "name": "Enterprise",
+      "price": "Custom",
+      "period": "",
+      "description": "For large organizations",
+      "color": "from-bright-500 to-bright-600",
+      "features": [
+        "Unlimited minutes",
+        "24/7 availability",
+        "Full API access",
+        "Dedicated account manager",
+        "Custom integrations",
+        "SLA guarantees"
+      ],
+      "cta": "Contact Sales",
+      "ctaUrl": "/contact"
+    }
+  ],
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Everything you need to know about VoiceAI",
+    "contactText": "Don't see your question here?",
+    "contactUrl": "/contact",
+    "questions": [
+      {
+        "question": "How accurate is the AI voice technology?",
+        "answer": "Our AI voice technology is remarkably accurate, with a 98.5% success rate in understanding and responding to customer inquiries. The voices sound natural and human-like, with appropriate pauses, intonations, and conversational flow."
+      },
+      {
+        "question": "Can I customize how the AI voice agents sound?",
+        "answer": "Yes, you can fully customize your AI voice agents. Choose from our library of 50+ voice options across different accents and languages, or work with us to create a custom voice that matches your brand identity."
+      },
+      {
+        "question": "How does VoiceAI integrate with my existing systems?",
+        "answer": "VoiceAI offers seamless integration with popular CRMs, calendars, and business tools through our API. We provide pre-built connectors for systems like Salesforce, HubSpot, Google Calendar, and many more. Our team can also help with custom integrations for specialized systems."
+      },
+      {
+        "question": "What languages do your AI agents support?",
+        "answer": "Our AI agents can speak and understand over 100 languages fluently, including English, Spanish, French, German, Japanese, Mandarin, Hindi, Arabic, and many more. Each language maintains natural conversational abilities and accurate pronunciation."
+      },
+      {
+        "question": "Is my customer data secure with VoiceAI?",
+        "answer": "Absolutely. We implement bank-level encryption and security protocols. VoiceAI is SOC 2 Type II compliant, HIPAA compliant (for healthcare clients), and GDPR compliant. We never sell or share your data, and you retain full ownership of all conversation data."
+      },
+      {
+        "question": "How quickly can I get started with VoiceAI?",
+        "answer": "Most customers are up and running within 1-2 weeks. Our streamlined implementation process includes setup, integration with your systems, voice selection, conversation flow design, and testing. For simpler use cases, you can be live in as little as 3-5 days."
+      }
+    ]
+  }
+} 

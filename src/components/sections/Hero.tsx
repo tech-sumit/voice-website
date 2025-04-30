@@ -1,0 +1,605 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import siteConfig from "@/config/site.json";
+import { Button } from "@/components/ui/Button";
+
+export default function Hero() {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [animationStage, setAnimationStage] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  
+  // Refs to prevent animation conflicts
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const messageDisplayed = useRef(false);
+  const inputDisplayed = useRef(false);
+  
+  const fullText = "Experience the future of customer service with our AI voice agents.";
+
+  useEffect(() => {
+    // Clean up animation timeline on component unmount
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Start animation sequence automatically with more reliable timing
+    const stageOneTimer = setTimeout(() => setAnimationStage(1), 700);
+    const stageTwoTimer = setTimeout(() => setAnimationStage(2), 1600);
+    const stageThreeTimer = setTimeout(() => {
+      setAnimationStage(3);
+      startTypingAnimation();
+    }, 2400);
+    const stageFourTimer = setTimeout(() => {
+      setAnimationStage(4);
+      inputDisplayed.current = true;
+    }, 3500);
+    
+    // Cleanup function to prevent memory leaks
+    return () => {
+      clearTimeout(stageOneTimer);
+      clearTimeout(stageTwoTimer);
+      clearTimeout(stageThreeTimer);
+      clearTimeout(stageFourTimer);
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+    };
+  }, []);
+  
+  const startTypingAnimation = () => {
+    if (messageDisplayed.current) return;
+    messageDisplayed.current = true;
+    
+    setIsTyping(true);
+    let i = 0;
+    
+    typingIntervalRef.current = setInterval(() => {
+      if (i < fullText.length) {
+        setCurrentText(fullText.substring(0, i + 1));
+        i++;
+      } else {
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+        }
+        setIsTyping(false);
+      }
+    }, 30);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (phoneNumber.trim().length >= 10) {
+      setIsSubmitted(true);
+      // Here you would typically send the phone number to your backend
+      console.log("Phone number submitted:", phoneNumber);
+      
+      // Reset after showing success message
+      setTimeout(() => {
+        setPhoneNumber("");
+        setIsSubmitted(false);
+      }, 5000);
+    }
+  };
+
+  // Blob animation variants
+  const blobVariants = {
+    animate: (custom: number) => ({
+      scale: [1, 1.1, 1],
+      opacity: [0.15, 0.25, 0.15],
+      y: custom === 1 ? [0, -20, 0] : custom === 2 ? [0, 20, 0] : 0,
+      x: custom === 3 ? [0, 30, 0] : 0,
+      transition: { 
+        duration: 12 + custom * 3, 
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: custom - 1
+      }
+    })
+  };
+
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-b from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-800 min-h-[90vh] flex items-center">
+      {/* Gradient background blobs - subtle and modern */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-0 left-[10%] w-[40rem] h-[40rem] rounded-full bg-primary-400/20 dark:bg-primary-500/10 blur-[100px]"
+          variants={blobVariants}
+          animate="animate"
+          custom={1}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-[5%] w-[35rem] h-[35rem] rounded-full bg-accent-400/15 dark:bg-accent-500/10 blur-[100px]"
+          variants={blobVariants}
+          animate="animate"
+          custom={2}
+        />
+        <motion.div 
+          className="absolute top-[40%] right-[15%] w-[25rem] h-[25rem] rounded-full bg-secondary-400/15 dark:bg-secondary-500/10 blur-[80px]"
+          variants={blobVariants}
+          animate="animate"
+          custom={3}
+        />
+      </div>
+
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]" />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left column - Text */}
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.8,
+                type: "spring",
+                stiffness: 100
+              }}
+              className="space-y-6"
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="inline-flex items-center px-3 py-1 rounded-full bg-accent-100 dark:bg-accent-900/30 border border-accent-200 dark:border-accent-800 text-accent-800 dark:text-accent-300 text-sm font-medium mb-4"
+              >
+                <motion.span 
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="flex h-2 w-2 rounded-full bg-accent-500 mr-2"
+                />
+                Revolutionary Voice AI Technology
+              </motion.div>
+            
+              <motion.h1
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white"
+              >
+                <motion.span 
+                  className="text-gradient-primary inline-block"
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {siteConfig.name}
+                </motion.span>{" "}
+                <br />
+                <motion.span
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.8 }} 
+                  className="text-gradient-secondary inline-block mt-1"
+                >
+                  {siteConfig.description}
+                </motion.span>
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.8 }}
+                className="text-xl text-neutral-700 dark:text-neutral-300 max-w-xl"
+              >
+                AI phone agents that sound human, speak any language, and work 24/7. 
+                Integrate seamlessly with your CRM and business tools.
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.6 }}
+                className="flex flex-wrap gap-5 pt-4"
+              >
+                <Button 
+                  href={siteConfig.cta.primary.url} 
+                  size="lg" 
+                  className="btn-gradient shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-[1.02] transition-all duration-300"
+                >
+                  {siteConfig.cta.primary.text}
+                </Button>
+                <Button 
+                  href={siteConfig.cta.secondary.url} 
+                  variant="outline" 
+                  size="lg"
+                  className="border-2 border-accent-500/50 text-accent-600 dark:text-accent-400 hover:bg-accent-500/10 hover:scale-[1.02] transition-all duration-300"
+                >
+                  {siteConfig.cta.secondary.text}
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1, duration: 0.8 }}
+                className="pt-8"
+              >
+                <p className="text-sm text-neutral-500 dark:text-neutral-400 flex items-center">
+                  <motion.svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-5 w-5 mr-2 text-accent-500" 
+                    viewBox="0 0 20 20" 
+                    fill="currentColor"
+                    animate={{ rotate: [0, 10, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </motion.svg>
+                  Trusted by 500+ innovative companies worldwide
+                </p>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Right column - New Interactive Phone Experience */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ 
+              duration: 0.7, 
+              delay: 0.3,
+              type: "spring",
+              stiffness: 100
+            }}
+            className="flex justify-center lg:justify-end"
+          >
+            <div className="relative w-full max-w-[370px]">
+              {/* Floating Notifications */}
+              {animationStage >= 1 && (
+                <motion.div 
+                  key="notification"
+                  initial={{ opacity: 0, x: 100, y: -20 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ type: "spring", damping: 20 }}
+                  className="absolute -right-8 -top-10 z-20 w-44 bg-white dark:bg-neutral-800 rounded-xl shadow-xl p-3 border border-neutral-200 dark:border-neutral-700"
+                >
+                  <div className="flex items-center mb-1">
+                    <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white">
+                        <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="ml-2">
+                      <div className="text-xs font-semibold text-neutral-900 dark:text-white">Incoming call</div>
+                      <div className="text-xs text-neutral-500">{siteConfig.name}</div>
+                    </div>
+                  </div>
+                  <div className="flex space-x-2 mt-1">
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 text-xs py-1 rounded-md bg-error-100 dark:bg-error-900/30 text-error-600 dark:text-error-400"
+                    >
+                      Decline
+                    </motion.button>
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 text-xs py-1 rounded-md bg-success-100 dark:bg-success-900/30 text-success-600 dark:text-success-400"
+                    >
+                      Accept
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* 3D Phone Device Frame */}
+              <motion.div 
+                className="w-full bg-gradient-to-b from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 rounded-[40px] overflow-hidden shadow-2xl border border-neutral-400/20 dark:border-neutral-600/20"
+                initial={{ rotateY: 0 }}
+                animate={{ 
+                  rotateY: animationStage >= 1 ? [0, -15, 0, -5, 0] : 0,
+                  y: [0, -8, 0],
+                }}
+                transition={{ 
+                  rotateY: { duration: 1.5, ease: "easeInOut" },
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                  perspective: "1000px",
+                  boxShadow: "0 50px 100px -20px rgba(0, 0, 0, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3)"
+                }}
+              >
+                {/* Phone Notch */}
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-7 bg-neutral-800 dark:bg-neutral-950 rounded-b-xl z-10" />
+                
+                {/* Phone Screen with High-Definition Visuals */}
+                <div className="pt-9 pb-10 px-4 min-h-[650px] bg-surface-50/90 dark:bg-surface-900/90 backdrop-blur-md">
+                  {/* Status Bar */}
+                  <div className="flex justify-between text-xs text-neutral-800 dark:text-neutral-200 mb-4">
+                    <span>9:41 AM</span>
+                    <div className="flex space-x-1">
+                      <motion.svg 
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                      </motion.svg>
+                      <motion.svg 
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                        <path d="M5 5v1.5" />
+                        <path d="M9 5v1.5" />
+                        <path d="M5 11.5v1" />
+                        <path d="M9 11.5v1" />
+                        <path d="M5 15v1.5" />
+                        <path d="M9 15v1.5" />
+                        <path d="M19 5v1.5" />
+                        <path d="M19 11.5v1" />
+                        <path d="M19 15v1.5" />
+                        <path d="M15 5v1.5" />
+                        <path d="M15 11.5v1" />
+                        <path d="M15 15v1.5" />
+                      </motion.svg>
+                      <motion.svg 
+                        animate={{ 
+                          fill: ["rgba(0,0,0,0)", "currentColor", "rgba(0,0,0,0)"] 
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </motion.svg>
+                    </div>
+                  </div>
+
+                  {/* AI Assistant Visual */}
+                  <div className="relative mb-6">
+                    <motion.div 
+                      className="w-full h-40 rounded-2xl bg-gradient-to-r from-primary-400 to-secondary-400 dark:from-primary-600 dark:to-secondary-600 overflow-hidden"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ 
+                        opacity: animationStage >= 1 ? 1 : 0, 
+                        y: animationStage >= 1 ? 0 : 20,
+                        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                      }}
+                      transition={{ 
+                        duration: 0.6, 
+                        delay: 0.2,
+                        backgroundPosition: {
+                          duration: 10,
+                          repeat: Infinity,
+                          ease: "linear"
+                        }
+                      }}
+                    >
+                      {/* Animated sound waves */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="flex space-x-2">
+                          {[1, 2, 3, 4, 5].map((i) => (
+                            <motion.div
+                              key={`sound-wave-${i}`}
+                              className="w-1 bg-white/80 rounded-full"
+                              animate={{ 
+                                height: animationStage >= 2 ? 
+                                  [15, 30 + (i * 5), 10, 40 - (i * 3), 20] : 
+                                  [15, 15, 15] 
+                              }}
+                              transition={{ 
+                                duration: 1,
+                                repeat: Infinity, 
+                                ease: "easeInOut",
+                                delay: i * 0.05
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Dynamic Voice Assistant Icon */}
+                    <motion.div 
+                      className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary-500 dark:bg-primary-600 flex items-center justify-center border-4 border-white dark:border-surface-900 shadow-lg"
+                      animate={{ 
+                        scale: animationStage >= 2 ? [1, 1.1, 1] : 1,
+                        boxShadow: animationStage >= 2 ? [
+                          "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                          "0 15px 25px -5px rgba(59, 130, 246, 0.3)",
+                          "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                        ] : "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                      }}
+                      transition={{ 
+                        scale: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
+                        boxShadow: { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
+                      }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-white">
+                        <path d="M8.25 4.5a3.75 3.75 0 117.5 0v8.25a3.75 3.75 0 11-7.5 0V4.5z" />
+                        <path d="M6 10.5a.75.75 0 01.75.75v1.5a5.25 5.25 0 1010.5 0v-1.5a.75.75 0 011.5 0v1.5a6.751 6.751 0 01-6 6.709v2.291h3a.75.75 0 010 1.5h-7.5a.75.75 0 010-1.5h3v-2.291a6.751 6.751 0 01-6-6.709v-1.5A.75.75 0 016 10.5z" />
+                      </svg>
+                    </motion.div>
+                  </div>
+
+                  {/* Animated Message Area - No AnimatePresence */}
+                  <div className="mt-12 pt-2">
+                    {/* Assistant message */}
+                    {animationStage >= 2 && (
+                      <motion.div
+                        key="assistant-message"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-center mb-4"
+                      >
+                        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                          {siteConfig.name} Assistant
+                        </h3>
+                        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                          {isTyping ? (
+                            <span>{currentText}<span className="animate-blink">|</span></span>
+                          ) : (
+                            animationStage >= 3 && fullText
+                          )}
+                        </p>
+                      </motion.div>
+                    )}
+
+                    {/* Conditionally render only one of these at a time */}
+                    {animationStage >= 4 && !isSubmitted && (
+                      <motion.div
+                        key="phone-input"
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ 
+                          duration: 0.3,
+                          type: "spring", 
+                          stiffness: 500, 
+                          damping: 25 
+                        }}
+                        className="relative bg-white dark:bg-neutral-800 rounded-2xl p-5 shadow-xl border border-neutral-200 dark:border-neutral-700"
+                        style={{
+                          boxShadow: "0 20px 30px -10px rgba(0, 0, 0, 0.15), 0 0 10px rgba(0, 0, 0, 0.1)"
+                        }}
+                      >
+                        <h3 className="text-lg font-bold text-center text-neutral-900 dark:text-white mb-4">
+                          Get a Personal Demo
+                        </h3>
+                        <p className="text-sm text-center text-neutral-600 dark:text-neutral-300 mb-4">
+                          Enter your phone number and we'll call you back instantly
+                        </p>
+
+                        <form onSubmit={handleSubmit} className="space-y-3">
+                          <div className="relative">
+                            <motion.div
+                              animate={{ 
+                                boxShadow: ["0 0 0 0 rgba(59, 130, 246, 0)", "0 0 0 4px rgba(59, 130, 246, 0.3)", "0 0 0 0 rgba(59, 130, 246, 0)"]
+                              }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                              className="relative"
+                            >
+                              <input
+                                type="tel"
+                                placeholder="(123) 456-7890"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                pattern="[0-9]{10,}"
+                                title="Please enter at least 10 digits"
+                                required
+                              />
+                              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                <motion.svg
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5 text-primary-600 dark:text-primary-400"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                </motion.svg>
+                              </div>
+                            </motion.div>
+                          </div>
+                        
+                          <motion.button
+                            type="submit"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            className="w-full py-3 rounded-xl bg-gradient-primary text-white font-medium shadow-lg shadow-primary-500/20"
+                          >
+                            Call Me Now
+                          </motion.button>
+                        </form>
+                      </motion.div>
+                    )}
+
+                    {/* Success message */}
+                    {isSubmitted && (
+                      <motion.div
+                        key="success-message"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-gradient-success text-white rounded-2xl p-5 text-center shadow-lg"
+                      >
+                        <motion.div 
+                          animate={{ 
+                            scale: [1, 1.2, 1],
+                            rotate: [0, 10, 0]
+                          }}
+                          transition={{ duration: 0.5 }}
+                          className="w-12 h-12 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-3"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </motion.div>
+                        <h3 className="text-lg font-bold mb-1">Thank You!</h3>
+                        <p className="text-sm opacity-90 mb-3">Our team will call you back shortly</p>
+                        <motion.div 
+                          animate={{ y: [0, -5, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                          className="text-xs opacity-75"
+                        >
+                          Connecting to the future of customer service...
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Home indicator */}
+                <div className="h-1.5 w-1/3 bg-neutral-500 rounded-full mx-auto my-4"></div>
+              </motion.div>
+
+              {/* Interactive notification pulse - without AnimatePresence */}
+              {animationStage >= 1 && (
+                <motion.div
+                  key="notification-pulse"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: [0, 0.7, 0], scale: [1, 1.5, 1] }}
+                  transition={{ 
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatDelay: 0.5
+                  }}
+                  className="absolute -bottom-2 right-10 w-6 h-6 bg-primary-500 rounded-full z-20"
+                  style={{ filter: "blur(8px)" }}
+                />
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      
+      {/* Decorative wave */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto text-surface-100 dark:text-surface-800 translate-y-[1px]">
+          <path d="M0 25.0194L60 32.5585C120 40.0252 240 55.8083 360 62.333C480 68.8083 600 66.533 720 59.0083C840 51.5329 960 38.9996 1080 36.6663C1200 34.333 1320 42.4996 1380 46.5829L1440 50.6663V74.0001H1380C1320 74.0001 1200 74.0001 1080 74.0001C960 74.0001 840 74.0001 720 74.0001C600 74.0001 480 74.0001 360 74.0001C240 74.0001 120 74.0001 60 74.0001H0V25.0194Z" fill="currentColor" />
+        </svg>
+      </div>
+    </section>
+  );
+} 
