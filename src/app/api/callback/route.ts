@@ -3,17 +3,11 @@ import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
 
 // Initialize Resend with your API key
-// Get your API key from https://resend.com after signing up
-// Add RESEND_API_KEY to your .env.local file
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Define maximum lengths for fields
-const MAX_LENGTHS = {
-  name: 100,
-  email: 100,
-  company: 100,
+// Define maximum length for phone field
+const MAX_LENGTH = {
   phone: 20,
-  message: 5000, // 5000 characters max for message
 };
 
 // Simple in-memory rate limiting (reset on server restart)
@@ -22,15 +16,9 @@ const ipRequestCounts = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_MAX = 2; // Max requests per window
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
 
-// Input validation functions
-function isValidEmail(email: string): boolean {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email);
-}
-
+// Validate phone number format
 function isValidPhone(phone: string): boolean {
-  // Allow empty phone (it's optional)
-  if (!phone) return true;
+  if (!phone) return false;
   
   // Basic phone validation - allows various formats with optional country codes
   const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,9}$/;
@@ -128,13 +116,13 @@ export async function POST(request: Request) {
       });
     }
     
-    const formData = await request.json();
-    const { name, email, company, phone, message, captchaToken } = formData;
+    const data = await request.json();
+    const { phoneNumber, captchaToken } = data;
     
-    // Initial validation - required fields
-    if (!name || !email || !message) {
+    // Validate phone number
+    if (!phoneNumber) {
       return NextResponse.json({ 
-        error: 'Name, email, and message are required' 
+        error: 'Phone number is required' 
       }, { 
         status: 400 
       });
@@ -143,7 +131,7 @@ export async function POST(request: Request) {
     // Validate reCAPTCHA token
     if (!captchaToken) {
       return NextResponse.json({ 
-        error: 'Security verification failed. Please try again.' 
+        error: 'CAPTCHA verification failed. Please try again.' 
       }, { 
         status: 400 
       });
@@ -153,7 +141,7 @@ export async function POST(request: Request) {
     const isValidCaptcha = await verifyRecaptcha(captchaToken);
     if (!isValidCaptcha) {
       return NextResponse.json({ 
-        error: 'Security verification failed. Please refresh the page and try again.' 
+        error: 'CAPTCHA verification failed. Please refresh the page and try again.' 
       }, { 
         status: 403 
       });
@@ -162,35 +150,12 @@ export async function POST(request: Request) {
     // Validate input length and format
     const validationErrors = [];
     
-    // Name validation
-    if (name.length > MAX_LENGTHS.name) {
-      validationErrors.push(`Name must be ${MAX_LENGTHS.name} characters or less`);
+    if (phoneNumber.length > MAX_LENGTH.phone) {
+      validationErrors.push(`Phone number must be ${MAX_LENGTH.phone} characters or less`);
     }
     
-    // Email validation
-    if (email.length > MAX_LENGTHS.email) {
-      validationErrors.push(`Email must be ${MAX_LENGTHS.email} characters or less`);
-    }
-    if (!isValidEmail(email)) {
-      validationErrors.push('Please provide a valid email address');
-    }
-    
-    // Company validation (optional field)
-    if (company && company.length > MAX_LENGTHS.company) {
-      validationErrors.push(`Company name must be ${MAX_LENGTHS.company} characters or less`);
-    }
-    
-    // Phone validation (optional field)
-    if (phone && phone.length > MAX_LENGTHS.phone) {
-      validationErrors.push(`Phone number must be ${MAX_LENGTHS.phone} characters or less`);
-    }
-    if (phone && !isValidPhone(phone)) {
+    if (!isValidPhone(phoneNumber)) {
       validationErrors.push('Please provide a valid phone number');
-    }
-    
-    // Message validation
-    if (message.length > MAX_LENGTHS.message) {
-      validationErrors.push(`Message must be ${MAX_LENGTHS.message} characters or less`);
     }
     
     // Return validation errors if any
@@ -203,27 +168,20 @@ export async function POST(request: Request) {
       });
     }
     
-    // Sanitize all inputs
-    const sanitizedData = {
-      name: sanitizeInput(name),
-      email: sanitizeInput(email).toLowerCase(),
-      company: company ? sanitizeInput(company) : '',
-      phone: phone ? sanitizeInput(phone) : '',
-      message: sanitizeInput(message),
-    };
+    // Sanitize the phone number
+    const sanitizedPhone = sanitizeInput(phoneNumber);
     
     // If Resend API key is not configured, just log the message and return success
     if (!process.env.RESEND_API_KEY) {
-      console.log('RESEND_API_KEY not found. Contact form submission (not sent):');
-      // Don't log full data to avoid exposing personal information
-      console.log('Received contact form submission - email service not configured');
+      console.log('RESEND_API_KEY not found. Callback request (not sent):');
+      console.log({ phoneNumber: sanitizedPhone });
       return NextResponse.json({ 
         success: true, 
-        warning: 'Email not sent - email service not configured' 
+        warning: 'Notification not sent - email service not configured' 
       });
     }
     
-    // Format the email content with a beautiful, professional template
+    // Format the email notification with a professional template
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -231,7 +189,7 @@ export async function POST(request: Request) {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          <title>New Contact Form Submission</title>
+          <title>New Callback Request</title>
           <style type="text/css">
             body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; line-height: 1.5; }
@@ -241,14 +199,12 @@ export async function POST(request: Request) {
             .header { background-color: #6366F1; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background-color: #ffffff; padding: 20px; }
             .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; }
-            .message-box { background-color: #f3f4f6; padding: 15px; border-radius: 6px; margin-top: 20px; }
             .info-item { padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
             .info-item:last-child { border-bottom: none; }
             .label { font-weight: bold; color: #374151; }
             h1 { margin: 0; font-size: 22px; font-weight: bold; }
-            h2 { font-size: 18px; color: #374151; margin-top: 25px; margin-bottom: 10px; }
             .logo { font-size: 24px; font-weight: bold; color: white; margin-bottom: 10px; }
-            .message-text { white-space: pre-line; color: #4b5563; }
+            .urgent { color: #ef4444; font-weight: bold; }
             .button { display: inline-block; background-color: #6366F1; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; margin-top: 15px; }
           </style>
         </head>
@@ -256,42 +212,27 @@ export async function POST(request: Request) {
           <div class="container">
             <div class="header">
               <div class="logo">${siteConfig.name}</div>
-              <div>New Contact Form Submission</div>
+              <div class="urgent">⚡ URGENT: New Callback Request</div>
             </div>
             
             <div class="content">
-              <p>You've received a new message from your website contact form:</p>
+              <p>You've received a new callback request from your website:</p>
               
               <div class="info-item">
-                <span class="label">Name:</span> ${sanitizedData.name}
+                <span class="label">Phone Number:</span> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a>
               </div>
               
               <div class="info-item">
-                <span class="label">Email:</span> <a href="mailto:${sanitizedData.email}">${sanitizedData.email}</a>
+                <span class="label">Requested on:</span> ${new Date().toLocaleString()}
               </div>
               
-              ${sanitizedData.company ? `
-                <div class="info-item">
-                  <span class="label">Company:</span> ${sanitizedData.company}
-                </div>
-              ` : ''}
+              <p>This customer is waiting for an immediate callback. Please contact them as soon as possible.</p>
               
-              ${sanitizedData.phone ? `
-                <div class="info-item">
-                  <span class="label">Phone:</span> <a href="tel:${sanitizedData.phone}">${sanitizedData.phone}</a>
-                </div>
-              ` : ''}
-              
-              <h2>Message:</h2>
-              <div class="message-box">
-                <div class="message-text">${sanitizedData.message.replace(/\n/g, '<br>')}</div>
-              </div>
-              
-              <a href="mailto:${sanitizedData.email}" class="button">Reply to ${sanitizedData.name}</a>
+              <a href="tel:${sanitizedPhone}" class="button">Call Customer Now</a>
             </div>
             
             <div class="footer">
-              <p>This email was sent from the contact form on your ${siteConfig.name} website.</p>
+              <p>This notification was sent from the callback form on your ${siteConfig.name} website.</p>
               <p>&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
             </div>
           </div>
@@ -299,13 +240,12 @@ export async function POST(request: Request) {
       </html>
     `;
     
-    // Send email using Resend with sanitized data
-    const { data, error } = await resend.emails.send({
-      from: `Contact Form <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
+    // Send notification email using Resend
+    const { data: emailData, error } = await resend.emails.send({
+      from: `Callback Request <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
       to: siteConfig.company.email,
-      subject: `New contact form submission from ${sanitizedData.name}`,
+      subject: `🔴 URGENT: New callback request - ${sanitizedPhone}`,
       html: emailHtml,
-      replyTo: sanitizedData.email,
     });
     
     if (error) {
@@ -316,21 +256,20 @@ export async function POST(request: Request) {
       );
     }
     
-    // Return success with minimal information and security headers
-    return NextResponse.json(
-      { success: true },
-      {
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-          'Surrogate-Control': 'no-store'
-        }
+    // Return success with minimal information
+    return NextResponse.json({ 
+      success: true 
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Surrogate-Control': 'no-store'
       }
-    );
+    });
     
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('Callback request error:', error);
     // Generic error message to avoid leaking implementation details
     return NextResponse.json(
       { error: 'Unable to process your request' },

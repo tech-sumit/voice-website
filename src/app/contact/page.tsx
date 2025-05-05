@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import siteConfig from '@/config/site.json';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -15,14 +16,29 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  
+  // Ref for reCAPTCHA
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token);
+  };
+  
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Verify that CAPTCHA has been completed
+    if (!captchaToken) {
+      setSubmitError("Please complete the CAPTCHA verification first.");
+      return;
+    }
+    
     setIsSubmitting(true);
     setSubmitError(null);
     
@@ -32,13 +48,31 @@ export default function ContactPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          captchaToken
+        }),
       });
       
       const data = await response.json();
       
       if (!response.ok) {
-        setSubmitError(data.error || 'Failed to send message');
+        // Generic error message to avoid exposing implementation details
+        if (response.status === 429) {
+          setSubmitError("Too many requests. Please try again later.");
+        } else if (data.error?.includes('Security')) {
+          setSubmitError("Security verification failed. Please refresh the page and try again.");
+        } else {
+          setSubmitError(data.error || 'Unable to process your request at this time');
+        }
+        
+        // Reset captcha token if it was invalid
+        if (data.error?.includes('Security')) {
+          setCaptchaToken(null);
+          recaptchaRef.current?.reset();
+        }
+        
+        setIsSubmitting(false);
         return;
       }
       
@@ -51,12 +85,16 @@ export default function ContactPage() {
         message: '',
       });
       
+      // Reset captcha
+      setCaptchaToken(null);
+      recaptchaRef.current?.reset();
+      
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 5000);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitError('An error occurred while sending your message');
+    } catch (err) {
+      console.error('Form submission error');
+      setSubmitError('Unable to process your request. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -250,24 +288,40 @@ export default function ContactPage() {
                 />
               </div>
               
+              {/* Styled reCAPTCHA component */}
+              <div className="mt-6">
+                <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-3 border border-neutral-200 dark:border-neutral-600 shadow-sm flex justify-center">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}
+                    onChange={handleCaptchaChange}
+                    theme="light"
+                    className="transform scale-95 origin-center"
+                  />
+                </div>
+                <p className="text-xs text-center text-secondary-500 dark:text-secondary-400 mt-2 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                  </svg>
+                  Secured by reCAPTCHA
+                </p>
+              </div>
+              
               <div>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className={`
-                    w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors
-                    ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}
-                  `}
+                  disabled={isSubmitting || !captchaToken}
+                  className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${(isSubmitting || !captchaToken) ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Sending...
-                    </>
-                  ) : 'Send Message'}
+                      Processing...
+                    </span>
+                  ) : "Send Message"}
                 </button>
               </div>
             </form>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
 import { Button } from "@/components/ui/Button";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Hero() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -11,11 +12,15 @@ export default function Hero() {
   const [animationStage, setAnimationStage] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   
   // Refs to prevent animation conflicts
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const messageDisplayed = useRef(false);
   const inputDisplayed = useRef(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const fullText = "Experience the future of customer service with our AI voice agents.";
 
@@ -73,18 +78,81 @@ export default function Hero() {
     }, 30);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phoneNumber.trim().length >= 10) {
+    setError(null);
+    
+    // Check if phone number is valid
+    if (phoneNumber.trim().length < 10) {
+      setError("Please enter a valid phone number with at least 10 digits");
+      return;
+    }
+    
+    // Verify CAPTCHA is completed
+    if (!captchaToken) {
+      setError("Please complete the security verification first");
+      return;
+    }
+    
+    // Proceed with form submission
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('/api/callback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          phoneNumber,
+          captchaToken: captchaToken
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        // Generic error message to avoid exposing implementation details
+        if (response.status === 429) {
+          setError("Too many requests. Please try again later.");
+        } else if (data.error?.includes('CAPTCHA')) {
+          setError("Security verification failed. Please refresh the page and try again.");
+        } else {
+          setError(data.error || 'Unable to process your request at this time');
+        }
+        
+        setIsSubmitting(false);
+        
+        // Reset captcha token if it was invalid
+        if (data.error?.includes('CAPTCHA')) {
+          setCaptchaToken(null);
+          recaptchaRef.current?.reset();
+        }
+        return;
+      }
+      
       setIsSubmitted(true);
-      // Here you would typically send the phone number to your backend
-      console.log("Phone number submitted:", phoneNumber);
+      // Don't log phone number to console in production
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Phone number submitted");
+      }
       
       // Reset after showing success message
       setTimeout(() => {
         setPhoneNumber("");
         setIsSubmitted(false);
+        setCaptchaToken(null);
+        recaptchaRef.current?.reset();
       }, 5000);
+    } catch (err) {
+      console.error('Form submission error');
+      setError('Unable to process your request. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -418,6 +486,19 @@ export default function Hero() {
                       </motion.div>
                     )}
 
+                    {/* Show error message if there's an error */}
+                    {error && (
+                      <motion.div
+                        key="error-message"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="bg-red-500 text-white rounded-2xl p-3 mb-3 text-center text-sm"
+                      >
+                        {error}
+                      </motion.div>
+                    )}
+
                     {/* Conditionally render only one of these at a time */}
                     {animationStage >= 4 && !isSubmitted && (
                       <motion.div
@@ -475,16 +556,49 @@ export default function Hero() {
                               </div>
                             </motion.div>
                           </div>
+
+                          {/* Styled reCAPTCHA component */}
+                          <div className="mt-4">
+                            <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-3 border border-neutral-200 dark:border-neutral-600 shadow-sm">
+                              <ReCAPTCHA
+                                ref={recaptchaRef}
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}
+                                onChange={handleCaptchaChange}
+                                theme="light"
+                                size="normal"
+                                className="transform scale-90 origin-top-left mx-auto"
+                              />
+                            </div>
+                            <p className="text-xs text-center text-neutral-500 dark:text-neutral-400 mt-2 flex items-center justify-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                              </svg>
+                              Secured by reCAPTCHA
+                            </p>
+                          </div>
                         
                           <motion.button
                             type="submit"
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
-                            className="w-full py-3 rounded-xl bg-gradient-primary text-white font-medium shadow-lg shadow-primary-500/20"
+                            disabled={isSubmitting || !captchaToken}
+                            className={`w-full py-3 rounded-xl bg-gradient-primary text-white font-medium shadow-lg shadow-primary-500/20 ${(isSubmitting || !captchaToken) ? 'opacity-70 cursor-not-allowed' : ''}`}
                           >
-                            Call Me Now
+                            {isSubmitting ? (
+                              <span className="flex items-center justify-center">
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Processing...
+                              </span>
+                            ) : "Call Me Now"}
                           </motion.button>
                         </form>
+
+                        <div className="mt-4 text-center">
+                          {/* Removed redundant text since we now have it above the button */}
+                        </div>
                       </motion.div>
                     )}
 
