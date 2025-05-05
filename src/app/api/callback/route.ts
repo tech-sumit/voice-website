@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
+import { RecaptchaEnterpriseServiceClient } from '@google-cloud/recaptcha-enterprise';
 
 // Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -42,29 +43,63 @@ function sanitizeInput(input: string): string {
     .replace(/'/g, '&#x27;');
 }
 
-// Verify reCAPTCHA token with Google
-async function verifyRecaptcha(token: string): Promise<boolean> {
+// Verify reCAPTCHA Enterprise token with Google Cloud
+async function verifyRecaptchaEnterprise(token: string, action: string = 'CALLBACK'): Promise<boolean> {
   try {
-    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    // Get the project ID from environment variable
+    const projectID = process.env.RECAPTCHA_PROJECT_ID;
+    const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi';
     
-    // If no secret key, skip verification in development
-    if (!recaptchaSecret) {
-      console.warn('RECAPTCHA_SECRET_KEY not configured, skipping verification');
-      return true;
+    // Check if project ID is configured
+    if (!projectID) {
+      console.warn('RECAPTCHA_PROJECT_ID not configured, skipping verification');
+      return true; // Skip verification in development
     }
     
-    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    // Create the reCAPTCHA client
+    const client = new RecaptchaEnterpriseServiceClient();
+    const projectPath = client.projectPath(projectID);
+
+    // Build the assessment request
+    const request = {
+      assessment: {
+        event: {
+          token: token,
+          siteKey: recaptchaKey,
+        },
       },
-      body: `secret=${recaptchaSecret}&response=${token}`,
-    });
+      parent: projectPath,
+    };
+
+    const [response] = await client.createAssessment(request);
+
+    // Check if the token is valid
+    if (!response.tokenProperties?.valid) {
+      console.log(`Token validation failed: ${response.tokenProperties?.invalidReason}`);
+      return false;
+    }
+
+    // Check if the expected action was executed
+    if (response.tokenProperties?.action !== action) {
+      console.log(`Action mismatch. Expected: ${action}, Got: ${response.tokenProperties?.action}`);
+      return false;
+    }
+
+    // Get the risk score - typically anything above 0.5 is likely legitimate
+    const score = response.riskAnalysis?.score;
+    console.log(`reCAPTCHA score: ${score}`);
     
-    const data = await response.json();
-    return data.success === true;
+    // For debugging purposes, log reasons if score is low
+    if (score && score < 0.5) {
+      response.riskAnalysis?.reasons?.forEach((reason) => {
+        console.log(`Risk reason: ${reason}`);
+      });
+    }
+
+    // Consider scores above threshold as valid
+    return score !== undefined && score !== null && score >= 0.5;
   } catch (error) {
-    console.error('reCAPTCHA verification error:', error);
+    console.error('reCAPTCHA Enterprise verification error:', error);
     return false;
   }
 }
@@ -131,17 +166,17 @@ export async function POST(request: Request) {
     // Validate reCAPTCHA token
     if (!captchaToken) {
       return NextResponse.json({ 
-        error: 'CAPTCHA verification failed. Please try again.' 
+        error: 'Security verification failed. Please try again.' 
       }, { 
         status: 400 
       });
     }
     
-    // Verify reCAPTCHA token with Google
-    const isValidCaptcha = await verifyRecaptcha(captchaToken);
+    // Verify reCAPTCHA Enterprise token with Google Cloud
+    const isValidCaptcha = await verifyRecaptchaEnterprise(captchaToken, 'CALLBACK');
     if (!isValidCaptcha) {
       return NextResponse.json({ 
-        error: 'CAPTCHA verification failed. Please refresh the page and try again.' 
+        error: 'Security verification failed. Please refresh the page and try again.' 
       }, { 
         status: 403 
       });

@@ -381,7 +381,7 @@ body {
 /* Dark mode toggle utility */
 .dark-toggle {
   position: fixed;
-  bottom: 1rem;
+  bottom: 4rem;
   right: 1rem;
   z-index: 50;
   background-color: var(--surface-2);

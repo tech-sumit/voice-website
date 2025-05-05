@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
 import { Button } from "@/components/ui/Button";
-import ReCAPTCHA from "react-google-recaptcha";
+import Script from "next/script";
 
 export default function Hero() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -15,12 +15,12 @@ export default function Hero() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
   
   // Refs to prevent animation conflicts
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const messageDisplayed = useRef(false);
   const inputDisplayed = useRef(false);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const fullText = "Experience the future of customer service with our AI voice agents.";
 
@@ -58,6 +58,11 @@ export default function Hero() {
     };
   }, []);
   
+  // Initialize reCAPTCHA when it loads
+  const handleRecaptchaLoad = () => {
+    setIsRecaptchaLoaded(true);
+  };
+  
   const startTypingAnimation = () => {
     if (messageDisplayed.current) return;
     messageDisplayed.current = true;
@@ -78,10 +83,6 @@ export default function Hero() {
     }, 30);
   };
 
-  const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -92,15 +93,47 @@ export default function Hero() {
       return;
     }
     
-    // Verify CAPTCHA is completed
+    // Execute reCAPTCHA Enterprise
     if (!captchaToken) {
-      setError("Please complete the security verification first");
-      return;
+      if (!isRecaptchaLoaded || typeof window.grecaptcha === 'undefined') {
+        setError("Security verification is still loading. Please try again in a moment.");
+        return;
+      }
+      
+      try {
+        setIsSubmitting(true);
+        
+        // Execute reCAPTCHA Enterprise
+        window.grecaptcha.enterprise.ready(async () => {
+          try {
+            const token = await window.grecaptcha.enterprise.execute(
+              process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi', 
+              { action: 'CALLBACK' }
+            );
+            
+            setCaptchaToken(token);
+            
+            // Continue with form submission
+            await submitForm(token);
+          } catch (error) {
+            console.error('reCAPTCHA error:', error);
+            setError("Security verification failed. Please try again.");
+            setIsSubmitting(false);
+          }
+        });
+      } catch (error) {
+        console.error('reCAPTCHA execution error:', error);
+        setError("Security verification failed. Please refresh the page and try again.");
+        setIsSubmitting(false);
+      }
+    } else {
+      // If we already have a token, proceed with submission
+      setIsSubmitting(true);
+      await submitForm(captchaToken);
     }
-    
-    // Proceed with form submission
-    setIsSubmitting(true);
-    
+  };
+  
+  const submitForm = async (token: string) => {
     try {
       const response = await fetch('/api/callback', {
         method: 'POST',
@@ -109,7 +142,7 @@ export default function Hero() {
         },
         body: JSON.stringify({ 
           phoneNumber,
-          captchaToken: captchaToken
+          captchaToken: token
         }),
       });
       
@@ -119,19 +152,18 @@ export default function Hero() {
         // Generic error message to avoid exposing implementation details
         if (response.status === 429) {
           setError("Too many requests. Please try again later.");
-        } else if (data.error?.includes('CAPTCHA')) {
+        } else if (data.error?.includes('Security')) {
           setError("Security verification failed. Please refresh the page and try again.");
         } else {
           setError(data.error || 'Unable to process your request at this time');
         }
         
-        setIsSubmitting(false);
-        
         // Reset captcha token if it was invalid
-        if (data.error?.includes('CAPTCHA')) {
+        if (data.error?.includes('Security')) {
           setCaptchaToken(null);
-          recaptchaRef.current?.reset();
         }
+        
+        setIsSubmitting(false);
         return;
       }
       
@@ -146,7 +178,6 @@ export default function Hero() {
         setPhoneNumber("");
         setIsSubmitted(false);
         setCaptchaToken(null);
-        recaptchaRef.current?.reset();
       }, 5000);
     } catch {
       console.error('Form submission error');
@@ -174,6 +205,12 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-800 min-h-[90vh] flex items-center">
+      {/* Load reCAPTCHA Enterprise script */}
+      <Script
+        src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
+        onLoad={handleRecaptchaLoad}
+      />
+      
       {/* Gradient background blobs - subtle and modern */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
@@ -557,32 +594,22 @@ export default function Hero() {
                             </motion.div>
                           </div>
 
-                          {/* Styled reCAPTCHA component */}
-                          <div className="mt-4">
-                            <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-3 border border-neutral-200 dark:border-neutral-600 shadow-sm">
-                              <ReCAPTCHA
-                                ref={recaptchaRef}
-                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}
-                                onChange={handleCaptchaChange}
-                                theme="light"
-                                size="normal"
-                                className="transform scale-90 origin-top-left mx-auto"
-                              />
-                            </div>
-                            <p className="text-xs text-center text-neutral-500 dark:text-neutral-400 mt-2 flex items-center justify-center">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                          {/* Security badge instead of visible CAPTCHA */}
+                          <div className="flex flex-col items-center mt-2">
+                            <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-2 flex items-center text-xs text-secondary-600 dark:text-secondary-300">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              Secured by reCAPTCHA
-                            </p>
+                              Protected by reCAPTCHA Enterprise
+                            </div>
                           </div>
                         
                           <motion.button
                             type="submit"
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
-                            disabled={isSubmitting || !captchaToken}
-                            className={`w-full py-3 rounded-xl bg-gradient-primary text-white font-medium shadow-lg shadow-primary-500/20 ${(isSubmitting || !captchaToken) ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            disabled={isSubmitting}
+                            className={`w-full py-3 rounded-xl bg-gradient-primary text-white font-medium shadow-lg shadow-primary-500/20 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                           >
                             {isSubmitting ? (
                               <span className="flex items-center justify-center">
@@ -595,10 +622,6 @@ export default function Hero() {
                             ) : "Call Me Now"}
                           </motion.button>
                         </form>
-
-                        <div className="mt-4 text-center">
-                          {/* Removed redundant text since we now have it above the button */}
-                        </div>
                       </motion.div>
                     )}
 

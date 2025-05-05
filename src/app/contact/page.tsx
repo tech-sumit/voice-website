@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import siteConfig from '@/config/site.json';
-import ReCAPTCHA from "react-google-recaptcha";
+import Script from 'next/script';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -17,31 +17,63 @@ export default function ContactPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
   
-  // Ref for reCAPTCHA
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token);
+  // Handle reCAPTCHA script load
+  const handleRecaptchaLoad = () => {
+    setIsRecaptchaLoaded(true);
   };
   
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Verify that CAPTCHA has been completed
-    if (!captchaToken) {
-      setSubmitError("Please complete the CAPTCHA verification first.");
-      return;
-    }
-    
-    setIsSubmitting(true);
     setSubmitError(null);
     
+    // Execute reCAPTCHA Enterprise
+    if (!captchaToken) {
+      if (!isRecaptchaLoaded || typeof window.grecaptcha === 'undefined') {
+        setSubmitError("Security verification is still loading. Please try again in a moment.");
+        return;
+      }
+      
+      try {
+        setIsSubmitting(true);
+        
+        // Execute reCAPTCHA Enterprise
+        window.grecaptcha.enterprise.ready(async () => {
+          try {
+            const token = await window.grecaptcha.enterprise.execute(
+              process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi', 
+              { action: 'CONTACT' }
+            );
+            
+            setCaptchaToken(token);
+            
+            // Continue with form submission
+            await submitForm(token);
+          } catch (error) {
+            console.error('reCAPTCHA error:', error);
+            setSubmitError("Security verification failed. Please try again.");
+            setIsSubmitting(false);
+          }
+        });
+      } catch (error) {
+        console.error('reCAPTCHA execution error:', error);
+        setSubmitError("Security verification failed. Please refresh the page and try again.");
+        setIsSubmitting(false);
+      }
+    } else {
+      // If we already have a token, proceed with submission
+      setIsSubmitting(true);
+      await submitForm(captchaToken);
+    }
+  };
+  
+  const submitForm = async (token: string) => {
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -50,7 +82,7 @@ export default function ContactPage() {
         },
         body: JSON.stringify({
           ...formData,
-          captchaToken
+          captchaToken: token
         }),
       });
       
@@ -69,7 +101,6 @@ export default function ContactPage() {
         // Reset captcha token if it was invalid
         if (data.error?.includes('Security')) {
           setCaptchaToken(null);
-          recaptchaRef.current?.reset();
         }
         
         setIsSubmitting(false);
@@ -87,7 +118,6 @@ export default function ContactPage() {
       
       // Reset captcha
       setCaptchaToken(null);
-      recaptchaRef.current?.reset();
       
       setTimeout(() => {
         setSubmitSuccess(false);
@@ -102,6 +132,12 @@ export default function ContactPage() {
   
   return (
     <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Load reCAPTCHA Enterprise script */}
+      <Script
+        src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
+        onLoad={handleRecaptchaLoad}
+      />
+      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <h1 className="text-4xl font-bold text-secondary-900 dark:text-white mb-6">
@@ -288,30 +324,21 @@ export default function ContactPage() {
                 />
               </div>
               
-              {/* Styled reCAPTCHA component */}
+              {/* Security badge instead of visible CAPTCHA */}
               <div className="mt-6">
-                <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-3 border border-neutral-200 dark:border-neutral-600 shadow-sm flex justify-center">
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}
-                    onChange={handleCaptchaChange}
-                    theme="light"
-                    className="transform scale-95 origin-center"
-                  />
-                </div>
-                <p className="text-xs text-center text-secondary-500 dark:text-secondary-400 mt-2 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-3 flex items-center justify-center space-x-2 text-secondary-600 dark:text-secondary-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Secured by reCAPTCHA
-                </p>
+                  <span className="text-sm">Protected by reCAPTCHA Enterprise</span>
+                </div>
               </div>
               
               <div>
                 <button
                   type="submit"
-                  disabled={isSubmitting || !captchaToken}
-                  className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${(isSubmitting || !captchaToken) ? 'opacity-75 cursor-not-allowed' : ''}`}
+                  disabled={isSubmitting}
+                  className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center">
