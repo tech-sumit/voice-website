@@ -25,8 +25,12 @@ function isValidPhone(phone: string): boolean {
   // Allows for formats like: +1-123-456-7890, +44 7911 123456, etc.
   const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]*[0-9]{1,5}[-\s.]*[0-9]{1,5}[-\s.]*[0-9]{1,9}$/;
   
-  // Minimum length check - a valid international number should have at least 8 characters (including country code)
-  return phoneRegex.test(phone) && phone.replace(/[^0-9]/g, '').length >= 7;
+  // Extract digits only for length validation
+  const digitsOnly = phone.replace(/\D/g, '');
+  
+  // Valid international numbers should have between 7 and 15 digits
+  // (including country code but excluding formatting characters)
+  return phoneRegex.test(phone) && digitsOnly.length >= 7 && digitsOnly.length <= 15;
 }
 
 // Sanitize input to prevent XSS attacks

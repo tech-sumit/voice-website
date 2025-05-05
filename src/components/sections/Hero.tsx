@@ -88,9 +88,11 @@ export default function Hero() {
     e.preventDefault();
     setError(null);
     
-    // Check if phone number is valid
-    if (phoneNumber.trim().length < 10) {
-      setError("Please enter a valid phone number with at least 10 digits");
+    // Improved phone number validation
+    const phoneDigits = phoneNumber.replace(/\D/g, '');
+    
+    if (phoneDigits.length < 7 || phoneDigits.length > 15) {
+      setError("Please enter a valid phone number (7-15 digits)");
       return;
     }
     
@@ -745,8 +747,8 @@ export default function Hero() {
                                   value={phoneNumber}
                                   onChange={(e) => setPhoneNumber(e.target.value)}
                                   className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
-                                  pattern="[0-9-]{6,}"
-                                  title="Please enter at least 6 digits"
+                                  pattern="[0-9-\s\(\)\.]{7,}"
+                                  title="Please enter a valid phone number (7-15 digits)"
                                   required
                                 />
                               </div>
