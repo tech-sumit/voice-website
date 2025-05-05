@@ -148,7 +148,7 @@ export default function Hero() {
         setCaptchaToken(null);
         recaptchaRef.current?.reset();
       }, 5000);
-    } catch (err) {
+    } catch {
       console.error('Form submission error');
       setError('Unable to process your request. Please try again later.');
     } finally {

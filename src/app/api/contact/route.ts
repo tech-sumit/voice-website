@@ -300,7 +300,7 @@ export async function POST(request: Request) {
     `;
     
     // Send email using Resend with sanitized data
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `Contact Form <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
       to: siteConfig.company.email,
       subject: `New contact form submission from ${sanitizedData.name}`,

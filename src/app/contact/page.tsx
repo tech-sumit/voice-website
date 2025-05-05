@@ -92,7 +92,7 @@ export default function ContactPage() {
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 5000);
-    } catch (err) {
+    } catch {
       console.error('Form submission error');
       setSubmitError('Unable to process your request. Please try again later.');
     } finally {

@@ -241,7 +241,7 @@ export async function POST(request: Request) {
     `;
     
     // Send notification email using Resend
-    const { data: emailData, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `Callback Request <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
       to: siteConfig.company.email,
       subject: `🔴 URGENT: New callback request - ${sanitizedPhone}`,

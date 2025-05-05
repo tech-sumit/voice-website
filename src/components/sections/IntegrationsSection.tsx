@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 
@@ -100,7 +100,7 @@ export default function IntegrationsSection() {
   const hasPlayedRef = useRef(false);
   const sectionRef = useRef<HTMLElement>(null);
   
-  const startDemo = () => {
+  const startDemo = useCallback(() => {
     if (isPlaying) return;
     
     // Reset state
@@ -138,7 +138,7 @@ export default function IntegrationsSection() {
     }, 9000);
     
     animationRef.current.push(completeTimer);
-  };
+  }, [isPlaying]); // Only depend on isPlaying
   
   // Auto-start the demo when component mounts and on visibility change
   useEffect(() => {
@@ -155,16 +155,19 @@ export default function IntegrationsSection() {
       }
     }, { threshold: 0.3 });
     
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    // Capture the current value of sectionRef
+    const currentSectionRef = sectionRef.current;
+    
+    if (currentSectionRef) {
+      observer.observe(currentSectionRef);
     }
     
     // Clean up timers and observer on unmount
     return () => {
       animationRef.current.forEach(timer => clearTimeout(timer));
-      if (sectionRef.current) observer.unobserve(sectionRef.current);
+      if (currentSectionRef) observer.unobserve(currentSectionRef);
     };
-  }, []);  // Only run once on mount
+  }, [isPlaying, startDemo]);  // Add missing dependencies
 
   return (
     <section 
