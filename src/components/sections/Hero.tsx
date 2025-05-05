@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
 import { Button } from "@/components/ui/Button";
 
@@ -205,13 +205,6 @@ export default function Hero() {
                 transition={{ delay: 0.9, duration: 0.6 }}
                 className="flex flex-wrap gap-5 pt-4"
               >
-                <Button 
-                  href={siteConfig.cta.primary.url} 
-                  size="lg" 
-                  className="btn-gradient shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-[1.02] transition-all duration-300"
-                >
-                  {siteConfig.cta.primary.text}
-                </Button>
                 <Button 
                   href={siteConfig.cta.secondary.url} 
                   variant="outline" 
@@ -446,7 +439,7 @@ export default function Hero() {
                           Get a Personal Demo
                         </h3>
                         <p className="text-sm text-center text-neutral-600 dark:text-neutral-300 mb-4">
-                          Enter your phone number and we'll call you back instantly
+                          Enter your phone number and we&apos;ll call you back instantly
                         </p>
 
                         <form onSubmit={handleSubmit} className="space-y-3">

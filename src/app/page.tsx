@@ -2,12 +2,8 @@ import { Metadata } from "next";
 import Hero from "@/components/sections/Hero";
 import FeatureSection from "@/components/sections/FeatureSection";
 import UseCaseSection from "@/components/sections/UseCaseSection";
-import LogoCarousel from "@/components/sections/LogoCarousel";
-import PricingPreview from "@/components/sections/PricingPreview";
 import HowItWorks from "@/components/sections/HowItWorks";
-import StatsSection from "@/components/sections/StatsSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import IntegrationsSection from "@/components/sections/IntegrationsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import siteConfig from "@/config/site.json";
 
@@ -28,14 +24,14 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
-      <LogoCarousel />
-      <StatsSection />
+      {/* <LogoCarousel /> */}
+      {/* <StatsSection /> */}
       <HowItWorks />
       <FeatureSection />
-      <IntegrationsSection />
+      {/* <IntegrationsSection /> */}
       <UseCaseSection />
       <TestimonialsSection />
-      <PricingPreview />
+      {/* <PricingPreview /> */}
       <FAQSection />
     </div>
   );

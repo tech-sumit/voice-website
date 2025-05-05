@@ -23,6 +23,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Filter out pricing from navigation
+  const filteredNavItems = siteConfig.nav.filter(item => item.path !== '/pricing');
+
   return (
     <nav 
       className={`sticky top-0 z-50 backdrop-blur-md transition-all duration-300 
@@ -42,7 +45,7 @@ export default function Navbar() {
           
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-1 lg:space-x-2">
-            {siteConfig.nav.map((item) => (
+            {filteredNavItems.map((item) => (
               <Link 
                 key={item.path} 
                 href={item.path} 
@@ -59,12 +62,6 @@ export default function Navbar() {
               className="hidden md:inline-flex items-center px-3 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-surface-200/50 dark:hover:bg-surface-800/50 hover:text-accent-600 dark:hover:text-accent-400 transition-all"
             >
               {siteConfig.cta.secondary.text}
-            </Link>
-            <Link
-              href={siteConfig.cta.primary.url}
-              className="inline-flex items-center px-4 py-2 btn-gradient rounded-lg text-white shadow-sm hover:shadow-md hover:shadow-primary-500/20 hover:scale-[1.02] transition-all"
-            >
-              {siteConfig.cta.primary.text}
             </Link>
             
             {/* Mobile menu button */}
@@ -95,7 +92,7 @@ export default function Navbar() {
           transition={{ duration: 0.2 }}
         >
           <div className="pt-2 pb-4 space-y-1 px-4 sm:px-6 bg-surface-50/95 dark:bg-surface-900/95 backdrop-blur-md">
-            {siteConfig.nav.map((item) => (
+            {filteredNavItems.map((item) => (
               <Link
                 key={item.path}
                 href={item.path}

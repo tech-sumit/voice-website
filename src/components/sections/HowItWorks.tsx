@@ -9,7 +9,7 @@ export default function HowItWorks() {
     {
       number: "01",
       title: "Design Your Agent",
-      description: "Create your ideal AI voice agent using our intuitive builder. Choose voices, set guidelines, and define how conversations should flow.",
+      description: "Create your ideal AI voice agent. Choose voices, set guidelines, and define how conversations should flow.",
       color: "from-primary-400 to-primary-600",
     },
     {
