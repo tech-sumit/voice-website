@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
 import { RecaptchaEnterpriseServiceClient } from '@google-cloud/recaptcha-enterprise';
+import supportedLanguages from '@/config/languages';
 
 // Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -139,6 +140,12 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+// Validate language code against supported languages
+function isValidLanguage(language: string): boolean {
+  if (!language) return false;
+  return supportedLanguages.some(lang => lang.code === language);
+}
+
 export async function POST(request: Request) {
   try {
     // Get IP address for rate limiting (using X-Forwarded-For or direct)
@@ -159,12 +166,29 @@ export async function POST(request: Request) {
     }
     
     const data = await request.json();
-    const { phoneNumber, captchaToken } = data;
+    const { phoneNumber, language, captchaToken } = data;
     
     // Validate phone number
     if (!phoneNumber) {
       return NextResponse.json({ 
         error: 'Phone number is required' 
+      }, { 
+        status: 400 
+      });
+    }
+    
+    // Validate language
+    if (!language) {
+      return NextResponse.json({ 
+        error: 'Language selection is required' 
+      }, { 
+        status: 400 
+      });
+    }
+
+    if (!isValidLanguage(language)) {
+      return NextResponse.json({ 
+        error: 'Selected language is not supported' 
       }, { 
         status: 400 
       });
@@ -210,8 +234,9 @@ export async function POST(request: Request) {
       });
     }
     
-    // Sanitize the phone number
+    // Sanitize the inputs
     const sanitizedPhone = sanitizeInput(phoneNumber);
+    const sanitizedLanguage = sanitizeInput(language);
     
     // If Resend API key is not configured, just log the message and return success
     if (!process.env.RESEND_API_KEY) {
@@ -262,6 +287,10 @@ export async function POST(request: Request) {
               
               <div class="info-item">
                 <span class="label">Phone Number:</span> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a> <span class="label">(International Format)</span>
+              </div>
+              
+              <div class="info-item">
+                <span class="label">Preferred Language:</span> ${supportedLanguages.find(lang => lang.code === sanitizedLanguage)?.name || sanitizedLanguage}
               </div>
               
               <div class="info-item">

@@ -3,12 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
+import supportedLanguages from "@/config/languages";
 import { Button } from "@/components/ui/Button";
 import Script from "next/script";
 
 export default function Hero() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
+  const [language, setLanguage] = useState("en");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
   const [currentText, setCurrentText] = useState("");
@@ -145,6 +147,7 @@ export default function Hero() {
         },
         body: JSON.stringify({ 
           phoneNumber: `${countryCode}${phoneNumber}`,
+          language: language,
           captchaToken: token
         }),
       });
@@ -751,6 +754,30 @@ export default function Hero() {
                                   title="Please enter a valid phone number (7-15 digits)"
                                   required
                                 />
+                              </div>
+
+                              {/* Language selection dropdown */}
+                              <div className="mt-3">
+                                <label htmlFor="language-select" className="block text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1">
+                                  Preferred Language
+                                </label>
+                                <select
+                                  id="language-select"
+                                  value={language}
+                                  onChange={(e) => setLanguage(e.target.value)}
+                                  className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  aria-label="Preferred language"
+                                  required
+                                >
+                                  {supportedLanguages.map((lang) => (
+                                    <option key={lang.code} value={lang.code}>
+                                      {lang.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                                  Select the language you&apos;d like for your demo call
+                                </p>
                               </div>
                             </motion.div>
                           </div>
