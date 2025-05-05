@@ -8,6 +8,7 @@ import Script from "next/script";
 
 export default function Hero() {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [countryCode, setCountryCode] = useState("+1");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
   const [currentText, setCurrentText] = useState("");
@@ -141,7 +142,7 @@ export default function Hero() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          phoneNumber,
+          phoneNumber: `${countryCode}${phoneNumber}`,
           captchaToken: token
         }),
       });
@@ -202,6 +203,160 @@ export default function Hero() {
       }
     })
   };
+
+  // Common country codes for dropdown
+  const countryCodes = [
+    { code: "+1", name: "US/CA" },
+    { code: "+7", name: "RU" },
+    { code: "+20", name: "EG" },
+    { code: "+27", name: "ZA" },
+    { code: "+30", name: "GR" },
+    { code: "+31", name: "NL" },
+    { code: "+32", name: "BE" },
+    { code: "+33", name: "FR" },
+    { code: "+34", name: "ES" },
+    { code: "+36", name: "HU" },
+    { code: "+39", name: "IT" },
+    { code: "+40", name: "RO" },
+    { code: "+41", name: "CH" },
+    { code: "+43", name: "AT" },
+    { code: "+44", name: "UK" },
+    { code: "+45", name: "DK" },
+    { code: "+46", name: "SE" },
+    { code: "+47", name: "NO" },
+    { code: "+48", name: "PL" },
+    { code: "+49", name: "DE" },
+    { code: "+51", name: "PE" },
+    { code: "+52", name: "MX" },
+    { code: "+53", name: "CU" },
+    { code: "+54", name: "AR" },
+    { code: "+55", name: "BR" },
+    { code: "+56", name: "CL" },
+    { code: "+57", name: "CO" },
+    { code: "+58", name: "VE" },
+    { code: "+60", name: "MY" },
+    { code: "+61", name: "AU" },
+    { code: "+62", name: "ID" },
+    { code: "+63", name: "PH" },
+    { code: "+64", name: "NZ" },
+    { code: "+65", name: "SG" },
+    { code: "+66", name: "TH" },
+    { code: "+81", name: "JP" },
+    { code: "+82", name: "KR" },
+    { code: "+84", name: "VN" },
+    { code: "+86", name: "CN" },
+    { code: "+90", name: "TR" },
+    { code: "+91", name: "IN" },
+    { code: "+92", name: "PK" },
+    { code: "+93", name: "AF" },
+    { code: "+94", name: "LK" },
+    { code: "+95", name: "MM" },
+    { code: "+98", name: "IR" },
+    { code: "+212", name: "MA" },
+    { code: "+213", name: "DZ" },
+    { code: "+216", name: "TN" },
+    { code: "+218", name: "LY" },
+    { code: "+220", name: "GM" },
+    { code: "+221", name: "SN" },
+    { code: "+222", name: "MR" },
+    { code: "+223", name: "ML" },
+    { code: "+234", name: "NG" },
+    { code: "+241", name: "GA" },
+    { code: "+242", name: "CG" },
+    { code: "+251", name: "ET" },
+    { code: "+254", name: "KE" },
+    { code: "+255", name: "TZ" },
+    { code: "+256", name: "UG" },
+    { code: "+260", name: "ZM" },
+    { code: "+261", name: "MG" },
+    { code: "+262", name: "RE" },
+    { code: "+263", name: "ZW" },
+    { code: "+351", name: "PT" },
+    { code: "+352", name: "LU" },
+    { code: "+353", name: "IE" },
+    { code: "+354", name: "IS" },
+    { code: "+355", name: "AL" },
+    { code: "+357", name: "CY" },
+    { code: "+358", name: "FI" },
+    { code: "+359", name: "BG" },
+    { code: "+370", name: "LT" },
+    { code: "+371", name: "LV" },
+    { code: "+372", name: "EE" },
+    { code: "+373", name: "MD" },
+    { code: "+374", name: "AM" },
+    { code: "+375", name: "BY" },
+    { code: "+376", name: "AD" },
+    { code: "+377", name: "MC" },
+    { code: "+378", name: "SM" },
+    { code: "+380", name: "UA" },
+    { code: "+381", name: "RS" },
+    { code: "+385", name: "HR" },
+    { code: "+386", name: "SI" },
+    { code: "+387", name: "BA" },
+    { code: "+389", name: "MK" },
+    { code: "+420", name: "CZ" },
+    { code: "+421", name: "SK" },
+    { code: "+423", name: "LI" },
+    { code: "+501", name: "BZ" },
+    { code: "+502", name: "GT" },
+    { code: "+503", name: "SV" },
+    { code: "+504", name: "HN" },
+    { code: "+505", name: "NI" },
+    { code: "+506", name: "CR" },
+    { code: "+507", name: "PA" },
+    { code: "+509", name: "HT" },
+    { code: "+590", name: "GP" },
+    { code: "+591", name: "BO" },
+    { code: "+592", name: "GY" },
+    { code: "+593", name: "EC" },
+    { code: "+595", name: "PY" },
+    { code: "+597", name: "SR" },
+    { code: "+598", name: "UY" },
+    { code: "+599", name: "CW" },
+    { code: "+673", name: "BN" },
+    { code: "+674", name: "NR" },
+    { code: "+675", name: "PG" },
+    { code: "+676", name: "TO" },
+    { code: "+677", name: "SB" },
+    { code: "+678", name: "VU" },
+    { code: "+679", name: "FJ" },
+    { code: "+680", name: "PW" },
+    { code: "+682", name: "CK" },
+    { code: "+685", name: "WS" },
+    { code: "+686", name: "KI" },
+    { code: "+687", name: "NC" },
+    { code: "+689", name: "PF" },
+    { code: "+850", name: "KP" },
+    { code: "+852", name: "HK" },
+    { code: "+853", name: "MO" },
+    { code: "+855", name: "KH" },
+    { code: "+856", name: "LA" },
+    { code: "+880", name: "BD" },
+    { code: "+886", name: "TW" },
+    { code: "+960", name: "MV" },
+    { code: "+961", name: "LB" },
+    { code: "+962", name: "JO" },
+    { code: "+963", name: "SY" },
+    { code: "+964", name: "IQ" },
+    { code: "+965", name: "KW" },
+    { code: "+966", name: "SA" },
+    { code: "+967", name: "YE" },
+    { code: "+968", name: "OM" },
+    { code: "+970", name: "PS" },
+    { code: "+971", name: "AE" },
+    { code: "+972", name: "IL" },
+    { code: "+973", name: "BH" },
+    { code: "+974", name: "QA" },
+    { code: "+975", name: "BT" },
+    { code: "+976", name: "MN" },
+    { code: "+977", name: "NP" },
+    { code: "+992", name: "TJ" },
+    { code: "+993", name: "TM" },
+    { code: "+994", name: "AZ" },
+    { code: "+995", name: "GE" },
+    { code: "+996", name: "KG" },
+    { code: "+998", name: "UZ" }
+  ];
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-800 min-h-[90vh] flex items-center">
@@ -567,29 +722,33 @@ export default function Hero() {
                                 boxShadow: ["0 0 0 0 rgba(59, 130, 246, 0)", "0 0 0 4px rgba(59, 130, 246, 0.3)", "0 0 0 0 rgba(59, 130, 246, 0)"]
                               }}
                               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                              className="relative"
                             >
-                              <input
-                                type="tel"
-                                placeholder="(123) 456-7890"
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
-                                pattern="[0-9]{10,}"
-                                title="Please enter at least 10 digits"
-                                required
-                              />
-                              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                                <motion.svg
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ duration: 1.5, repeat: Infinity }}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-5 w-5 text-primary-600 dark:text-primary-400"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
+                              <div className="flex flex-col sm:flex-row gap-2">
+                                {/* Country code dropdown */}
+                                <select
+                                  value={countryCode}
+                                  onChange={(e) => setCountryCode(e.target.value)}
+                                  className="w-full sm:w-auto px-2 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  aria-label="Country code"
                                 >
-                                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                                </motion.svg>
+                                  {countryCodes.map((country) => (
+                                    <option key={country.code} value={country.code}>
+                                      {country.code} {country.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                
+                                {/* Phone input */}
+                                <input
+                                  type="tel"
+                                  placeholder="123-456-7890"
+                                  value={phoneNumber}
+                                  onChange={(e) => setPhoneNumber(e.target.value)}
+                                  className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  pattern="[0-9-]{6,}"
+                                  title="Please enter at least 6 digits"
+                                  required
+                                />
                               </div>
                             </motion.div>
                           </div>

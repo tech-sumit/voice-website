@@ -21,9 +21,12 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
 function isValidPhone(phone: string): boolean {
   if (!phone) return false;
   
-  // Basic phone validation - allows various formats with optional country codes
-  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,9}$/;
-  return phoneRegex.test(phone);
+  // Enhanced phone validation - properly handles international formats with country codes
+  // Allows for formats like: +1-123-456-7890, +44 7911 123456, etc.
+  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]*[0-9]{1,5}[-\s.]*[0-9]{1,5}[-\s.]*[0-9]{1,9}$/;
+  
+  // Minimum length check - a valid international number should have at least 8 characters (including country code)
+  return phoneRegex.test(phone) && phone.replace(/[^0-9]/g, '').length >= 7;
 }
 
 // Sanitize input to prevent XSS attacks
@@ -254,7 +257,7 @@ export async function POST(request: Request) {
               <p>You've received a new callback request from your website:</p>
               
               <div class="info-item">
-                <span class="label">Phone Number:</span> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a>
+                <span class="label">Phone Number:</span> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a> <span class="label">(International Format)</span>
               </div>
               
               <div class="info-item">
