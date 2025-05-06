@@ -17,7 +17,6 @@ export default function Hero() {
   const [isTyping, setIsTyping] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
   
   // Refs to prevent animation conflicts
@@ -98,43 +97,37 @@ export default function Hero() {
       return;
     }
     
-    // Execute reCAPTCHA Enterprise
-    if (!captchaToken) {
+    // Always retrieve a fresh reCAPTCHA token when submitting
+    // This ensures the token isn't expired (they expire after 2 minutes)
+    setIsSubmitting(true);
+    
+    try {
       if (!isRecaptchaLoaded || typeof window.grecaptcha === 'undefined') {
         setError("Security verification is still loading. Please try again in a moment.");
+        setIsSubmitting(false);
         return;
       }
       
-      try {
-        setIsSubmitting(true);
-        
-        // Execute reCAPTCHA Enterprise
-        window.grecaptcha.enterprise.ready(async () => {
-          try {
-            const token = await window.grecaptcha.enterprise.execute(
-              process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi', 
-              { action: 'CALLBACK' }
-            );
-            
-            setCaptchaToken(token);
-            
-            // Continue with form submission
-            await submitForm(token);
-          } catch (error) {
-            console.error('reCAPTCHA error:', error);
-            setError("Security verification failed. Please try again.");
-            setIsSubmitting(false);
-          }
-        });
-      } catch (error) {
-        console.error('reCAPTCHA execution error:', error);
-        setError("Security verification failed. Please refresh the page and try again.");
-        setIsSubmitting(false);
-      }
-    } else {
-      // If we already have a token, proceed with submission
-      setIsSubmitting(true);
-      await submitForm(captchaToken);
+      // Execute reCAPTCHA - always generate a fresh token
+      window.grecaptcha.enterprise.ready(async () => {
+        try {
+          const token = await window.grecaptcha.enterprise.execute(
+            process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi', 
+            { action: 'CALLBACK' }  // Explicit action that matches server-side verification
+          );
+          
+          // Continue with form submission using the fresh token
+          await submitForm(token);
+        } catch (error) {
+          console.error('reCAPTCHA error:', error);
+          setError("Security verification failed. Please try again.");
+          setIsSubmitting(false);
+        }
+      });
+    } catch (error) {
+      console.error('reCAPTCHA execution error:', error);
+      setError("Security verification failed. Please refresh the page and try again.");
+      setIsSubmitting(false);
     }
   };
   
@@ -166,7 +159,7 @@ export default function Hero() {
         
         // Reset captcha token if it was invalid
         if (data.error?.includes('Security')) {
-          setCaptchaToken(null);
+          setIsRecaptchaLoaded(false);
         }
         
         setIsSubmitting(false);
@@ -183,7 +176,7 @@ export default function Hero() {
       setTimeout(() => {
         setPhoneNumber("");
         setIsSubmitted(false);
-        setCaptchaToken(null);
+        setIsRecaptchaLoaded(false);
       }, 5000);
     } catch {
       console.error('Form submission error');

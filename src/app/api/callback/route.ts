@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
-import { RecaptchaEnterpriseServiceClient } from '@google-cloud/recaptcha-enterprise';
 import supportedLanguages from '@/config/languages';
 import { initiateCall, logCallRequest } from '@/lib/call';
 
@@ -52,71 +51,138 @@ function sanitizeInput(input: string): string {
     .replace(/'/g, '&#x27;');
 }
 
-// Verify reCAPTCHA Enterprise token with Google Cloud
+// Only import Google Cloud library if needed (based on environment variables)
+const useEnterpriseAPI = !process.env.RECAPTCHA_SECRET_KEY && process.env.RECAPTCHA_PROJECT_ID;
+let RecaptchaEnterpriseServiceClient: any;
+if (useEnterpriseAPI) {
+  // Dynamically import the library only if needed
+  import('@google-cloud/recaptcha-enterprise').then(module => {
+    RecaptchaEnterpriseServiceClient = module.RecaptchaEnterpriseServiceClient;
+  });
+}
+
+// Verify reCAPTCHA token
 async function verifyRecaptchaEnterprise(token: string, action: string = 'CALLBACK'): Promise<boolean> {
   try {
-    // Get the project ID from environment variable
-    const projectID = process.env.RECAPTCHA_PROJECT_ID;
-    const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi';
+    // 1. Direct API Method (Recommended)
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
     
-    // Check if project ID is configured
-    if (!projectID) {
-      console.warn('RECAPTCHA_PROJECT_ID not configured, verification is disabled in this environment');
+    if (recaptchaSecret) {
+      console.log('🔒 Using Direct reCAPTCHA API verification (recommended method)');
       
-      // In production, fail verification when not configured
-      if (process.env.NODE_ENV === 'production') {
-        console.error('reCAPTCHA verification failed: Missing RECAPTCHA_PROJECT_ID in production');
+      // Make the verification request to Google's API
+      const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+      const response = await fetch(verifyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          secret: recaptchaSecret,
+          response: token,
+          // You can optionally include the user's IP
+          // remoteip: userIP
+        })
+      });
+      
+      if (!response.ok) {
+        console.error('❌ reCAPTCHA verification failed:', response.statusText);
         return false;
       }
       
-      // In development/test, allow without verification
+      const data = await response.json();
+      
+      // Check if verification was successful
+      if (!data.success) {
+        console.error('❌ reCAPTCHA verification failed with error codes:', data['error-codes']);
+        return false;
+      }
+      
+      // Check if the action matches (for v3)
+      if (data.action && data.action !== action) {
+        console.error(`❌ Action mismatch. Expected: ${action}, Got: ${data.action}`);
+        return false;
+      }
+      
+      // For v3, check the score
+      if (data.score !== undefined) {
+        console.log(`✅ reCAPTCHA verification successful with score: ${data.score}`);
+        return data.score >= 0.5; // Adjust threshold as needed
+      }
+      
+      // Success without score (e.g. for v2)
+      console.log('✅ reCAPTCHA verification successful');
       return true;
     }
     
-    // Create the reCAPTCHA client
-    const client = new RecaptchaEnterpriseServiceClient();
-    const projectPath = client.projectPath(projectID);
-
-    // Build the assessment request
-    const request = {
-      assessment: {
-        event: {
-          token: token,
-          siteKey: recaptchaKey,
-        },
-      },
-      parent: projectPath,
-    };
-
-    const [response] = await client.createAssessment(request);
-
-    // Check if the token is valid
-    if (!response.tokenProperties?.valid) {
-      console.log(`Token validation failed: ${response.tokenProperties?.invalidReason}`);
-      return false;
-    }
-
-    // Check if the expected action was executed
-    if (response.tokenProperties?.action !== action) {
-      console.log(`Action mismatch. Expected: ${action}, Got: ${response.tokenProperties?.action}`);
-      return false;
-    }
-
-    // Get the risk score - typically anything above 0.5 is likely legitimate
-    const score = response.riskAnalysis?.score;
-    console.log(`reCAPTCHA score: ${score}`);
+    // 2. Google Cloud reCAPTCHA Enterprise API (Alternative Method)
+    const projectID = process.env.RECAPTCHA_PROJECT_ID;
+    const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi';
     
-    // For debugging purposes, log reasons if score is low
-    if (score && score < 0.5) {
-      response.riskAnalysis?.reasons?.forEach((reason) => {
-        console.log(`Risk reason: ${reason}`);
-      });
-    }
+    if (projectID) {
+      console.log('🔄 Using Google Cloud reCAPTCHA Enterprise API (alternative method)');
+      
+      if (!RecaptchaEnterpriseServiceClient) {
+        console.error('❌ RecaptchaEnterpriseServiceClient not loaded yet');
+        return false;
+      }
+      
+      // Create the reCAPTCHA client
+      const client = new RecaptchaEnterpriseServiceClient();
+      const projectPath = client.projectPath(projectID);
 
-    // Consider scores above threshold as valid
-    return score !== undefined && score !== null && score >= 0.5;
+      // Build the assessment request
+      const request = {
+        assessment: {
+          event: {
+            token: token,
+            siteKey: recaptchaKey,
+            expectedAction: action
+          },
+        },
+        parent: projectPath,
+      };
+
+      const [response] = await client.createAssessment(request);
+
+      // Check if the token is valid
+      if (!response.tokenProperties?.valid) {
+        console.error(`❌ Token validation failed: ${response.tokenProperties?.invalidReason}`);
+        return false;
+      }
+
+      // Check if the expected action was executed
+      if (response.tokenProperties?.action !== action) {
+        console.error(`❌ Action mismatch. Expected: ${action}, Got: ${response.tokenProperties?.action}`);
+        return false;
+      }
+
+      // Get the risk score
+      const score = response.riskAnalysis?.score;
+      
+      // For debugging purposes, log reasons if score is low
+      if (score && score < 0.5) {
+        response.riskAnalysis?.reasons?.forEach((reason: string) => {
+          console.error(`⚠️ Risk reason: ${reason}`);
+        });
+      }
+
+      console.log(`✅ reCAPTCHA verification successful with score: ${score}`);
+      return score !== undefined && score !== null && score >= 0.5;
+    }
+    
+    // 3. No verification method available
+    console.warn('⚠️ No reCAPTCHA verification method configured');
+    
+    // In production, fail verification when not configured
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ reCAPTCHA verification failed: Missing configuration in production');
+      return false;
+    }
+    
+    // In development, allow without verification
+    console.warn('⚠️ Allowing request without reCAPTCHA verification (DEVELOPMENT MODE ONLY)');
+    return true;
   } catch (error) {
-    console.error('reCAPTCHA Enterprise verification error:', error);
+    console.error('❌ reCAPTCHA verification error:', error);
     return false;
   }
 }
