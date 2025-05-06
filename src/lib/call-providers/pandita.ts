@@ -7,7 +7,6 @@ interface PanditaCallParams {
   language: string;
   name?: string;
   expectedFlow?: string;
-  initialGreeting?: string;
 }
 
 interface PanditaCallResponse {
@@ -22,10 +21,9 @@ interface PanditaCallResponse {
  * @param language Language code for the call
  * @param name Optional caller name provided in settings
  * @param expectedFlow Optional expected conversation flow
- * @param initialGreeting Optional initial greeting for the AI
  * @returns JWT token
  */
-function generateToken(language: string, name?: string, expectedFlow?: string, initialGreeting?: string): string {
+function generateToken(language: string, name?: string, expectedFlow?: string): string {
   const jwtSecret = process.env.PANDITA_JWT_SECRET || '';
   const tokenMinutes = parseInt(process.env.PANDITA_TOKEN_MINUTES || '10');
   
@@ -115,11 +113,6 @@ function generateToken(language: string, name?: string, expectedFlow?: string, i
     tts_options: {
       gender: gender
     },
-
-    // Initial greeting 
-    messages: {
-      initial_greeting: initialGreeting
-    },
     
     // Callback settings for webhook
     callback: {
@@ -140,18 +133,17 @@ function generateToken(language: string, name?: string, expectedFlow?: string, i
  * @param language The preferred language code for the call
  * @param name Optional caller name provided in settings
  * @param expectedFlow Optional expected conversation flow
- * @param initialGreeting Optional initial greeting for the AI
  * @returns Promise resolving to call response
  */
-export async function initiateCallWithPandita({ phoneNumber, language, name, expectedFlow, initialGreeting }: PanditaCallParams): Promise<PanditaCallResponse> {
+export async function initiateCallWithPandita({ phoneNumber, language, name, expectedFlow }: PanditaCallParams): Promise<PanditaCallResponse> {
   try {
     // Get API configuration from environment variables
     const serverUrl = process.env.PANDITA_SERVER_URL || 'https://api.panditaai.com';
     const fromNumber = process.env.PANDITA_FROM_NUMBER || siteConfig.company.phone;
     const timeout = parseInt(process.env.PANDITA_TIMEOUT || '30');
     
-    // Generate JWT token for the call with initialGreeting
-    const token = generateToken(language, name, expectedFlow, initialGreeting);
+    // Generate JWT token for the call
+    const token = generateToken(language, name, expectedFlow);
     
     // API endpoint for initiating calls
     const apiUrl = `${serverUrl.replace(/\/$/, '')}/call/initiate`;

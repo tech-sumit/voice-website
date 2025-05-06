@@ -175,7 +175,7 @@ export async function POST(request: Request) {
     }
     
     const data = await request.json();
-    const { phoneNumber, language, captchaToken, name, expectedFlow, initialGreeting } = data;
+    const { phoneNumber, language, captchaToken, name, expectedFlow } = data;
     
     // Validate phone number
     if (!phoneNumber) {
@@ -233,8 +233,8 @@ export async function POST(request: Request) {
       validationErrors.push('Please provide a valid phone number');
     }
     
-    // Enforce that name and expected flow are either both provided or both omitted
-    if ((name || expectedFlow || initialGreeting) && !(name && expectedFlow)) {
+    // Modify validation for name and expectedFlow
+    if ((name && !expectedFlow) || (!name && expectedFlow)) {
       validationErrors.push('Name and expected conversation flow must both be provided when using custom settings');
     }
     
@@ -246,11 +246,6 @@ export async function POST(request: Request) {
     // Limit expected conversation flow length to 1000 characters
     if (expectedFlow && expectedFlow.length > 1000) {
       validationErrors.push('Expected conversation flow must be 1000 characters or less');
-    }
-    
-    // Limit initial greeting length to 100 characters
-    if (initialGreeting && initialGreeting.length > 100) {
-      validationErrors.push('Initial greeting must be 100 characters or less');
     }
     
     // Return validation errors if any
@@ -266,9 +261,14 @@ export async function POST(request: Request) {
     // Sanitize the inputs
     const sanitizedPhone = sanitizeInput(phoneNumber);
     const sanitizedLanguage = sanitizeInput(language);
-    const sanitizedName = sanitizeInput(name || '');
-    const sanitizedExpectedFlow = sanitizeInput(expectedFlow || '');
-    const sanitizedInitialGreeting = sanitizeInput(initialGreeting || '');
+    
+    // Use default values when name/flow not provided
+    const defaultName = 'Customer';
+    const defaultFlow = 'Introduce yourself as an AI assistant for our company. Ask how you can help. Answer their questions about our services. At the end, ask if you answered all their questions and if there\'s anything else they need help with.';
+    
+    // Use provided values or defaults
+    const sanitizedName = sanitizeInput(name || defaultName);
+    const sanitizedExpectedFlow = sanitizeInput(expectedFlow || defaultFlow);
     
     // Initialize response objects
     let emailResult = { success: false };
@@ -278,8 +278,7 @@ export async function POST(request: Request) {
       phoneNumber: sanitizedPhone,
       language: sanitizedLanguage,
       name: sanitizedName,
-      expectedFlow: sanitizedExpectedFlow,
-      initialGreeting: sanitizedInitialGreeting
+      expectedFlow: sanitizedExpectedFlow
     });
     
     // Log the call request for monitoring and debugging

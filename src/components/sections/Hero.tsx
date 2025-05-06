@@ -23,7 +23,6 @@ export default function Hero() {
   const [showSettings, setShowSettings] = useState(false);
   const [name, setName] = useState("");
   const [expectedFlow, setExpectedFlow] = useState("");
-  const [initialGreeting, setInitialGreeting] = useState("");
   
   // Refs to prevent animation conflicts
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -96,7 +95,7 @@ export default function Hero() {
     setError(null);
     
     // Enforce that name and expected flow must both be provided together or both omitted
-    if ((name || expectedFlow || initialGreeting) && !(name && expectedFlow)) {
+    if ((name && !expectedFlow) || (!name && expectedFlow)) {
       setError('Name and expected conversation flow must both be provided when using custom settings');
       return;
     }
@@ -155,7 +154,6 @@ export default function Hero() {
           language: language,
           name,
           expectedFlow,
-          initialGreeting,
           captchaToken: token
         }),
       });
@@ -762,22 +760,6 @@ export default function Hero() {
                                       />
                                       <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
                                         {name.length}/20
-                                      </div>
-                                    </div>
-                                  </label>
-                                  <label className="block text-sm font-medium">
-                                    Initial Greeting
-                                    <div className="relative">
-                                      <input
-                                        type="text"
-                                        value={initialGreeting}
-                                        onChange={e => setInitialGreeting(e.target.value)}
-                                        className="mt-1 block w-full input"
-                                        placeholder="Custom greeting to start the call"
-                                        maxLength={100}
-                                      />
-                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
-                                        {initialGreeting.length}/100
                                       </div>
                                     </div>
                                   </label>
