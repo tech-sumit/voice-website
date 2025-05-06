@@ -175,7 +175,7 @@ export async function POST(request: Request) {
     }
     
     const data = await request.json();
-    const { phoneNumber, language, captchaToken } = data;
+    const { phoneNumber, language, captchaToken, name, expectedFlow } = data;
     
     // Validate phone number
     if (!phoneNumber) {
@@ -233,6 +233,15 @@ export async function POST(request: Request) {
       validationErrors.push('Please provide a valid phone number');
     }
     
+    // Enforce that name and expected flow are either both provided or both omitted
+    if ((name && !expectedFlow) || (!name && expectedFlow)) {
+      validationErrors.push('Both name and expected conversation flow must be provided together');
+    }
+    // Limit expected conversation flow length to 500 characters
+    if (expectedFlow && expectedFlow.length > 500) {
+      validationErrors.push('Expected conversation flow must be 500 characters or less');
+    }
+    
     // Return validation errors if any
     if (validationErrors.length > 0) {
       return NextResponse.json({ 
@@ -246,6 +255,8 @@ export async function POST(request: Request) {
     // Sanitize the inputs
     const sanitizedPhone = sanitizeInput(phoneNumber);
     const sanitizedLanguage = sanitizeInput(language);
+    const sanitizedName = sanitizeInput(name || '');
+    const sanitizedExpectedFlow = sanitizeInput(expectedFlow || '');
     
     // Initialize response objects
     let emailResult = { success: false };
@@ -253,7 +264,9 @@ export async function POST(request: Request) {
     // Initiate the call using our call service
     const callResult = await initiateCall({
       phoneNumber: sanitizedPhone,
-      language: sanitizedLanguage
+      language: sanitizedLanguage,
+      name: sanitizedName,
+      expectedFlow: sanitizedExpectedFlow
     });
     
     // Log the call request for monitoring and debugging

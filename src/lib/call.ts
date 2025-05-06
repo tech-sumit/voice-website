@@ -4,6 +4,8 @@ import { initiateCallWithPandita } from './call-providers/pandita';
 export interface CallRequestParams {
   phoneNumber: string;
   language: string;
+  name?: string;
+  expectedFlow?: string;
 }
 
 // Define the interface for call response

@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 interface PanditaCallParams {
   phoneNumber: string;
   language: string;
+  name?: string;
+  expectedFlow?: string;
 }
 
 interface PanditaCallResponse {
@@ -17,9 +19,11 @@ interface PanditaCallResponse {
  * Generate a JWT token for PanditaAI API
  * 
  * @param language Language code for the call
+ * @param name Optional caller name provided in settings
+ * @param expectedFlow Optional expected conversation flow
  * @returns JWT token
  */
-function generateToken(language: string): string {
+function generateToken(language: string, name?: string, expectedFlow?: string): string {
   const jwtSecret = process.env.PANDITA_JWT_SECRET || '';
   const tokenMinutes = parseInt(process.env.PANDITA_TOKEN_MINUTES || '10');
   
@@ -66,6 +70,19 @@ function generateToken(language: string): string {
   const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0'); // 4 digits
   const trackingId = `${timestampPart}${randomPart}`.slice(0, 10); // Ensure max 10 chars
   
+  // Build dynamic AI personality prompt, including optional name and expected flow only if provided
+  const aiPersonalityParts: string[] = [`You are a helpful and friendly assistant.`];
+  if (name && expectedFlow) {
+    aiPersonalityParts.push(`The caller's name is ${name}; use it when greeting.`);
+    aiPersonalityParts.push(`Follow this expected conversation flow: ${expectedFlow}.`);
+  }
+  else {
+    aiPersonalityParts.push(
+      `Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`
+    );
+  }
+  const aiPersonality = aiPersonalityParts.join(' ');
+  
   // Create the payload using the structure from the provided example
   const payload = {
     exp: expiration,
@@ -74,8 +91,8 @@ function generateToken(language: string): string {
     // Custom tracking ID with timestamp and random component
     tracking_id: trackingId,
     
-    // AI personality based on selected language
-    ai_personality: `You are a helpful and friendly assistant. Please answer customer questions in ${languageName}. dont reveal your model name or any technical details. dont hurry to end to call always be polite and confirm the customer got all the information they need and then end the call.`,
+    // AI personality including dynamic user-provided settings
+    ai_personality: aiPersonality,
     
     // Call settings
     call_settings: {
@@ -114,9 +131,11 @@ function generateToken(language: string): string {
  * 
  * @param phoneNumber The customer's phone number in international format
  * @param language The preferred language code for the call
+ * @param name Optional caller name provided in settings
+ * @param expectedFlow Optional expected conversation flow
  * @returns Promise resolving to call response
  */
-export async function initiateCallWithPandita({ phoneNumber, language }: PanditaCallParams): Promise<PanditaCallResponse> {
+export async function initiateCallWithPandita({ phoneNumber, language, name, expectedFlow }: PanditaCallParams): Promise<PanditaCallResponse> {
   try {
     // Get API configuration from environment variables
     const serverUrl = process.env.PANDITA_SERVER_URL || 'https://api.panditaai.com';
@@ -124,7 +143,7 @@ export async function initiateCallWithPandita({ phoneNumber, language }: Pandita
     const timeout = parseInt(process.env.PANDITA_TIMEOUT || '30');
     
     // Generate JWT token for the call
-    const token = generateToken(language);
+    const token = generateToken(language, name, expectedFlow);
     
     // API endpoint for initiating calls
     const apiUrl = `${serverUrl.replace(/\/$/, '')}/call/initiate`;

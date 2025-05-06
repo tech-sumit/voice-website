@@ -6,6 +6,8 @@ import siteConfig from "@/config/site.json";
 import supportedLanguages from "@/config/languages";
 import { Button } from "@/components/ui/Button";
 import Script from "next/script";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function Hero() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -18,6 +20,9 @@ export default function Hero() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [name, setName] = useState("");
+  const [expectedFlow, setExpectedFlow] = useState("");
   
   // Refs to prevent animation conflicts
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -89,6 +94,12 @@ export default function Hero() {
     e.preventDefault();
     setError(null);
     
+    // Enforce that name and expected flow must both be provided together or both omitted
+    if ((name && !expectedFlow) || (!name && expectedFlow)) {
+      setError('Both name and expected conversation flow must be provided together');
+      return;
+    }
+    
     // Improved phone number validation
     const phoneDigits = phoneNumber.replace(/\D/g, '');
     
@@ -141,6 +152,8 @@ export default function Hero() {
         body: JSON.stringify({ 
           phoneNumber: `${countryCode}${phoneNumber}`,
           language: language,
+          name,
+          expectedFlow,
           captchaToken: token
         }),
       });
@@ -714,6 +727,50 @@ export default function Hero() {
                         </p>
 
                         <form onSubmit={handleSubmit} className="space-y-3">
+                          {/* Settings icon triggers modal */}
+                          <button
+                            type="button"
+                            className="absolute top-4 right-4 p-2 rounded hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                            onClick={() => setShowSettings(true)}
+                          >
+                            <Cog6ToothIcon className="h-6 w-6 text-neutral-600 dark:text-neutral-300" />
+                          </button>
+                          {showSettings && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                              <div className="bg-white dark:bg-neutral-800 rounded-lg p-6 w-96 relative">
+                                <button
+                                  type="button"
+                                  className="absolute top-2 right-2 text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100"
+                                  onClick={() => setShowSettings(false)}
+                                >
+                                  <XMarkIcon className="h-5 w-5" />
+                                </button>
+                                <h2 className="text-lg font-semibold mb-4">Settings</h2>
+                                <div className="space-y-4">
+                                  <label className="block text-sm font-medium">
+                                    Name
+                                    <input
+                                      type="text"
+                                      value={name}
+                                      onChange={e => setName(e.target.value)}
+                                      className="mt-1 block w-full input"
+                                      placeholder="Enter your name"
+                                    />
+                                  </label>
+                                  <label className="block text-sm font-medium">
+                                    Expected Conversation Flow
+                                    <textarea
+                                      value={expectedFlow}
+                                      onChange={e => setExpectedFlow(e.target.value)}
+                                      className="mt-1 block w-full input"
+                                      placeholder="Describe the expected call flow"
+                                      rows={3}
+                                    />
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                           <div className="relative">
                             <motion.div
                               animate={{ 
@@ -790,7 +847,7 @@ export default function Hero() {
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
                             disabled={isSubmitting}
-                            className={`w-full py-3 rounded-xl bg-gradient-primary text-white font-medium shadow-lg shadow-primary-500/20 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`w-full py-3 rounded-xl border border-primary-500 bg-primary-600 dark:bg-gradient-primary text-white dark:text-white font-bold shadow-lg shadow-primary-500/20 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                           >
                             {isSubmitting ? (
                               <span className="flex items-center justify-center">
