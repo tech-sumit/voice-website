@@ -6,6 +6,7 @@ export interface CallRequestParams {
   language: string;
   name?: string;
   expectedFlow?: string;
+  initialGreeting?: string;
 }
 
 // Define the interface for call response

@@ -175,7 +175,7 @@ export async function POST(request: Request) {
     }
     
     const data = await request.json();
-    const { phoneNumber, language, captchaToken, name, expectedFlow } = data;
+    const { phoneNumber, language, captchaToken, name, expectedFlow, initialGreeting } = data;
     
     // Validate phone number
     if (!phoneNumber) {
@@ -234,12 +234,23 @@ export async function POST(request: Request) {
     }
     
     // Enforce that name and expected flow are either both provided or both omitted
-    if ((name && !expectedFlow) || (!name && expectedFlow)) {
-      validationErrors.push('Both name and expected conversation flow must be provided together');
+    if ((name || expectedFlow || initialGreeting) && !(name && expectedFlow)) {
+      validationErrors.push('Name and expected conversation flow must both be provided when using custom settings');
     }
+    
+    // Limit name length to 20 characters
+    if (name && name.length > 20) {
+      validationErrors.push('Name must be 20 characters or less');
+    }
+    
     // Limit expected conversation flow length to 500 characters
     if (expectedFlow && expectedFlow.length > 500) {
       validationErrors.push('Expected conversation flow must be 500 characters or less');
+    }
+    
+    // Limit initial greeting length to 100 characters
+    if (initialGreeting && initialGreeting.length > 100) {
+      validationErrors.push('Initial greeting must be 100 characters or less');
     }
     
     // Return validation errors if any
@@ -257,6 +268,7 @@ export async function POST(request: Request) {
     const sanitizedLanguage = sanitizeInput(language);
     const sanitizedName = sanitizeInput(name || '');
     const sanitizedExpectedFlow = sanitizeInput(expectedFlow || '');
+    const sanitizedInitialGreeting = sanitizeInput(initialGreeting || '');
     
     // Initialize response objects
     let emailResult = { success: false };
@@ -266,7 +278,8 @@ export async function POST(request: Request) {
       phoneNumber: sanitizedPhone,
       language: sanitizedLanguage,
       name: sanitizedName,
-      expectedFlow: sanitizedExpectedFlow
+      expectedFlow: sanitizedExpectedFlow,
+      initialGreeting: sanitizedInitialGreeting
     });
     
     // Log the call request for monitoring and debugging

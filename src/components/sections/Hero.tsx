@@ -23,6 +23,7 @@ export default function Hero() {
   const [showSettings, setShowSettings] = useState(false);
   const [name, setName] = useState("");
   const [expectedFlow, setExpectedFlow] = useState("");
+  const [initialGreeting, setInitialGreeting] = useState("");
   
   // Refs to prevent animation conflicts
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -95,8 +96,8 @@ export default function Hero() {
     setError(null);
     
     // Enforce that name and expected flow must both be provided together or both omitted
-    if ((name && !expectedFlow) || (!name && expectedFlow)) {
-      setError('Both name and expected conversation flow must be provided together');
+    if ((name || expectedFlow || initialGreeting) && !(name && expectedFlow)) {
+      setError('Name and expected conversation flow must both be provided when using custom settings');
       return;
     }
     
@@ -154,6 +155,7 @@ export default function Hero() {
           language: language,
           name,
           expectedFlow,
+          initialGreeting,
           captchaToken: token
         }),
       });
@@ -749,23 +751,51 @@ export default function Hero() {
                                 <div className="space-y-4">
                                   <label className="block text-sm font-medium">
                                     Name
-                                    <input
-                                      type="text"
-                                      value={name}
-                                      onChange={e => setName(e.target.value)}
-                                      className="mt-1 block w-full input"
-                                      placeholder="Enter your name"
-                                    />
+                                    <div className="relative">
+                                      <input
+                                        type="text"
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                        className="mt-1 block w-full input"
+                                        placeholder="Enter your name"
+                                        maxLength={20}
+                                      />
+                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+                                        {name.length}/20
+                                      </div>
+                                    </div>
+                                  </label>
+                                  <label className="block text-sm font-medium">
+                                    Initial Greeting
+                                    <div className="relative">
+                                      <input
+                                        type="text"
+                                        value={initialGreeting}
+                                        onChange={e => setInitialGreeting(e.target.value)}
+                                        className="mt-1 block w-full input"
+                                        placeholder="Custom greeting to start the call"
+                                        maxLength={100}
+                                      />
+                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+                                        {initialGreeting.length}/100
+                                      </div>
+                                    </div>
                                   </label>
                                   <label className="block text-sm font-medium">
                                     Expected Conversation Flow
-                                    <textarea
-                                      value={expectedFlow}
-                                      onChange={e => setExpectedFlow(e.target.value)}
-                                      className="mt-1 block w-full input"
-                                      placeholder="Describe the expected call flow"
-                                      rows={3}
-                                    />
+                                    <div className="relative">
+                                      <textarea
+                                        value={expectedFlow}
+                                        onChange={e => setExpectedFlow(e.target.value)}
+                                        className="mt-1 block w-full input"
+                                        placeholder="Describe the expected call flow"
+                                        maxLength={500}
+                                        rows={3}
+                                      />
+                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+                                        {expectedFlow.length}/500
+                                      </div>
+                                    </div>
                                   </label>
                                 </div>
                               </div>
