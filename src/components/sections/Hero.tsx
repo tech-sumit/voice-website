@@ -789,11 +789,11 @@ export default function Hero() {
                                         onChange={e => setExpectedFlow(e.target.value)}
                                         className="mt-1 block w-full input"
                                         placeholder="Describe the expected call flow"
-                                        maxLength={500}
+                                        maxLength={1000}
                                         rows={3}
                                       />
                                       <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
-                                        {expectedFlow.length}/500
+                                        {expectedFlow.length}/1000
                                       </div>
                                     </div>
                                   </label>

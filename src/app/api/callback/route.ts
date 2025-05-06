@@ -243,9 +243,9 @@ export async function POST(request: Request) {
       validationErrors.push('Name must be 20 characters or less');
     }
     
-    // Limit expected conversation flow length to 500 characters
-    if (expectedFlow && expectedFlow.length > 500) {
-      validationErrors.push('Expected conversation flow must be 500 characters or less');
+    // Limit expected conversation flow length to 1000 characters
+    if (expectedFlow && expectedFlow.length > 1000) {
+      validationErrors.push('Expected conversation flow must be 1000 characters or less');
     }
     
     // Limit initial greeting length to 100 characters
