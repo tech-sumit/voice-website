@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
-import { RecaptchaEnterpriseServiceClient } from '@google-cloud/recaptcha-enterprise';
 
 // Initialize Resend with your API key
 // Get your API key from https://resend.com after signing up
@@ -55,63 +54,70 @@ function sanitizeInput(input: string): string {
     .replace(/'/g, '&#x27;');
 }
 
-// Verify reCAPTCHA Enterprise token with Google Cloud
-async function verifyRecaptchaEnterprise(token: string, action: string = 'CONTACT'): Promise<boolean> {
+// Verify reCAPTCHA token
+async function verifyRecaptcha(token: string, action: string = 'CONTACT'): Promise<boolean> {
   try {
-    // Get the project ID from environment variable
-    const projectID = process.env.RECAPTCHA_PROJECT_ID;
-    const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi';
+    // Get the reCAPTCHA secret key
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
     
-    // Check if project ID is configured
-    if (!projectID) {
-      console.warn('RECAPTCHA_PROJECT_ID not configured, skipping verification');
-      return true; // Skip verification in development
-    }
-    
-    // Create the reCAPTCHA client
-    const client = new RecaptchaEnterpriseServiceClient();
-    const projectPath = client.projectPath(projectID);
-
-    // Build the assessment request
-    const request = {
-      assessment: {
-        event: {
-          token: token,
-          siteKey: recaptchaKey,
-        },
-      },
-      parent: projectPath,
-    };
-
-    const [response] = await client.createAssessment(request);
-
-    // Check if the token is valid
-    if (!response.tokenProperties?.valid) {
-      console.log(`Token validation failed: ${response.tokenProperties?.invalidReason}`);
-      return false;
-    }
-
-    // Check if the expected action was executed
-    if (response.tokenProperties?.action !== action) {
-      console.log(`Action mismatch. Expected: ${action}, Got: ${response.tokenProperties?.action}`);
-      return false;
-    }
-
-    // Get the risk score - typically anything above 0.5 is likely legitimate
-    const score = response.riskAnalysis?.score;
-    console.log(`reCAPTCHA score: ${score}`);
-    
-    // For debugging purposes, log reasons if score is low
-    if (score && score < 0.5) {
-      response.riskAnalysis?.reasons?.forEach((reason) => {
-        console.log(`Risk reason: ${reason}`);
+    if (recaptchaSecret) {
+      console.log('🔒 Using Direct reCAPTCHA API verification');
+      
+      // Make the verification request to Google's API
+      const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+      const response = await fetch(verifyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          secret: recaptchaSecret,
+          response: token
+        })
       });
+      
+      if (!response.ok) {
+        console.error('❌ reCAPTCHA verification failed:', response.statusText);
+        return false;
+      }
+      
+      const data = await response.json();
+      
+      // Check if verification was successful
+      if (!data.success) {
+        console.error('❌ reCAPTCHA verification failed with error codes:', data['error-codes']);
+        return false;
+      }
+      
+      // Check if the action matches (for v3)
+      if (data.action && data.action !== action) {
+        console.error(`❌ Action mismatch. Expected: ${action}, Got: ${data.action}`);
+        return false;
+      }
+      
+      // For v3, check the score
+      if (data.score !== undefined) {
+        console.log(`✅ reCAPTCHA verification successful with score: ${data.score}`);
+        return data.score >= 0.5; // Adjust threshold as needed
+      }
+      
+      // Success without score (e.g. for v2)
+      console.log('✅ reCAPTCHA verification successful');
+      return true;
     }
-
-    // Consider scores above threshold as valid
-    return score !== undefined && score !== null && score >= 0.5;
+    
+    // No verification method available
+    console.warn('⚠️ No reCAPTCHA verification method configured. Missing RECAPTCHA_SECRET_KEY');
+    
+    // In production, fail verification when not configured
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ reCAPTCHA verification failed: Missing configuration in production');
+      return false;
+    }
+    
+    // In development, allow without verification
+    console.warn('⚠️ Allowing request without reCAPTCHA verification (DEVELOPMENT MODE ONLY)');
+    return true;
   } catch (error) {
-    console.error('reCAPTCHA Enterprise verification error:', error);
+    console.error('❌ reCAPTCHA verification error:', error);
     return false;
   }
 }
@@ -184,8 +190,8 @@ export async function POST(request: Request) {
       });
     }
     
-    // Verify reCAPTCHA Enterprise token with Google Cloud
-    const isValidCaptcha = await verifyRecaptchaEnterprise(captchaToken, 'CONTACT');
+    // Verify reCAPTCHA token
+    const isValidCaptcha = await verifyRecaptcha(captchaToken, 'CONTACT');
     if (!isValidCaptcha) {
       return NextResponse.json({ 
         error: 'Security verification failed. Please refresh the page and try again.' 

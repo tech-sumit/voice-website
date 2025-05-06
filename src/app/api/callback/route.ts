@@ -51,24 +51,14 @@ function sanitizeInput(input: string): string {
     .replace(/'/g, '&#x27;');
 }
 
-// Only import Google Cloud library if needed (based on environment variables)
-const useEnterpriseAPI = !process.env.RECAPTCHA_SECRET_KEY && process.env.RECAPTCHA_PROJECT_ID;
-let RecaptchaEnterpriseServiceClient: any;
-if (useEnterpriseAPI) {
-  // Dynamically import the library only if needed
-  import('@google-cloud/recaptcha-enterprise').then(module => {
-    RecaptchaEnterpriseServiceClient = module.RecaptchaEnterpriseServiceClient;
-  });
-}
-
 // Verify reCAPTCHA token
-async function verifyRecaptchaEnterprise(token: string, action: string = 'CALLBACK'): Promise<boolean> {
+async function verifyRecaptcha(token: string, action: string = 'CALLBACK'): Promise<boolean> {
   try {
-    // 1. Direct API Method (Recommended)
+    // Get the reCAPTCHA secret key
     const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
     
     if (recaptchaSecret) {
-      console.log('🔒 Using Direct reCAPTCHA API verification (recommended method)');
+      console.log('🔒 Using Direct reCAPTCHA API verification');
       
       // Make the verification request to Google's API
       const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
@@ -113,64 +103,8 @@ async function verifyRecaptchaEnterprise(token: string, action: string = 'CALLBA
       return true;
     }
     
-    // 2. Google Cloud reCAPTCHA Enterprise API (Alternative Method)
-    const projectID = process.env.RECAPTCHA_PROJECT_ID;
-    const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi';
-    
-    if (projectID) {
-      console.log('🔄 Using Google Cloud reCAPTCHA Enterprise API (alternative method)');
-      
-      if (!RecaptchaEnterpriseServiceClient) {
-        console.error('❌ RecaptchaEnterpriseServiceClient not loaded yet');
-        return false;
-      }
-      
-      // Create the reCAPTCHA client
-      const client = new RecaptchaEnterpriseServiceClient();
-      const projectPath = client.projectPath(projectID);
-
-      // Build the assessment request
-      const request = {
-        assessment: {
-          event: {
-            token: token,
-            siteKey: recaptchaKey,
-            expectedAction: action
-          },
-        },
-        parent: projectPath,
-      };
-
-      const [response] = await client.createAssessment(request);
-
-      // Check if the token is valid
-      if (!response.tokenProperties?.valid) {
-        console.error(`❌ Token validation failed: ${response.tokenProperties?.invalidReason}`);
-        return false;
-      }
-
-      // Check if the expected action was executed
-      if (response.tokenProperties?.action !== action) {
-        console.error(`❌ Action mismatch. Expected: ${action}, Got: ${response.tokenProperties?.action}`);
-        return false;
-      }
-
-      // Get the risk score
-      const score = response.riskAnalysis?.score;
-      
-      // For debugging purposes, log reasons if score is low
-      if (score && score < 0.5) {
-        response.riskAnalysis?.reasons?.forEach((reason: string) => {
-          console.error(`⚠️ Risk reason: ${reason}`);
-        });
-      }
-
-      console.log(`✅ reCAPTCHA verification successful with score: ${score}`);
-      return score !== undefined && score !== null && score >= 0.5;
-    }
-    
-    // 3. No verification method available
-    console.warn('⚠️ No reCAPTCHA verification method configured');
+    // No verification method available
+    console.warn('⚠️ No reCAPTCHA verification method configured. Missing RECAPTCHA_SECRET_KEY');
     
     // In production, fail verification when not configured
     if (process.env.NODE_ENV === 'production') {
@@ -278,8 +212,8 @@ export async function POST(request: Request) {
       });
     }
     
-    // Verify reCAPTCHA Enterprise token with Google Cloud
-    const isValidCaptcha = await verifyRecaptchaEnterprise(captchaToken, 'CALLBACK');
+    // Verify reCAPTCHA token
+    const isValidCaptcha = await verifyRecaptcha(captchaToken, 'CALLBACK');
     if (!isValidCaptcha) {
       return NextResponse.json({ 
         error: 'Security verification failed. Please refresh the page and try again.' 
