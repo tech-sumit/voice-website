@@ -73,8 +73,8 @@ function generateToken(language: string, name?: string, expectedFlow?: string): 
   // Build dynamic AI personality prompt, including optional name and expected flow only if provided
   const aiPersonalityParts: string[] = [`You are a helpful and friendly assistant.`];
   if (name && expectedFlow) {
-    aiPersonalityParts.push(`The caller's name is ${name}; use it when greeting.`);
-    aiPersonalityParts.push(`Follow this expected conversation flow: ${expectedFlow}.`);
+    aiPersonalityParts.push(`The customer's name is ${name}; use it when greeting.`);
+    aiPersonalityParts.push(`Follow this expected conversation flow: \n\n${expectedFlow}.\n\n`);
   }
   else {
     aiPersonalityParts.push(
@@ -116,7 +116,7 @@ function generateToken(language: string, name?: string, expectedFlow?: string): 
     
     // Callback settings for webhook
     callback: {
-      enabled: webhookUrl ? true : false,
+      enabled: !!webhookUrl,
       url: webhookUrl
     },
     
