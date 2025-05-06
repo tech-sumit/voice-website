@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
 import { RecaptchaEnterpriseServiceClient } from '@google-cloud/recaptcha-enterprise';
 import supportedLanguages from '@/config/languages';
+import { initiateCall, logCallRequest } from '@/lib/call';
 
 // Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -238,106 +239,143 @@ export async function POST(request: Request) {
     const sanitizedPhone = sanitizeInput(phoneNumber);
     const sanitizedLanguage = sanitizeInput(language);
     
-    // If Resend API key is not configured, just log the message and return success
+    // Initialize response objects
+    let emailResult = { success: false };
+    
+    // Initiate the call using our call service
+    const callResult = await initiateCall({
+      phoneNumber: sanitizedPhone,
+      language: sanitizedLanguage
+    });
+    
+    // Log the call request for monitoring and debugging
+    logCallRequest(
+      sanitizedPhone, 
+      sanitizedLanguage, 
+      callResult.success, 
+      callResult.callId, 
+      callResult.error
+    );
+    
+    // If Resend API key is not configured, just log the message and continue
     if (!process.env.RESEND_API_KEY) {
       console.log('RESEND_API_KEY not found. Callback request (not sent):');
       console.log({ phoneNumber: sanitizedPhone });
-      return NextResponse.json({ 
-        success: true, 
-        warning: 'Notification not sent - email service not configured' 
+      emailResult = { success: false };
+    } else {
+      // Format the email notification with a professional template
+      const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>New Callback Request</title>
+            <style type="text/css">
+              body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; line-height: 1.5; }
+              table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; }
+              img { -ms-interpolation-mode: bicubic; max-width: 100%; }
+              .container { max-width: 600px; margin: 0 auto; }
+              .header { background-color: #6366F1; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+              .content { background-color: #ffffff; padding: 20px; }
+              .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; }
+              .info-item { padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+              .info-item:last-child { border-bottom: none; }
+              .label { font-weight: bold; color: #374151; }
+              h1 { margin: 0; font-size: 22px; font-weight: bold; }
+              .logo { font-size: 24px; font-weight: bold; color: white; margin-bottom: 10px; }
+              .urgent { color: #ef4444; font-weight: bold; }
+              .button { display: inline-block; background-color: #6366F1; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; margin-top: 15px; }
+              .call-status { margin-top: 15px; padding: 10px; border-radius: 4px; }
+              .call-success { background-color: #ecfdf5; color: #059669; }
+              .call-error { background-color: #fef2f2; color: #dc2626; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <div class="logo">${siteConfig.name}</div>
+                <div class="urgent">⚡ URGENT: New Callback Request</div>
+              </div>
+              
+              <div class="content">
+                <p>You've received a new callback request from your website:</p>
+                
+                <div class="info-item">
+                  <span class="label">Phone Number:</span> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a> <span class="label">(International Format)</span>
+                </div>
+                
+                <div class="info-item">
+                  <span class="label">Preferred Language:</span> ${supportedLanguages.find(lang => lang.code === sanitizedLanguage)?.name || sanitizedLanguage}
+                </div>
+                
+                <div class="info-item">
+                  <span class="label">Requested on:</span> ${new Date().toLocaleString()}
+                </div>
+                
+                ${callResult.success 
+                  ? `<div class="call-status call-success">
+                      ✅ Automated call has been initiated. Call ID: ${callResult.callId || 'Not available'}
+                    </div>`
+                  : `<div class="call-status call-error">
+                      ❌ Automated call could not be initiated: ${callResult.error || 'Unknown error'}. 
+                      Please call the customer manually as soon as possible.
+                    </div>`
+                }
+                
+                <p>This customer is waiting for an immediate callback. ${!callResult.success ? 'Please contact them as soon as possible.' : ''}</p>
+                
+                <a href="tel:${sanitizedPhone}" class="button">Call Customer Now</a>
+              </div>
+              
+              <div class="footer">
+                <p>This notification was sent from the callback form on your ${siteConfig.name} website.</p>
+                <p>&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+      
+      // Send notification email using Resend
+      const { error } = await resend.emails.send({
+        from: `Callback Request <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
+        to: siteConfig.company.email,
+        subject: `🔴 URGENT: New callback request - ${sanitizedPhone}`,
+        html: emailHtml,
       });
+      
+      if (error) {
+        console.error('Email service error:', error);
+        emailResult = { success: false };
+      } else {
+        emailResult = { success: true };
+      }
     }
     
-    // Format the email notification with a professional template
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          <title>New Callback Request</title>
-          <style type="text/css">
-            body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; line-height: 1.5; }
-            table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; }
-            img { -ms-interpolation-mode: bicubic; max-width: 100%; }
-            .container { max-width: 600px; margin: 0 auto; }
-            .header { background-color: #6366F1; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background-color: #ffffff; padding: 20px; }
-            .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; }
-            .info-item { padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
-            .info-item:last-child { border-bottom: none; }
-            .label { font-weight: bold; color: #374151; }
-            h1 { margin: 0; font-size: 22px; font-weight: bold; }
-            .logo { font-size: 24px; font-weight: bold; color: white; margin-bottom: 10px; }
-            .urgent { color: #ef4444; font-weight: bold; }
-            .button { display: inline-block; background-color: #6366F1; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; margin-top: 15px; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <div class="logo">${siteConfig.name}</div>
-              <div class="urgent">⚡ URGENT: New Callback Request</div>
-            </div>
-            
-            <div class="content">
-              <p>You've received a new callback request from your website:</p>
-              
-              <div class="info-item">
-                <span class="label">Phone Number:</span> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a> <span class="label">(International Format)</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="label">Preferred Language:</span> ${supportedLanguages.find(lang => lang.code === sanitizedLanguage)?.name || sanitizedLanguage}
-              </div>
-              
-              <div class="info-item">
-                <span class="label">Requested on:</span> ${new Date().toLocaleString()}
-              </div>
-              
-              <p>This customer is waiting for an immediate callback. Please contact them as soon as possible.</p>
-              
-              <a href="tel:${sanitizedPhone}" class="button">Call Customer Now</a>
-            </div>
-            
-            <div class="footer">
-              <p>This notification was sent from the callback form on your ${siteConfig.name} website.</p>
-              <p>&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
-    
-    // Send notification email using Resend
-    const { error } = await resend.emails.send({
-      from: `Callback Request <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
-      to: siteConfig.company.email,
-      subject: `🔴 URGENT: New callback request - ${sanitizedPhone}`,
-      html: emailHtml,
-    });
-    
-    if (error) {
-      console.error('Email service error:', error);
+    // Return success if either email or call was successful
+    if (emailResult.success || callResult.success) {
+      return NextResponse.json({ 
+        success: true,
+        callInitiated: callResult.success,
+        emailSent: emailResult.success
+      }, {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'Surrogate-Control': 'no-store'
+        }
+      });
+    } else {
+      // Both email and call failed
       return NextResponse.json(
         { error: 'Unable to process your request at this time' },
         { status: 500 }
       );
     }
-    
-    // Return success with minimal information
-    return NextResponse.json({ 
-      success: true 
-    }, {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'Surrogate-Control': 'no-store'
-      }
-    });
     
   } catch (error) {
     console.error('Callback request error:', error);

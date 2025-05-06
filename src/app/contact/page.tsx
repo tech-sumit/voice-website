@@ -40,8 +40,8 @@ export default function ContactPage() {
       }
       
       try {
-        setIsSubmitting(true);
-        
+    setIsSubmitting(true);
+    
         // Execute reCAPTCHA Enterprise
         window.grecaptcha.enterprise.ready(async () => {
           try {
@@ -102,7 +102,7 @@ export default function ContactPage() {
           setCaptchaToken(null);
         }
         
-        setIsSubmitting(false);
+      setIsSubmitting(false);
         return;
       }
       

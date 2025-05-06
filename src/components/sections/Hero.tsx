@@ -9,8 +9,8 @@ import Script from "next/script";
 
 export default function Hero() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+1");
-  const [language, setLanguage] = useState("en");
+  const [countryCode, setCountryCode] = useState("+91");
+  const [language, setLanguage] = useState("hi-IN");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
   const [currentText, setCurrentText] = useState("");
@@ -735,7 +735,7 @@ export default function Hero() {
                                   onChange={(e) => setCountryCode(e.target.value)}
                                   className="w-full sm:w-auto px-2 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
                                   aria-label="Country code"
-                                >
+                            >
                                   {countryCodes.map((country) => (
                                     <option key={country.code} value={country.code}>
                                       {country.code} {country.name}
@@ -744,16 +744,16 @@ export default function Hero() {
                                 </select>
                                 
                                 {/* Phone input */}
-                                <input
-                                  type="tel"
+                              <input
+                                type="tel"
                                   placeholder="123-456-7890"
-                                  value={phoneNumber}
-                                  onChange={(e) => setPhoneNumber(e.target.value)}
-                                  className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
                                   pattern="[0-9-\s\(\)\.]{7,}"
                                   title="Please enter a valid phone number (7-15 digits)"
-                                  required
-                                />
+                                required
+                              />
                               </div>
 
                               {/* Language selection dropdown */}
