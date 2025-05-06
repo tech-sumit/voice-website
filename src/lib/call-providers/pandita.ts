@@ -39,23 +39,32 @@ function generateToken(language: string): string {
   
   // Validate webhook URL for call events
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
-  let webhookUrl = `${siteUrl}/api/call-events`;
+  let webhookUrl = '';
   
-  // Verify the webhook URL is valid
-  try {
-    new URL(webhookUrl);
-  } catch {
-    console.warn('Invalid webhook URL. Call events will not be received:', webhookUrl);
-    webhookUrl = ''; // Empty URL will disable the webhook
+  // Only set webhook URL if we have a proper site URL with domain
+  if (siteUrl && (siteUrl.startsWith('http://') || siteUrl.startsWith('https://'))) {
+    webhookUrl = `${siteUrl}/api/call-events`;
+    
+    // Verify the webhook URL is valid
+    try {
+      new URL(webhookUrl);
+      console.log('Using webhook URL:', webhookUrl);
+    } catch {
+      console.warn('Invalid webhook URL format. Call events will not be received:', webhookUrl);
+      webhookUrl = ''; // Empty URL will disable the webhook
+    }
+  } else {
+    console.warn('Missing NEXT_PUBLIC_SITE_URL environment variable. Call events will not be received.');
   }
   
-  // Get max call duration (default: 3 minutes)
+  // Get max call duration (default: 5 minutes)
   const maxCallDuration = parseInt(process.env.PANDITA_MAX_CALL_DURATION || '300');
   
-  // Generate a guaranteed unique tracking ID 
-  const timestamp = Date.now();
-  const randomPart = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-  const trackingId = `${timestamp}-${randomPart}`;
+  // Generate a shortened tracking ID (max 10 chars)
+  // Format: Timestamp modulo + random digits, total 10 chars
+  const timestampPart = (Date.now() % 1000000).toString().padStart(6, '0'); // 6 digits
+  const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0'); // 4 digits
+  const trackingId = `${timestampPart}${randomPart}`.slice(0, 10); // Ensure max 10 chars
   
   // Create the payload using the structure from the provided example
   const payload = {
@@ -157,13 +166,14 @@ export async function initiateCallWithPandita({ phoneNumber, language }: Pandita
     // Log success
     console.log('PanditaAI call initiated successfully:', responseData);
     
-    // Generate a unique ID if one isn't provided by the API
-    const uniqueCallId = responseData.call_id || responseData.id || 
-      `call-${Date.now()}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+    // Get the call ID from the response or generate a short unique ID
+    // Make sure it doesn't contain any hyphens, which can cause issues with some systems
+    const callId = responseData.call_sid || responseData.id || 
+      `C${Date.now().toString(36)}${Math.floor(Math.random() * 36**4).toString(36)}`;
     
     return {
       success: true,
-      callId: uniqueCallId
+      callId: callId
     };
     
   } catch (error: unknown) {

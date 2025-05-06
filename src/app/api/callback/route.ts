@@ -61,8 +61,16 @@ async function verifyRecaptchaEnterprise(token: string, action: string = 'CALLBA
     
     // Check if project ID is configured
     if (!projectID) {
-      console.warn('RECAPTCHA_PROJECT_ID not configured, skipping verification');
-      return true; // Skip verification in development
+      console.warn('RECAPTCHA_PROJECT_ID not configured, verification is disabled in this environment');
+      
+      // In production, fail verification when not configured
+      if (process.env.NODE_ENV === 'production') {
+        console.error('reCAPTCHA verification failed: Missing RECAPTCHA_PROJECT_ID in production');
+        return false;
+      }
+      
+      // In development/test, allow without verification
+      return true;
     }
     
     // Create the reCAPTCHA client
