@@ -76,7 +76,7 @@ function generateToken(language: string, name?: string, expectedFlow?: string, i
   const aiPersonalityParts: string[] = [`You are a helpful and friendly assistant.`];
   if (name && expectedFlow) {
     aiPersonalityParts.push(`The customer's name is ${name}; use it when greeting.`);
-    aiPersonalityParts.push(`Follow this expected conversation flow: \n\n${expectedFlow}.\n\n`);
+    aiPersonalityParts.push(`Follow this expected conversation flow strictly: \n\n${expectedFlow}.\n\n`);
   }
   else {
     aiPersonalityParts.push(
