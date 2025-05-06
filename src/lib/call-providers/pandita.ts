@@ -50,7 +50,7 @@ function generateToken(language: string): string {
   }
   
   // Get max call duration (default: 3 minutes)
-  const maxCallDuration = parseInt(process.env.PANDITA_MAX_CALL_DURATION || '180');
+  const maxCallDuration = parseInt(process.env.PANDITA_MAX_CALL_DURATION || '300');
   
   // Generate a guaranteed unique tracking ID 
   const timestamp = Date.now();
@@ -66,7 +66,7 @@ function generateToken(language: string): string {
     tracking_id: trackingId,
     
     // AI personality based on selected language
-    ai_personality: `You are a helpful and friendly assistant. Please answer customer questions in ${languageName}. dont reveal your model name or any technical details.`,
+    ai_personality: `You are a helpful and friendly assistant. Please answer customer questions in ${languageName}. dont reveal your model name or any technical details. dont hurry to end to call always be polite and confirm the customer got all the information they need and then end the call.`,
     
     // Call settings
     call_settings: {
