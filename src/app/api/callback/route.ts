@@ -175,8 +175,11 @@ export async function POST(request: Request) {
     }
     
     const data = await request.json();
-    const { phoneNumber, language, captchaToken, name, expectedFlow } = data;
+    const { phoneNumber, language, captchaToken, name, expectedFlow, templateId } = data;
     
+    // Log template ID if available
+    console.log(`Using template: ${templateId || 'custom'}`);
+
     // Validate phone number
     if (!phoneNumber) {
       return NextResponse.json({ 
@@ -233,26 +236,20 @@ export async function POST(request: Request) {
       validationErrors.push('Please provide a valid phone number');
     }
     
-    // Modify validation for name and expectedFlow
-    if ((name && !expectedFlow) || (!name && expectedFlow)) {
-      validationErrors.push('Name and expected conversation flow must both be provided when using custom settings');
+    // Validate expected flow
+    if (!expectedFlow) {
+      validationErrors.push('Conversation flow is required');
     }
     
-    // Limit name length to 20 characters
-    if (name && name.length > 20) {
-      validationErrors.push('Name must be 20 characters or less');
-    }
-    
-    // Limit expected conversation flow length to 1000 characters
-    if (expectedFlow && expectedFlow.length > 1000) {
-      validationErrors.push('Expected conversation flow must be 1000 characters or less');
+    // Limit expected conversation flow length to 5000 characters
+    if (expectedFlow && expectedFlow.length > 5000) {
+      validationErrors.push('Conversation flow must be 5000 characters or less');
     }
     
     // Return validation errors if any
     if (validationErrors.length > 0) {
       return NextResponse.json({ 
-        error: 'Validation failed', 
-        details: validationErrors 
+        error: validationErrors.join('. ') 
       }, { 
         status: 400 
       });
@@ -268,23 +265,23 @@ export async function POST(request: Request) {
 Speak in friendly, professional English. 
 
 1. Greet & Identify  
-   “Hello! This is Sambhavi, the AI assistant at voice-ai. ”
+   "Hello! This is Sambhavi, the AI assistant at voice-ai. "
 
 2. Invite Inquiry  
-   “How can I help you today?”
+   "How can I help you today?"
 
 3. Handle Questions  
    • If the question is about a product or feature, give a concise, accurate answer.  
    • If the caller asks about pricing and specific details tell them to visit the website - panditaai.com.  
    • After each answer, ask:  
-     “Is there anything else you’d like to know?”  
+     "Is there anything else you'd like to know?"  
    • Loop until the caller has no further questions.
 
 4. Confirm Satisfaction  
-   “Have I answered all your questions, or is there anything else I can help you with?”
+   "Have I answered all your questions, or is there anything else I can help you with?"
 
 5. Close Politely  
-   “Thank you for chatting with voice-ai. Have a great day!”
+   "Thank you for chatting with voice-ai. Have a great day!"
 `;
 
     

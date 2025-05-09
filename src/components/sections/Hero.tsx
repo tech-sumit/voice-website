@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
 import supportedLanguages from "@/config/languages";
+import callTemplates from "@/config/callTemplates";
 import { Button } from "@/components/ui/Button";
 import Script from "next/script";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
@@ -21,8 +22,13 @@ export default function Hero() {
   const [error, setError] = useState<string | null>(null);
   const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [name, setName] = useState("");
-  const [expectedFlow, setExpectedFlow] = useState("");
+  
+  // Template state
+  const [selectedTemplateId, setSelectedTemplateId] = useState("custom");
+  const [templateValues, setTemplateValues] = useState<Record<string, string>>({
+    name: "",
+    expectedFlow: "",
+  });
   
   // Refs to prevent animation conflicts
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -30,6 +36,32 @@ export default function Hero() {
   const inputDisplayed = useRef(false);
   
   const fullText = "Experience the future of customer service with our AI voice agents.";
+
+  // Get the current template
+  const selectedTemplate = callTemplates.find(t => t.id === selectedTemplateId) || callTemplates[0];
+
+  // Handle template change
+  const handleTemplateChange = (templateId: string) => {
+    const template = callTemplates.find(t => t.id === templateId);
+    if (!template) return;
+    
+    // Reset template values
+    const initialValues: Record<string, string> = {};
+    template.fields.forEach(field => {
+      initialValues[field.name] = "";
+    });
+    
+    setSelectedTemplateId(templateId);
+    setTemplateValues(initialValues);
+  };
+
+  // Handle template field changes
+  const handleTemplateFieldChange = (fieldName: string, value: string) => {
+    setTemplateValues(prev => ({
+      ...prev,
+      [fieldName]: value
+    }));
+  };
 
   useEffect(() => {
     // Clean up animation timeline on component unmount
@@ -94,9 +126,16 @@ export default function Hero() {
     e.preventDefault();
     setError(null);
     
-    // Enforce that name and expected flow must both be provided together or both omitted
-    if ((name && !expectedFlow) || (!name && expectedFlow)) {
-      setError('Name and expected conversation flow must both be provided when using custom settings');
+    // Generate the expected flow from the template
+    const expectedFlow = selectedTemplate.generateFlow(templateValues);
+    
+    // Validate required fields
+    const missingFields = selectedTemplate.fields
+      .filter(field => field.required && !templateValues[field.name])
+      .map(field => field.label);
+    
+    if (missingFields.length > 0) {
+      setError(`Please fill in the following required fields: ${missingFields.join(', ')}`);
       return;
     }
     
@@ -128,7 +167,7 @@ export default function Hero() {
           );
           
           // Continue with form submission using the fresh token
-          await submitForm(token);
+          await submitForm(token, expectedFlow);
         } catch (error) {
           console.error('reCAPTCHA error:', error);
           setError("Security verification failed. Please try again.");
@@ -142,7 +181,7 @@ export default function Hero() {
     }
   };
   
-  const submitForm = async (token: string) => {
+  const submitForm = async (token: string, expectedFlow: string) => {
     try {
       const response = await fetch('/api/callback', {
         method: 'POST',
@@ -152,9 +191,10 @@ export default function Hero() {
         body: JSON.stringify({ 
           phoneNumber: `${countryCode}${phoneNumber}`,
           language: language,
-          name,
-          expectedFlow,
-          captchaToken: token
+          name: templateValues.name || '', // Use name from template values
+          expectedFlow: expectedFlow,
+          captchaToken: token,
+          templateId: selectedTemplateId
         }),
       });
       
@@ -509,7 +549,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right column - New Interactive Phone Experience */}
+          {/* Right column - Interactive Phone Experience */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -735,9 +775,11 @@ export default function Hero() {
                           >
                             <Cog6ToothIcon className="h-6 w-6 text-neutral-600 dark:text-neutral-300" />
                           </button>
+                          
+                          {/* Template Settings Modal */}
                           {showSettings && (
                             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                              <div className="bg-white dark:bg-neutral-800 rounded-lg p-6 w-96 relative">
+                              <div className="bg-white dark:bg-neutral-800 rounded-lg p-6 w-96 max-h-[80vh] overflow-y-auto relative">
                                 <button
                                   type="button"
                                   className="absolute top-2 right-2 text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100"
@@ -745,44 +787,78 @@ export default function Hero() {
                                 >
                                   <XMarkIcon className="h-5 w-5" />
                                 </button>
-                                <h2 className="text-lg font-semibold mb-4">Settings</h2>
+                                <h2 className="text-lg font-semibold mb-4">Conversation Settings</h2>
+                                
+                                {/* Template selection dropdown */}
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1">
+                                    Conversation Template
+                                  </label>
+                                  <select
+                                    value={selectedTemplateId}
+                                    onChange={(e) => handleTemplateChange(e.target.value)}
+                                    className="w-full px-4 py-2 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  >
+                                    {callTemplates.map(template => (
+                                      <option key={template.id} value={template.id}>
+                                        {template.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <p className="text-xs text-neutral-500 mt-1">
+                                    {selectedTemplate.description}
+                                  </p>
+                                </div>
+                                
+                                {/* Dynamic form fields based on selected template */}
                                 <div className="space-y-4">
-                                  <label className="block text-sm font-medium">
-                                    Name
-                                    <div className="relative">
-                                      <input
-                                        type="text"
-                                        value={name}
-                                        onChange={e => setName(e.target.value)}
-                                        className="mt-1 block w-full input"
-                                        placeholder="Enter your name"
-                                        maxLength={20}
-                                      />
-                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
-                                        {name.length}/20
+                                  {selectedTemplate.fields.map(field => (
+                                    <label key={field.name} className="block text-sm font-medium">
+                                      {field.label}
+                                      <div className="relative">
+                                        {field.type === 'text' && field.name === 'expectedFlow' ? (
+                                          <textarea
+                                            value={templateValues[field.name] || ''}
+                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
+                                            className="mt-1 block w-full px-3 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:text-white"
+                                            placeholder={field.placeholder}
+                                            maxLength={field.maxLength}
+                                            rows={5}
+                                            required={field.required}
+                                          />
+                                        ) : field.type === 'date' ? (
+                                          <input
+                                            type="date"
+                                            value={templateValues[field.name] || ''}
+                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
+                                            className="mt-1 block w-full px-3 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:text-white"
+                                            placeholder={field.placeholder}
+                                            required={field.required}
+                                          />
+                                        ) : (
+                                          <input
+                                            type={field.type}
+                                            value={templateValues[field.name] || ''}
+                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
+                                            className="mt-1 block w-full px-3 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:text-white"
+                                            placeholder={field.placeholder}
+                                            maxLength={field.maxLength}
+                                            required={field.required}
+                                          />
+                                        )}
+                                        {field.maxLength && (
+                                          <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+                                            {(templateValues[field.name] || '').length}/{field.maxLength}
+                                          </div>
+                                        )}
                                       </div>
-                                    </div>
-                                  </label>
-                                  <label className="block text-sm font-medium">
-                                    Expected Conversation Flow
-                                    <div className="relative">
-                                      <textarea
-                                        value={expectedFlow}
-                                        onChange={e => setExpectedFlow(e.target.value)}
-                                        className="mt-1 block w-full input"
-                                        placeholder="Describe the expected call flow"
-                                        maxLength={1000}
-                                        rows={3}
-                                      />
-                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
-                                        {expectedFlow.length}/1000
-                                      </div>
-                                    </div>
-                                  </label>
+                                    </label>
+                                  ))}
                                 </div>
                               </div>
                             </div>
                           )}
+                          
                           <div className="relative">
                             <motion.div
                               animate={{ 
@@ -797,7 +873,7 @@ export default function Hero() {
                                   onChange={(e) => setCountryCode(e.target.value)}
                                   className="w-full sm:w-auto px-2 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
                                   aria-label="Country code"
-                            >
+                                >
                                   {countryCodes.map((country) => (
                                     <option key={country.code} value={country.code}>
                                       {country.code} {country.name}
@@ -806,16 +882,16 @@ export default function Hero() {
                                 </select>
                                 
                                 {/* Phone input */}
-                              <input
-                                type="tel"
+                                <input
+                                  type="tel"
                                   placeholder="123-456-7890"
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  value={phoneNumber}
+                                  onChange={(e) => setPhoneNumber(e.target.value)}
+                                  className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
                                   pattern="[0-9-\s\(\)\.]{7,}"
                                   title="Please enter a valid phone number (7-15 digits)"
-                                required
-                              />
+                                  required
+                                />
                               </div>
 
                               {/* Language selection dropdown */}
