@@ -21,7 +21,7 @@ const callTemplates: CallTemplate[] = [
     name: 'Default Flow',
     description: 'Standard conversation flow with basic greeting and assistance',
     fields: [],
-    generateFlow: (values) => {
+    generateFlow: () => {
       return `
 1. Greet, identify & confirm customer  
    "Hello! This is Sakshi from Voice AI"  
