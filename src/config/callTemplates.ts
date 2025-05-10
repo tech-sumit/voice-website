@@ -17,18 +17,39 @@ export interface CallTemplate {
 
 const callTemplates: CallTemplate[] = [
   {
+    id: 'default',
+    name: 'Default Flow',
+    description: 'Standard conversation flow with basic greeting and assistance',
+    fields: [],
+    generateFlow: (values) => {
+      return `
+1. Greet, identify & confirm customer  
+   "Hello! This is Sakshi from Voice AI"  
+
+2. Introduce purpose  
+   "I'm calling on behalf of Voice AI to assist you. How may I help you today?"
+
+3. Handle questions appropriately  
+   • Answer general inquiries about Voice AI technology and services.
+   • Take note of specific requests or concerns.
+   • Respond with relevant information based on the query.
+
+4. Provide information or solutions  
+   "Based on what you've shared, [provide appropriate information or solution]."
+
+5. Check for additional questions  
+   "Is there anything else I can help you with today?"
+
+6. Close call politely  
+   "Thank you for your time. Have a wonderful day!"
+      `.trim();
+    }
+  },
+  {
     id: 'custom',
     name: 'Custom Flow',
     description: 'Create your own custom conversation flow',
     fields: [
-      {
-        name: 'aiName',
-        label: 'AI Name',
-        type: 'text',
-        placeholder: 'Enter AI assistant name',
-        maxLength: 20,
-        required: true
-      },
       {
         name: 'name',
         label: 'Customer Name',
@@ -46,7 +67,10 @@ const callTemplates: CallTemplate[] = [
         required: true
       }
     ],
-    generateFlow: (values) => values.expectedFlow || ''
+    generateFlow: (values) => { 
+      return `The customer's name is ${values.name}; use it when greeting. 
+      Follow this expected conversation flow strictly: \n\n${values.expectedFlow}.\n\n`
+    }
   },
   {
     id: 'loan-reminder',

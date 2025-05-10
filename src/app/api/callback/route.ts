@@ -179,7 +179,7 @@ export async function POST(request: Request) {
     
     // Log template ID if available
     console.log(`Using template: ${templateId || 'custom'}`);
-
+    
     // Validate phone number
     if (!phoneNumber) {
       return NextResponse.json({ 

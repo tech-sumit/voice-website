@@ -24,7 +24,7 @@ export default function Hero() {
   const [showSettings, setShowSettings] = useState(false);
   
   // Template state
-  const [selectedTemplateId, setSelectedTemplateId] = useState("custom");
+  const [selectedTemplateId, setSelectedTemplateId] = useState("default");
   const [templateValues, setTemplateValues] = useState<Record<string, string>>({
     name: "",
     expectedFlow: "",
@@ -815,7 +815,7 @@ export default function Hero() {
                                   {selectedTemplate.fields.map(field => (
                                     <label key={field.name} className="block text-sm font-medium">
                                       {field.label}
-                                      <div className="relative">
+                                    <div className="relative">
                                         {field.type === 'text' && field.name === 'expectedFlow' ? (
                                           <textarea
                                             value={templateValues[field.name] || ''}
@@ -827,7 +827,7 @@ export default function Hero() {
                                             required={field.required}
                                           />
                                         ) : field.type === 'date' ? (
-                                          <input
+                                      <input
                                             type="date"
                                             value={templateValues[field.name] || ''}
                                             onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
@@ -844,15 +844,15 @@ export default function Hero() {
                                             placeholder={field.placeholder}
                                             maxLength={field.maxLength}
                                             required={field.required}
-                                          />
+                                      />
                                         )}
                                         {field.maxLength && (
-                                          <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
                                             {(templateValues[field.name] || '').length}/{field.maxLength}
-                                          </div>
-                                        )}
                                       </div>
-                                    </label>
+                                        )}
+                                    </div>
+                                  </label>
                                   ))}
                                 </div>
                               </div>
@@ -873,7 +873,7 @@ export default function Hero() {
                                   onChange={(e) => setCountryCode(e.target.value)}
                                   className="w-full sm:w-auto px-2 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
                                   aria-label="Country code"
-                                >
+                            >
                                   {countryCodes.map((country) => (
                                     <option key={country.code} value={country.code}>
                                       {country.code} {country.name}
@@ -882,16 +882,16 @@ export default function Hero() {
                                 </select>
                                 
                                 {/* Phone input */}
-                                <input
-                                  type="tel"
+                              <input
+                                type="tel"
                                   placeholder="123-456-7890"
-                                  value={phoneNumber}
-                                  onChange={(e) => setPhoneNumber(e.target.value)}
-                                  className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
                                   pattern="[0-9-\s\(\)\.]{7,}"
                                   title="Please enter a valid phone number (7-15 digits)"
-                                  required
-                                />
+                                required
+                              />
                               </div>
 
                               {/* Language selection dropdown */}
