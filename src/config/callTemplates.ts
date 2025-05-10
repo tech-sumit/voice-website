@@ -22,6 +22,14 @@ const callTemplates: CallTemplate[] = [
     description: 'Create your own custom conversation flow',
     fields: [
       {
+        name: 'aiName',
+        label: 'AI Name',
+        type: 'text',
+        placeholder: 'Enter AI assistant name',
+        maxLength: 20,
+        required: true
+      },
+      {
         name: 'name',
         label: 'Customer Name',
         type: 'text',
@@ -46,6 +54,14 @@ const callTemplates: CallTemplate[] = [
     description: 'Reminder for overdue loan payments',
     fields: [
       {
+        name: 'aiName',
+        label: 'AI Name',
+        type: 'text',
+        placeholder: 'Enter AI assistant name',
+        maxLength: 20,
+        required: true
+      },
+      {
         name: 'bankName',
         label: 'Bank Name',
         type: 'text',
@@ -54,10 +70,10 @@ const callTemplates: CallTemplate[] = [
         required: true
       },
       {
-        name: 'callerName',
-        label: 'Caller Name',
+        name: 'customerName',
+        label: 'Customer Name',
         type: 'text',
-        placeholder: 'Enter caller name',
+        placeholder: 'Enter customer name',
         maxLength: 20,
         required: true
       },
@@ -78,33 +94,32 @@ const callTemplates: CallTemplate[] = [
     ],
     generateFlow: (values) => {
       return `
-1. Greet & identify  
-   "Hello! This is ${values.callerName} calling from ${values.bankName}."
+1. Greet, identify & confirm customer  
+   "Hello! This is ${values.aiName} calling from ${values.bankName}. Am I speaking with ${values.customerName}?"  
+   → If confirmed: "Thank you!"  
+   → If not available: "No problem, I'll try again later. Have a great day!" [End call]
 
-2. State call purpose  
-   "I'm reaching out about your loan account."
+2. State purpose with overdue details  
+   "I'm calling regarding your loan account. Our records show an overdue balance of ₹${values.overdueAmount}, pending for ${values.overdueDays} days."
 
-3. Present overdue details  
-   "Our records show an overdue balance of ₹${values.overdueAmount} outstanding for ${values.overdueDays} days."
-
-4. Explain consequence & request date  
+3. Explain consequence & request date  
    "To avoid additional fees or credit impact, we'd like to set a payment date today."  
    "On which date do you plan to make this payment?"
 
-5. Capture & confirm date  
+4. Capture & confirm date  
    • Parse the spoken date to YYYY-MM-DD format.  
    • Repeat for confirmation:  
      "Just to confirm, you intend to pay on [Parsed-Date], correct?"  
    • If unclear or too far out, ask again or negotiate a nearer date.
 
-6. Summarize arrangement  
+5. Summarize arrangement  
    "Great. You'll pay ₹${values.overdueAmount} on [Confirmed-Date].  
    We'll send a reminder SMS 24 hours before the due date."
 
-7. Offer assistance  
+6. Offer assistance  
    "Do you have any questions, or is there anything else I can help you with today?"
 
-8. Close politely  
+7. Close politely  
    "Thank you, [end the call]."
       `.trim();
     }
@@ -115,6 +130,14 @@ const callTemplates: CallTemplate[] = [
     description: 'Reminder for upcoming appointments',
     fields: [
       {
+        name: 'aiName',
+        label: 'AI Name',
+        type: 'text',
+        placeholder: 'Enter AI assistant name',
+        maxLength: 20,
+        required: true
+      },
+      {
         name: 'businessName',
         label: 'Business Name',
         type: 'text',
@@ -123,10 +146,10 @@ const callTemplates: CallTemplate[] = [
         required: true
       },
       {
-        name: 'callerName',
-        label: 'Caller Name',
+        name: 'customerName',
+        label: 'Customer Name',
         type: 'text',
-        placeholder: 'Enter caller name',
+        placeholder: 'Enter customer name',
         maxLength: 20,
         required: true
       },
@@ -154,26 +177,28 @@ const callTemplates: CallTemplate[] = [
     ],
     generateFlow: (values) => {
       return `
-1. Greet & identify  
-   "Hello! This is ${values.callerName} calling from ${values.businessName}."
+1. Greet, identify & confirm customer  
+   "Hello! This is ${values.aiName} calling from ${values.businessName}. Am I speaking with ${values.customerName}?"  
+   → If confirmed: "Thank you!"  
+   → If not available: "No problem, I'll try again later. Have a great day!" [End call]
 
-2. State call purpose  
-   "I'm calling to remind you about your upcoming ${values.appointmentType} appointment."
+2. State purpose with appointment details  
+   "I'm calling regarding your upcoming ${values.appointmentType} appointment scheduled for ${values.appointmentDate} at ${values.appointmentTime}."
 
-3. Confirm appointment details  
-   "You have an appointment scheduled for ${values.appointmentDate} at ${values.appointmentTime}."
+3. Request attendance confirmation  
+   "I'd like to confirm that you'll be able to attend this appointment. Will you be able to make it?"
 
-4. Ask for confirmation  
-   "I'm calling to confirm that you'll be able to make this appointment. Will you be able to attend?"
+4. Handle response appropriately  
+   • If confirmed: "Excellent! We look forward to seeing you then. Please remember to arrive 10 minutes early to complete any necessary paperwork."
+   • If not confirmed: "I understand. Would you like to reschedule your appointment for another time?"
+     → If yes: "I'll make a note of that. Someone from our office will call you back shortly to arrange a new time."
+     → If no: "I'll mark this as a cancellation. Please note [mention any cancellation policies if applicable]."
 
-5. If confirmed:  
-   "Great! We look forward to seeing you then."  
-   "Please remember to arrive 10 minutes early to complete any necessary paperwork."
+5. Provide additional information  
+   "Do you have any questions about your upcoming appointment or any special requirements we should be aware of?"
 
-6. If not confirmed:  
-   "I understand. Would you like to reschedule your appointment for another time?"
-   • If yes, collect preferred dates/times and confirm they'll receive a follow-up.
-   • If no, note the cancellation and inform of any cancellation policies.
+6. Summarize and confirm  
+   "To summarize, your ${values.appointmentType} appointment is [confirmed/being rescheduled/cancelled] for ${values.appointmentDate} at ${values.appointmentTime}."
 
 7. Provide additional information  
    "Do you have any questions about your upcoming appointment?"
