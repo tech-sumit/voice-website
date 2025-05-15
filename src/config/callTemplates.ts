@@ -231,6 +231,79 @@ const callTemplates: CallTemplate[] = [
    "Thank you for your time. We look forward to seeing you on ${values.appointmentDate}. Have a great day!"
       `.trim();
     }
+  },
+  {
+    id: 'aditya-education-english',
+    name: 'Aditya Education Group (MCA/MBA) English',
+    description: 'English conversation flow for MCA/MBA admission inquiry with student/parent',
+    fields: [
+      {
+        name: 'aiName',
+        label: 'AI Name',
+        type: 'text',
+        placeholder: 'Enter AI assistant name',
+        maxLength: 20,
+        required: true
+      },
+      {
+        name: 'instituteName',
+        label: 'Institute Name',
+        type: 'text',
+        placeholder: 'Aditya Education Group, Beed',
+        maxLength: 50,
+        required: true
+      },
+      {
+        name: 'studentName',
+        label: 'Student Name',
+        type: 'text',
+        placeholder: 'Enter student name',
+        maxLength: 20,
+        required: true
+      }
+    ],
+    generateFlow: (values) => {
+      return [
+        'Keep the conversation dynamic and engaging. Make sure you ask according to who is speaking to you.',
+        `
+1. Greeting & Identification
+   "Hello, is this ${values.studentName}?"
+   (If parent answers: "Yes, I am the parent of ${values.studentName}.")
+   (If parent: Ask for the student or their number, or provide info if interested.)
+
+2. Self Introduction
+   "This is ${values.aiName} from ${values.instituteName}. May I speak with you for 2 minutes?"
+   (If no: Ask for a better time to call back. If yes, continue.)
+
+3. Graduation Status
+   "${values.studentName}, have you completed your graduation?"
+   (If not: "Are you currently in the final year of your degree?")
+   (If not interested: "We also offer other courses at our institute. If interested, please contact us.")
+
+4. Graduation Marks
+   (If graduation complete or in final year)
+   "Can you tell me your graduation percentage?"
+   (Student: "Sir, I scored ... percent.")
+
+5. Eligibility & CET Info
+   "Congratulations! You are eligible for MBA/MCA admission. (50% for Open, 45% for Caste & EWS categories). You are also required to appear for the CET exam. CET form filling is currently open."
+
+6. Institute & Scholarship Info
+   • Provide information about the institute.
+   • For SC category, explain the Swadhar Yojana scholarship.
+   • For OPEN category, explain the Punjabrao Deshmukh Hostel Scheme.
+
+7. MBA Specialisations
+   "MBA Specialisations Available: Human Resource, Marketing, Finance, Business Analytics, Agri-Business, International Business Environment, Production."
+
+8. CET Form Deadline
+   "The last date to fill the MBA/MCA CET form is 25-01-2025."
+
+9. Close Politely
+   "Thank you! For more information, please contact us. Best wishes!"
+        `.trim()
+      ].join('\n\n');
+    }
   }
 ];
 
