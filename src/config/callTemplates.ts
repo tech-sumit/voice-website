@@ -264,8 +264,8 @@ const callTemplates: CallTemplate[] = [
     ],
     generateFlow: (values) => {
       return [
-        'Keep the conversation dynamic and engaging. Make sure you ask according to who is speaking to you.',
         `
+Keep the conversation dynamic and engaging. Make sure you ask according to who is speaking to you. dont hurry to end the call explain about you offerings.
 1. Greeting & Identification of student / parent of student
    "Hello, is this ${values.studentName}?"
    (If parent answers: "Yes, I am the parent of ${values.studentName}.")
