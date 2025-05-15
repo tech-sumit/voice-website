@@ -99,7 +99,7 @@ function generateToken(language: string, name?: string, expectedFlow?: string): 
       language: language,
       max_duration_seconds: maxCallDuration,
       enable_max_duration: true,
-      allow_interruptions: true
+      allow_interruptions: false
     },
     
     // Idle detection settings
