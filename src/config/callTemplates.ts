@@ -266,7 +266,7 @@ const callTemplates: CallTemplate[] = [
       return [
         'Keep the conversation dynamic and engaging. Make sure you ask according to who is speaking to you.',
         `
-1. Greeting & Identification
+1. Greeting & Identification of student / parent of student
    "Hello, is this ${values.studentName}?"
    (If parent answers: "Yes, I am the parent of ${values.studentName}.")
    (If parent: Ask for the student or their number, or provide info if interested.)
@@ -286,18 +286,18 @@ const callTemplates: CallTemplate[] = [
    (Student: "Sir, I scored ... percent.")
 
 5. Eligibility & CET Info
-   "Congratulations! You are eligible for MBA/MCA admission. (50% for Open, 45% for Caste & EWS categories). You are also required to appear for the CET exam. CET form filling is currently open."
+   "Congratulations! You are eligible for MBA/MCA admission. (50% for Open, 45% for Caste & EWS categories). You are also required to appear for the C E T exam. C E T form filling is currently open."
 
 6. Institute & Scholarship Info
    • Provide information about the institute.
-   • For SC category, explain the Swadhar Yojana scholarship.
+   • For S C category, explain the Swadhar Yojana scholarship.
    • For OPEN category, explain the Punjabrao Deshmukh Hostel Scheme.
 
-7. MBA Specialisations
-   "MBA Specialisations Available: Human Resource, Marketing, Finance, Business Analytics, Agri-Business, International Business Environment, Production."
+7. M B A Specialisations
+   "M B A Specialisations Available: Human Resource, Marketing, Finance, Business Analytics, Agri-Business, International Business Environment, Production."
 
-8. CET Form Deadline
-   "The last date to fill the MBA/MCA CET form is 25-01-2025."
+8. C E T Form Deadline
+   "The last date to fill the M B A and M C A, C E T form is 25-01-2025."
 
 9. Close Politely
    "Thank you! For more information, please contact us. Best wishes!"
