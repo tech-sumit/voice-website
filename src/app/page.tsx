@@ -6,6 +6,7 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import siteConfig from "@/config/site.json";
+import IntegrationsSection from "@/components/sections/IntegrationsSection";
 
 export const metadata: Metadata = {
   title: siteConfig.metadata.title,
@@ -24,11 +25,11 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
+      <IntegrationsSection />
       {/* <LogoCarousel /> */}
       {/* <StatsSection /> */}
       <HowItWorks />
       <FeatureSection />
-      {/* <IntegrationsSection /> */}
       <UseCaseSection />
       <TestimonialsSection />
       {/* <PricingPreview /> */}

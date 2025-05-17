@@ -9,37 +9,37 @@ const whatsappConversation = [
   {
     type: "customer",
     message: "Hi! I'm interested in your services. Do you have any appointments available this week?",
-    timing: 1000,
+    timing: 500,
   },
   {
     type: "ai",
     message: "Hello! I'd be happy to help you book an appointment. We have openings on Wednesday at 2PM, Thursday at 11AM, and Friday at 3PM. Which works best for you?",
-    timing: 2000,
+    timing: 1000,
   },
   {
     type: "customer",
     message: "Thursday at 11AM would be perfect!",
-    timing: 3500,
+    timing: 1750,
   },
   {
     type: "ai",
     message: "Great! I'll book you for Thursday at 11AM. Could I get your name and email for the reservation?",
-    timing: 4500,
+    timing: 2250,
   },
   {
     type: "customer",
     message: "Sure, it's Alex Johnson, alex.johnson@example.com",
-    timing: 6000,
+    timing: 3000,
   },
   {
     type: "ai",
     message: "Thank you, Alex! I've booked your appointment and sent a confirmation to your email. Is there anything else you'd like to know about our services?",
-    timing: 7000,
+    timing: 3500,
   },
   {
     type: "system",
     message: "✓ Appointment added to CRM\n✓ Calendar updated\n✓ Confirmation email sent",
-    timing: 8000,
+    timing: 4000,
   }
 ];
 
@@ -54,7 +54,7 @@ const integrations = [
     ),
     color: "bg-primary-500",
     description: "Connect with customers where they are",
-    timing: 2500, // When to show this integration
+    timing: 1250, // When to show this integration
   },
   { 
     name: "Calendar Sync", 
@@ -65,7 +65,7 @@ const integrations = [
     ),
     color: "bg-secondary-500",
     description: "Schedule appointments instantly",
-    timing: 4000, // When to show this integration
+    timing: 2000, // When to show this integration
   },
   { 
     name: "CRM Integration", 
@@ -76,7 +76,7 @@ const integrations = [
     ),
     color: "bg-accent-500",
     description: "Automatically log conversations",
-    timing: 5500, // When to show this integration
+    timing: 2750, // When to show this integration
   },
   { 
     name: "Email Automation", 
@@ -87,7 +87,7 @@ const integrations = [
     ),
     color: "bg-bright-500",
     description: "Send confirmations automatically",
-    timing: 7000, // When to show this integration
+    timing: 3500, // When to show this integration
   },
 ];
 
@@ -96,12 +96,18 @@ export default function IntegrationsSection() {
   const [visibleIntegrations, setVisibleIntegrations] = useState<number[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [currentDateString, setCurrentDateString] = useState("");
   const animationRef = useRef<NodeJS.Timeout[]>([]);
-  const hasPlayedRef = useRef(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const isPlayingRef = useRef(isPlaying);
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
   
   const startDemo = useCallback(() => {
-    if (isPlaying) return;
+    if (isPlayingRef.current) return;
     
     // Reset state
     setActiveMessages([]);
@@ -118,7 +124,6 @@ export default function IntegrationsSection() {
       const timer = setTimeout(() => {
         setActiveMessages(prev => [...prev, index]);
       }, message.timing);
-      
       animationRef.current.push(timer);
     });
     
@@ -127,7 +132,6 @@ export default function IntegrationsSection() {
       const timer = setTimeout(() => {
         setVisibleIntegrations(prev => [...prev, index]);
       }, integration.timing);
-      
       animationRef.current.push(timer);
     });
     
@@ -135,29 +139,36 @@ export default function IntegrationsSection() {
     const completeTimer = setTimeout(() => {
       setIsPlaying(false);
       setIsComplete(true);
-    }, 9000);
+    }, 4500);
     
     animationRef.current.push(completeTimer);
-  }, [isPlaying]); // Only depend on isPlaying
+  }, [setActiveMessages, setVisibleIntegrations, setIsComplete, setIsPlaying]); // whatsappConversation & integrations are module-level constants
   
+  useEffect(() => {
+    setCurrentDateString(new Date().toLocaleDateString());
+  }, []);
+
+  // Auto-scroll chat container when new messages are added
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [activeMessages]);
+
   // Auto-start the demo when component mounts and on visibility change
   useEffect(() => {
-    // Start on initial mount
+    // Attempt to start on initial mount
     startDemo();
-    hasPlayedRef.current = true;
     
-    // Set up intersection observer to restart when visible
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
-      if (entry.isIntersecting && !isPlaying) {
-        // Restart when section becomes visible again
+      if (entry.isIntersecting && !isPlayingRef.current) {
+        // Restart when section becomes visible again and not already playing
         startDemo();
       }
     }, { threshold: 0.3 });
     
-    // Capture the current value of sectionRef
     const currentSectionRef = sectionRef.current;
-    
     if (currentSectionRef) {
       observer.observe(currentSectionRef);
     }
@@ -165,9 +176,11 @@ export default function IntegrationsSection() {
     // Clean up timers and observer on unmount
     return () => {
       animationRef.current.forEach(timer => clearTimeout(timer));
-      if (currentSectionRef) observer.unobserve(currentSectionRef);
+      if (currentSectionRef) {
+        observer.unobserve(currentSectionRef);
+      }
     };
-  }, [isPlaying, startDemo]);  // Add missing dependencies
+  }, [startDemo, sectionRef]); // sectionRef is stable, startDemo is now stable
 
   return (
     <section 
@@ -245,6 +258,7 @@ export default function IntegrationsSection() {
                 
                 {/* Chat container */}
                 <div 
+                  ref={chatContainerRef}
                   className="p-4 bg-neutral-50 dark:bg-neutral-900 h-[400px] overflow-y-auto flex flex-col space-y-3 scrollbar-hide"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
@@ -262,7 +276,7 @@ export default function IntegrationsSection() {
                   `}</style>
                   
                   <div className="text-center text-xs text-neutral-500 dark:text-neutral-400 py-2">
-                    Today, {new Date().toLocaleDateString()}
+                    Today, {currentDateString}
                   </div>
                   
                   {/* Messages */}
@@ -275,7 +289,7 @@ export default function IntegrationsSection() {
                               key={`message-${index}`}
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3 }}
+                              transition={{ duration: 0.15 }}
                               className="mx-auto max-w-[80%] bg-accent-100 dark:bg-accent-900/40 p-3 rounded-lg text-sm text-accent-800 dark:text-accent-200 border border-accent-200 dark:border-accent-800"
                             >
                               <div className="font-medium mb-1">System Notification</div>
@@ -289,7 +303,7 @@ export default function IntegrationsSection() {
                             key={`message-${index}`}
                             initial={{ opacity: 0, x: message.type === "customer" ? 20 : -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
                             className={`max-w-[70%] p-3 rounded-lg ${
                               message.type === "customer" 
                                 ? "ml-auto bg-primary-100 dark:bg-primary-800 text-neutral-800 dark:text-white rounded-tr-none" 
@@ -420,8 +434,8 @@ export default function IntegrationsSection() {
                     }}
                     transition={{ 
                       type: "spring", 
-                      stiffness: 300, 
-                      damping: 24,
+                      stiffness: 400, 
+                      damping: 30,
                     }}
                     className="bg-white dark:bg-neutral-800 rounded-lg p-4 shadow-md border border-neutral-200 dark:border-neutral-700 flex items-center"
                   >
