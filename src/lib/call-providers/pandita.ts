@@ -154,6 +154,21 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
       from_number: fromNumber,
       token: token
     };
+
+    // Log the API call details
+    console.log('PanditaAI API call initiated with details:', {
+      endpoint: apiUrl,
+      method: 'POST',
+      toNumber: phoneNumber,
+      fromNumber,
+      language,
+      name: name || 'Not provided',
+      expectedFlow: expectedFlow ? 'Custom flow provided' : 'Default flow',
+      timeout: `${timeout} seconds`,
+      // Don't decode JWT to avoid potential security issues and encoding problems
+      tokenLength: token.length,
+      tokenGenerated: true
+    });
     
     // Make the API request
     const controller = new AbortController();
@@ -173,7 +188,16 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
     // Parse the response
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      console.error('PanditaAI API error:', errorData);
+      console.error('PanditaAI API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorDetails: errorData,
+        requestData: {
+          toNumber: phoneNumber,
+          fromNumber,
+          endpoint: apiUrl
+        }
+      });
       return {
         success: false,
         error: errorData.error || 'Failed to initiate call'
@@ -182,8 +206,18 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
     
     const responseData = await response.json();
     
-    // Log success
-    console.log('PanditaAI call initiated successfully:', responseData);
+    // Log success with detailed information
+    console.log('PanditaAI call initiated successfully:', {
+      responseData,
+      callDetails: {
+        toNumber: phoneNumber,
+        fromNumber,
+        language,
+        name: name || 'Not provided',
+        expectedFlow: expectedFlow ? 'Provided' : 'Not provided',
+        timestamp: new Date().toISOString()
+      }
+    });
     
     // Get the call ID from the response or generate a short unique ID
     // Make sure it doesn't contain any hyphens, which can cause issues with some systems
@@ -199,7 +233,12 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
     // Handle different error types
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        console.error('PanditaAI API request timed out');
+        console.error('PanditaAI API request timed out', {
+          toNumber: phoneNumber,
+          fromNumber: process.env.PANDITA_FROM_NUMBER || siteConfig.company.phone,
+          language,
+          timeout: parseInt(process.env.PANDITA_TIMEOUT || '30')
+        });
         return {
           success: false,
           error: 'Request timed out'
@@ -207,7 +246,11 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
       }
       
       if (error.message && error.message.includes('JWT_SECRET')) {
-        console.error('PanditaAI JWT configuration error:', error);
+        console.error('PanditaAI JWT configuration error:', {
+          error: error.message,
+          language,
+          name: name || 'Not provided'
+        });
         return {
           success: false,
           error: 'Token generation failed - check JWT configuration'
@@ -215,7 +258,15 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
       }
     }
     
-    console.error('Error in PanditaAI call initiation:', error);
+    console.error('Error in PanditaAI call initiation:', {
+      error,
+      callDetails: {
+        toNumber: phoneNumber,
+        language,
+        name: name || 'Not provided',
+        expectedFlow: expectedFlow ? 'Provided' : 'Not provided'
+      }
+    });
     return {
       success: false,
       error: 'Unable to process call request'

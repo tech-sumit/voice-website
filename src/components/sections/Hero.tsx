@@ -44,15 +44,14 @@ export default function Hero() {
   const handleTemplateChange = (templateId: string) => {
     const template = callTemplates.find(t => t.id === templateId);
     if (!template) return;
-    
     // Reset template values
     const initialValues: Record<string, string> = {};
     template.fields.forEach(field => {
       initialValues[field.name] = "";
     });
-    
     setSelectedTemplateId(templateId);
     setTemplateValues(initialValues);
+    setIsSubmitted(false); // Reset submission state on template change
   };
 
   // Handle template field changes
@@ -125,49 +124,46 @@ export default function Hero() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
-    // Generate the expected flow from the template
-    const expectedFlow = selectedTemplate.generateFlow(templateValues);
-    
+
+    // Always get the latest template and values from state
+    const template = callTemplates.find(t => t.id === selectedTemplateId) || callTemplates[0];
+    const expectedFlow = template.generateFlow(templateValues);
+
     // Validate required fields
-    const missingFields = selectedTemplate.fields
+    const missingFields = template.fields
       .filter(field => field.required && !templateValues[field.name])
       .map(field => field.label);
-    
+
     if (missingFields.length > 0) {
       setError(`Please fill in the following required fields: ${missingFields.join(', ')}`);
       return;
     }
-    
+
     // Improved phone number validation
     const phoneDigits = phoneNumber.replace(/\D/g, '');
-    
+
     if (phoneDigits.length < 7 || phoneDigits.length > 15) {
       setError("Please enter a valid phone number (7-15 digits)");
       return;
     }
-    
-    // Always retrieve a fresh reCAPTCHA token when submitting
-    // This ensures the token isn't expired (they expire after 2 minutes)
+
     setIsSubmitting(true);
-    
+
     try {
       if (!isRecaptchaLoaded || typeof window.grecaptcha === 'undefined') {
         setError("Security verification is still loading. Please try again in a moment.");
         setIsSubmitting(false);
         return;
       }
-      
-      // Execute reCAPTCHA - always generate a fresh token
+
       window.grecaptcha.enterprise.ready(async () => {
         try {
           const token = await window.grecaptcha.enterprise.execute(
-            process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi', 
-            { action: 'CALLBACK' }  // Explicit action that matches server-side verification
+            process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi',
+            { action: 'CALLBACK' }
           );
-          
-          // Continue with form submission using the fresh token
-          await submitForm(token, expectedFlow);
+
+          await submitForm(token, expectedFlow, template.id);
         } catch (error) {
           console.error('reCAPTCHA error:', error);
           setError("Security verification failed. Please try again.");
@@ -181,20 +177,20 @@ export default function Hero() {
     }
   };
   
-  const submitForm = async (token: string, expectedFlow: string) => {
+  const submitForm = async (token: string, expectedFlow: string, templateId: string) => {
     try {
       const response = await fetch('/api/callback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           phoneNumber: `${countryCode}${phoneNumber}`,
           language: language,
-          name: templateValues.name || '', // Use name from template values
+          name: templateValues.name || '',
           expectedFlow: expectedFlow,
           captchaToken: token,
-          templateId: selectedTemplateId
+          templateId: templateId
         }),
       });
       
