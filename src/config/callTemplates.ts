@@ -298,9 +298,6 @@ Keep the conversation dynamic and engaging. Make sure you ask according to who i
 
 8. C E T Form Deadline
    "The last date to fill the M B A and M C A, C E T form is 25-01-2025."
-
-9. Close Politely
-   "Thank you! For more information, please contact us. Best wishes!"
         `.trim()
       ].join('\n\n');
     }
