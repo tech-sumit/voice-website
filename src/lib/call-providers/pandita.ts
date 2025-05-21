@@ -42,12 +42,12 @@ function generateToken(language: string, name?: string, expectedFlow?: string): 
   const expiration = now + (tokenMinutes * 60);
   
   // Validate webhook URL for call events
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_DOMAIN || '';
   let webhookUrl = '';
   
   // Only set webhook URL if we have a proper site URL with domain
   if (siteUrl && (siteUrl.startsWith('http://') || siteUrl.startsWith('https://'))) {
-    webhookUrl = `${siteUrl}/api/call-events`;
+    webhookUrl = `https://${siteUrl}/api/call-events`;
     
     // Verify the webhook URL is valid
     try {
@@ -122,6 +122,7 @@ function generateToken(language: string, name?: string, expectedFlow?: string): 
     
   };
   
+  console.log('payload', payload);
   // Generate and return the JWT token
   return jwt.sign(payload, jwtSecret, { algorithm: 'HS256' });
 }
@@ -136,11 +137,37 @@ function generateToken(language: string, name?: string, expectedFlow?: string): 
  * @returns Promise resolving to call response
  */
 export async function initiateCallWithPandita({ phoneNumber, language, name, expectedFlow }: PanditaCallParams): Promise<PanditaCallResponse> {
+  // Define these variables at function level so they're available in catch blocks
+  let languageName = '';
+  let aiPersonality = '';
+  
   try {
     // Get API configuration from environment variables
     const serverUrl = process.env.PANDITA_SERVER_URL || 'https://api.panditaai.com';
     const fromNumber = process.env.PANDITA_FROM_NUMBER || siteConfig.company.phone;
     const timeout = parseInt(process.env.PANDITA_TIMEOUT || '30');
+    
+    // Get language details for logging
+    languageName = supportedLanguages.find(lang => lang.code === language)?.name || 'English';
+    
+    console.log('expectedFlow', expectedFlow);
+
+    // Extract AI personality for logging - same logic as in generateToken
+    const aiPersonalityParts: string[] = [];
+    if(name || expectedFlow) {
+      if (name) {
+        aiPersonalityParts.push(`The customer's name is ${name}; use it when greeting.`);
+      }
+      if(expectedFlow){
+        aiPersonalityParts.push(`Follow this expected conversation flow strictly: \n\n${expectedFlow}.\n\n`);
+      }
+    }
+    else {
+      aiPersonalityParts.push(
+        `Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`
+      );
+    }
+    aiPersonality = aiPersonalityParts.join(' ');
     
     // Generate JWT token for the call
     const token = generateToken(language, name, expectedFlow);
@@ -162,12 +189,13 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
       toNumber: phoneNumber,
       fromNumber,
       language,
+      languageName,
       name: name || 'Not provided',
       expectedFlow: expectedFlow ? 'Custom flow provided' : 'Default flow',
       timeout: `${timeout} seconds`,
-      // Don't decode JWT to avoid potential security issues and encoding problems
       tokenLength: token.length,
-      tokenGenerated: true
+      tokenGenerated: true,
+      aiPersonality: aiPersonality
     }));
     
     // Make the API request
@@ -195,7 +223,11 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
         requestData: {
           toNumber: phoneNumber,
           fromNumber,
-          endpoint: apiUrl
+          endpoint: apiUrl,
+          language,
+          languageName,
+          name: name || 'Not provided',
+          expectedFlow: expectedFlow,
         }
       }));
       return {
@@ -213,9 +245,10 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
         toNumber: phoneNumber,
         fromNumber,
         language,
+        languageName,
         name: name || 'Not provided',
-        expectedFlow: expectedFlow ? 'Provided' : 'Not provided',
-        timestamp: new Date().toISOString()
+        expectedFlow: expectedFlow,
+        timestamp: new Date().toISOString(),
       }
     }));
     
@@ -237,7 +270,9 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
           toNumber: phoneNumber,
           fromNumber: process.env.PANDITA_FROM_NUMBER || siteConfig.company.phone,
           language,
-          timeout: parseInt(process.env.PANDITA_TIMEOUT || '30')
+          languageName,
+          timeout: parseInt(process.env.PANDITA_TIMEOUT || '30'),
+          aiPersonality
         }));
         return {
           success: false,
@@ -249,7 +284,9 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
         console.error('[PANDITA_JWT_ERROR]', JSON.stringify({
           error: error.message,
           language,
-          name: name || 'Not provided'
+          languageName,
+          name: name || 'Not provided',
+          aiPersonality
         }));
         return {
           success: false,
@@ -263,8 +300,10 @@ export async function initiateCallWithPandita({ phoneNumber, language, name, exp
       callDetails: {
         toNumber: phoneNumber,
         language,
+        languageName,
         name: name || 'Not provided',
-        expectedFlow: expectedFlow ? 'Provided' : 'Not provided'
+        expectedFlow: expectedFlow ? 'Provided' : 'Not provided',
+        aiPersonality
       }
     }));
     return {

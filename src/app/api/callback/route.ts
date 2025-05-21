@@ -178,7 +178,7 @@ export async function POST(request: Request) {
     const { phoneNumber, language, captchaToken, name, expectedFlow, templateId } = data;
     
     // Log template ID if available
-    console.log(`Using template: ${templateId || 'custom'}`);
+    console.log(`Using template: ${templateId || 'custom' || expectedFlow}`);
     
     // Validate phone number
     if (!phoneNumber) {
