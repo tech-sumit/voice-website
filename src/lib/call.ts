@@ -1,4 +1,4 @@
-import { initiateCallWithPandita } from './call-providers/pandita';
+import { initiateCallWithPixPoc } from './call-providers/pixpoc';
 
 // Define the interface for call request parameters
 export interface CallRequestParams {
@@ -16,15 +16,15 @@ export interface CallResponse {
 }
 
 /**
- * Initiates a call using the PanditaAI service
+ * Initiates a call using the PixPoc Voice service
  * 
  * @param params Call request parameters (phone number and language)
  * @returns Promise resolving to the call response
  */
 export async function initiateCall(params: CallRequestParams): Promise<CallResponse> {
   try {
-    // Use PanditaAI as the call provider
-    return await initiateCallWithPandita(params);
+    // Use PixPoc Voice as the call provider
+    return await initiateCallWithPixPoc(params);
   } catch (error) {
     console.error(`Error in call initiation:`, error);
     return {
