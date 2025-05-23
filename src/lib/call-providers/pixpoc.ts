@@ -142,7 +142,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
   
   try {
     // Get API configuration from environment variables
-    const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://api.voice.pixpoc.in';
+    const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://api.pixpoc.in';
     const apiEndpoint = `${apiServerUrl}/call/initiate`;
     const fromNumber = process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone;
     const timeout = parseInt(process.env.PIXPOC_TIMEOUT || '30');
