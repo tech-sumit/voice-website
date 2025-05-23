@@ -142,7 +142,8 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
   
   try {
     // Get API configuration from environment variables
-    const serverUrl = process.env.PIXPOC_SERVER_URL || 'https://voice.pixpoc.in';
+    const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://api.voice.pixpoc.in';
+    const apiEndpoint = `${apiServerUrl}/call/initiate`;
     const fromNumber = process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone;
     const timeout = parseInt(process.env.PIXPOC_TIMEOUT || '30');
     
@@ -164,43 +165,35 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
     
     // Generate JWT token for the call
     const token = generateToken(language, name, expectedFlow);
-    
-    // API endpoint for initiating calls
-    const apiUrl = `${serverUrl.replace(/\/$/, '')}/call/initiate`;
-    
-    // Prepare request payload
-    const data = {
-      to_number: phoneNumber,
-      from_number: fromNumber,
-      token: token
-    };
 
     // Log the API call details
-    console.log('[PIXPOC_CALL_INITIATED]', JSON.stringify({
-      endpoint: apiUrl,
-      method: 'POST',
-      toNumber: phoneNumber,
-      fromNumber,
-      language,
-      languageName,
-      name: name || 'Not provided',
-      expectedFlow: expectedFlow ? 'Custom flow provided' : 'Default flow',
-      timeout: `${timeout} seconds`,
-      tokenLength: token.length,
-      tokenGenerated: true,
-      aiPersonality: aiPersonality
-    }));
+    console.log(`[PIXPOC_CALL_INITIATED] Making API call to: ${apiEndpoint}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Method: POST`);
+    console.log(`[PIXPOC_CALL_INITIATED] To Number: ${phoneNumber}`);
+    console.log(`[PIXPOC_CALL_INITIATED] From Number: ${fromNumber}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Language: ${language}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Name: ${name || 'Not provided'}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Expected Flow: ${expectedFlow ? 'Provided' : 'Not provided'}`);
+    console.log(`[PIXPOC_CALL_INITIATED] AI Personality: ${aiPersonality}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Max Call Duration: ${parseInt(process.env.PIXPOC_MAX_CALL_DURATION || '300')} seconds`);
+    console.log(`[PIXPOC_CALL_INITIATED] JWT Token Length: ${token.length} characters`);
     
     // Make the API request
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout * 1000);
     
-    const response = await fetch(apiUrl, {
+    const response = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'User-Agent': 'VoiceCallingAgent-Client/1.0',
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        to_number: phoneNumber,
+        from_number: fromNumber,
+        token: token
+      }),
       signal: controller.signal
     });
     
@@ -208,50 +201,27 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
     
     // Parse the response
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      console.error('[PIXPOC_API_ERROR]', JSON.stringify({
+      const errorText = await response.text();
+      console.error(`[PIXPOC_CALL_ERROR] API Error Response:`, {
         status: response.status,
         statusText: response.statusText,
-        errorDetails: errorData,
-        requestData: {
-          toNumber: phoneNumber,
-          fromNumber,
-          endpoint: apiUrl,
-          language,
-          languageName
-        }
-      }));
-      return {
-        success: false,
-        error: errorData.error || 'Failed to initiate call'
-      };
+        errorText
+      });
+      throw new Error(`API request failed with status ${response.status}: ${errorText}`);
     }
     
-    const responseData = await response.json();
+    const data = await response.json();
     
     // Log success with detailed information
-    console.log('[PIXPOC_CALL_SUCCESS]', JSON.stringify({
-      responseData,
-      callDetails: {
-        toNumber: phoneNumber,
-        fromNumber,
-        language,
-        languageName,
-        name: name || 'Not provided',
-        expectedFlow: expectedFlow ? 'Provided' : 'Not provided',
-        timestamp: new Date().toISOString(),
-        aiPersonality: aiPersonality
-      }
-    }));
-    
-    // Get the call ID from the response or generate a short unique ID
-    // Make sure it doesn't contain any hyphens, which can cause issues with some systems
-    const callId = responseData.call_sid || responseData.id || 
-      `C${Date.now().toString(36)}${Math.floor(Math.random() * 36**4).toString(36)}`;
+    console.log(`[PIXPOC_CALL_SUCCESS] Call initiated successfully:`, {
+      callId: data.call_sid,
+      status: data.status,
+      message: data.message
+    });
     
     return {
       success: true,
-      callId: callId
+      callId: data.call_sid
     };
     
   } catch (error: unknown) {
@@ -285,10 +255,26 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
           error: 'Token generation failed - check JWT configuration'
         };
       }
+
+      // Add specific handling for network errors
+      if (error.message.includes('fetch failed') || error.message.includes('network')) {
+        console.error('[PIXPOC_NETWORK_ERROR]', JSON.stringify({
+          error: error.message,
+          toNumber: phoneNumber,
+          fromNumber: process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone,
+          language,
+          languageName
+        }));
+        return {
+          success: false,
+          error: 'Network error - please check your internet connection'
+        };
+      }
     }
     
-    console.error('[PIXPOC_GENERAL_ERROR]', JSON.stringify({
-      error: error instanceof Error ? error.message : String(error),
+    console.error(`[PIXPOC_CALL_ERROR] Failed to initiate call:`, {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
       callDetails: {
         toNumber: phoneNumber,
         language,
@@ -297,7 +283,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
         expectedFlow: expectedFlow ? 'Provided' : 'Not provided',
         aiPersonality
       }
-    }));
+    });
     return {
       success: false,
       error: 'Unable to process call request'
