@@ -301,6 +301,74 @@ Keep the conversation dynamic and engaging. Make sure you ask according to who i
         `.trim()
       ].join('\n\n');
     }
+  },
+  {
+    id: 'nashik-bank-english',
+    name: 'Nashik Merchant Bank (English)',
+    description: 'English conversation flow for Nashik Merchant Co-operative Bank digital services outreach',
+    fields: [
+      {
+        name: 'aiName',
+        label: 'AI Name',
+        type: 'text',
+        placeholder: 'Enter AI assistant name',
+        maxLength: 20,
+        required: true
+      },
+      {
+        name: 'customerName',
+        label: 'Customer Name',
+        type: 'text',
+        placeholder: 'Enter customer name (e.g. Mr. Gholap)',
+        maxLength: 30,
+        required: true
+      }
+    ],
+    generateFlow: (values) => {
+      return `
+  1. Greeting & Identity Confirmation
+     "Hello! This is ${values.aiName} calling from The Nashik Merchant Co-operative Bank Limited."
+     "This call is for ${values.customerName}."
+     "Am I speaking with ${values.customerName}?"
+     → Wait for confirmation: Yes/Correct (If confirmed, proceed)
+  
+  2. Thank You & Purpose Statement
+     "Thank you, ${values.customerName}."
+     "We appreciate you being a valued member of our bank."
+     "I'm calling to inform you that The Nashik Merchant Co-operative Bank Limited now offers modern and useful digital services."
+  
+  3. Digital Services Information
+     "📱 Our digital banking services include:"
+     "• Mobile Banking App"
+     "• Net Banking"
+     "• UPI and QR Code Payments"
+     "• Online account details and transactions"
+     "Are you currently using any of these facilities?"
+     → Wait for response: Yes/No (Respond accordingly)
+  
+  4. Feedback & Suggestions
+     "Are there any other banking services you would like us to make available?"
+     "Or do you have any suggestions for our bank management?"
+     → Wait for response: Suggestions/Feedback/None (Take notes as needed)
+  
+  5. Additional Information
+     "For more information, please visit your nearest branch or visit our website"
+     "www.namcobank.in"
+  
+  6. Call Closure
+     "${values.customerName},"
+     "Thank you for your time."
+     "We are proud to have you as part of The Nashik Merchant Co-operative Bank Limited."
+     "Have a good day and bank safely!"
+  
+  Important Instructions:
+  - Maintain a professional and respectful tone throughout
+  - Use the customer's name to personalize the conversation
+  - Listen patiently and provide appropriate responses
+  - Clearly explain digital services information
+  - Take note of customer feedback
+      `.trim();
+    }
   }
 ];
 
