@@ -15,7 +15,7 @@ const MAX_LENGTH = {
 // Simple in-memory rate limiting (reset on server restart)
 // In production, use Redis or similar for persistent rate limiting
 const ipRequestCounts = new Map<string, { count: number; timestamp: number }>();
-const RATE_LIMIT_MAX = 2; // Max requests per window
+const RATE_LIMIT_MAX = 10; // Max requests per window
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
 
 // Validate phone number format
