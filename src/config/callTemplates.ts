@@ -303,16 +303,15 @@ Keep the conversation dynamic and engaging. Make sure you ask according to who i
     }
   },
   {
-<<<<<<< HEAD
-    id: 'malegaon-property-tax',
-    name: 'Malegaon Property Tax Reminder (English)',
-    description: 'Property tax reminder call for Malegaon Municipal Corporation in English',
+    id: 'municipal-tax-reminder',
+    name: 'Municipal Corporation Property Tax Reminder',
+    description: 'Property tax payment reminder for municipal corporations',
     fields: [
       {
-        name: 'targetName',
+        name: 'targetPersonName',
         label: 'Target Person Name',
         type: 'text',
-        placeholder: 'Mr. Walmik Darade',
+        placeholder: 'Enter taxpayer name',
         maxLength: 50,
         required: true
       },
@@ -320,15 +319,15 @@ Keep the conversation dynamic and engaging. Make sure you ask according to who i
         name: 'municipalityName',
         label: 'Municipality Name',
         type: 'text',
-        placeholder: 'Malegaon Municipal Corporation',
-        maxLength: 50,
+        placeholder: 'Enter municipality name',
+        maxLength: 100,
         required: true
       },
       {
         name: 'dueAmount',
-        label: 'Due Amount (₹)',
+        label: 'Due Amount',
         type: 'number',
-        placeholder: '15000',
+        placeholder: 'Enter amount (e.g. 15000)',
         required: true
       },
       {
@@ -339,126 +338,59 @@ Keep the conversation dynamic and engaging. Make sure you ask according to who i
         required: true
       },
       {
-        name: 'helpdeskNumber',
-        label: 'Helpdesk Number',
-        type: 'text',
-        placeholder: '+91-XXXXXXXXXX',
-        maxLength: 15,
-        required: true
-      },
-      {
         name: 'websiteUrl',
         label: 'Municipality Website',
         type: 'text',
         placeholder: 'www.malegaoncorporation.org',
         maxLength: 100,
-=======
-    id: 'nashik-bank-english',
-    name: 'Nashik Merchant Bank (English)',
-    description: 'English conversation flow for Nashik Merchant Co-operative Bank digital services outreach',
-    fields: [
-      {
-        name: 'aiName',
-        label: 'AI Name',
-        type: 'text',
-        placeholder: 'Enter AI assistant name',
-        maxLength: 20,
         required: true
       },
       {
-        name: 'customerName',
-        label: 'Customer Name',
+        name: 'helpdeskNumber',
+        label: 'Helpdesk Number',
         type: 'text',
-        placeholder: 'Enter customer name (e.g. Mr. Gholap)',
-        maxLength: 30,
->>>>>>> f3d14ac3179572777d3ca18b626b333357784735
+        placeholder: 'Enter helpdesk phone number',
+        maxLength: 20,
         required: true
       }
     ],
     generateFlow: (values) => {
       return `
-<<<<<<< HEAD
-You are calling on behalf of ${values.municipalityName} for property tax collection. Speak in polite, respectful English. Follow this structure:
-
 1. Introductory Message
-   "Good morning/afternoon! This call is from ${values.municipalityName}.
-   We are calling to bring to the attention of ${values.targetName} that your property tax of ₹${values.dueAmount} is still pending.
-   Please pay this tax as soon as possible to avoid penalty charges.
-   If you have already made the payment, please disregard this call."
+   "Hello! This call is from ${values.municipalityName}. We are calling to bring to the attention of ${values.targetPersonName}. Your property tax of ₹${values.dueAmount} is still pending. Please pay this tax as soon as possible to avoid penalties. If you have already paid, please ignore this call."
 
-2. Handle Questions (if asked):
+2. Handle Common Questions (FAQ)
+   Be prepared to answer these frequently asked questions:
    
-   Q: "How can I check my property tax status?"
-   A: "You can check your property tax information on our website ${values.websiteUrl}. You will need your property ID or information from your previous receipt for this."
-
+   Q: "How can I check my property tax?"
+   A: "You can view your property tax information on our website ${values.websiteUrl}. You will need your Property ID or information from your old receipt for this."
+   
    Q: "What is the due date?"
-   A: "Please pay the tax before ${values.dueDate}. Late payment may result in penalty charges or interest being applied."
-
+   A: "Please pay the tax before ${values.dueDate}. Late payment may result in penalties or interest charges."
+   
    Q: "Where and how can I make the payment?"
-   A: "You can pay the tax online using UPI, Net Banking, or card payment. Alternatively, you can visit the nearest tax collection center and pay in person."
+   A: "You can pay the tax online using UPI, Net Banking, or Card. Alternatively, you can visit the nearest Tax Collection Center and pay in person."
+   
+   Q: "I have already paid. Why did I receive this call?"
+   A: "Sometimes the system updates are delayed. Please verify your payment receipt on the website or contact our office."
+   
+   Q: "I don't remember my Property ID."
+   A: "Please visit the nearest ward office with your old receipt, and they will help you retrieve your Property ID."
 
-   Q: "I have already paid. Why am I getting this call?"
-   A: "Sometimes there are delays in system updates. Please verify your payment receipt on the website or contact our office for confirmation."
+3. Payment Options & Instructions
+   "For your convenience, you have multiple payment options:
+   • Online payment through ${values.websiteUrl} using UPI, Net Banking, or Card
+   • Visit any authorized Tax Collection Center
+   • Pay at the municipal corporation office during working hours"
 
-   Q: "I don't remember my property ID."
-   A: "Please visit the nearest ward office with your old receipt or property documents."
+4. Provide Additional Support
+   "If you need any assistance with the payment process or have questions about your property tax calculation, please don't hesitate to ask. Our helpdesk is also available at ${values.helpdeskNumber}."
 
-3. Closing Message
-   "Once again, we kindly request you to pay the ₹${values.dueAmount} property tax as soon as possible.
-   For more information, please visit: ${values.websiteUrl}
-   Or call our helpdesk: ${values.helpdeskNumber}
-   Thank you! ${values.municipalityName}."
+5. Closing Message
+   "Once again, we humbly request — please pay the ₹${values.dueAmount} property tax as soon as possible to avoid penalties. For more information, visit: ${values.websiteUrl} or call: ${values.helpdeskNumber}. Thank you! ${values.municipalityName}."
 
-Important Guidelines:
-- Be respectful and patient throughout the call
-- If they say they already paid, politely ask them to check online or visit the office
-- If they need help with payment methods, provide detailed guidance
-- Always end with contact information for further assistance
-- Don't be pushy or aggressive about payment
-- Maintain a professional and helpful tone
-=======
-  1. Greeting & Identity Confirmation
-     "Hello! This is ${values.aiName} calling from The Nashik Merchant Co-operative Bank Limited."
-     "This call is for ${values.customerName}."
-     "Am I speaking with ${values.customerName}?"
-     → Wait for confirmation: Yes/Correct (If confirmed, proceed)
-  
-  2. Thank You & Purpose Statement
-     "Thank you, ${values.customerName}."
-     "We appreciate you being a valued member of our bank."
-     "I'm calling to inform you that The Nashik Merchant Co-operative Bank Limited now offers modern and useful digital services."
-  
-  3. Digital Services Information
-     "📱 Our digital banking services include:"
-     "• Mobile Banking App"
-     "• Net Banking"
-     "• UPI and QR Code Payments"
-     "• Online account details and transactions"
-     "Are you currently using any of these facilities?"
-     → Wait for response: Yes/No (Respond accordingly)
-  
-  4. Feedback & Suggestions
-     "Are there any other banking services you would like us to make available?"
-     "Or do you have any suggestions for our bank management?"
-     → Wait for response: Suggestions/Feedback/None (Take notes as needed)
-  
-  5. Additional Information
-     "For more information, please visit your nearest branch or visit our website"
-     "www.namcobank.in"
-  
-  6. Call Closure
-     "${values.customerName},"
-     "Thank you for your time."
-     "We are proud to have you as part of The Nashik Merchant Co-operative Bank Limited."
-     "Have a good day and bank safely!"
-  
-  Important Instructions:
-  - Maintain a professional and respectful tone throughout
-  - Use the customer's name to personalize the conversation
-  - Listen patiently and provide appropriate responses
-  - Clearly explain digital services information
-  - Take note of customer feedback
->>>>>>> f3d14ac3179572777d3ca18b626b333357784735
+6. Handle Follow-up Questions
+   If the taxpayer has additional questions or concerns, provide helpful information and direct them to appropriate resources. Always maintain a respectful and helpful tone throughout the conversation.
       `.trim();
     }
   }
