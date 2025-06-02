@@ -301,6 +301,101 @@ Keep the conversation dynamic and engaging. Make sure you ask according to who i
         `.trim()
       ].join('\n\n');
     }
+  },
+  {
+    id: 'malegaon-property-tax',
+    name: 'Malegaon Property Tax Reminder (English)',
+    description: 'Property tax reminder call for Malegaon Municipal Corporation in English',
+    fields: [
+      {
+        name: 'targetName',
+        label: 'Target Person Name',
+        type: 'text',
+        placeholder: 'Mr. Walmik Darade',
+        maxLength: 50,
+        required: true
+      },
+      {
+        name: 'municipalityName',
+        label: 'Municipality Name',
+        type: 'text',
+        placeholder: 'Malegaon Municipal Corporation',
+        maxLength: 50,
+        required: true
+      },
+      {
+        name: 'dueAmount',
+        label: 'Due Amount (₹)',
+        type: 'number',
+        placeholder: '15000',
+        required: true
+      },
+      {
+        name: 'dueDate',
+        label: 'Due Date',
+        type: 'date',
+        placeholder: 'YYYY-MM-DD',
+        required: true
+      },
+      {
+        name: 'helpdeskNumber',
+        label: 'Helpdesk Number',
+        type: 'text',
+        placeholder: '+91-XXXXXXXXXX',
+        maxLength: 15,
+        required: true
+      },
+      {
+        name: 'websiteUrl',
+        label: 'Municipality Website',
+        type: 'text',
+        placeholder: 'www.malegaoncorporation.org',
+        maxLength: 100,
+        required: true
+      }
+    ],
+    generateFlow: (values) => {
+      return `
+You are calling on behalf of ${values.municipalityName} for property tax collection. Speak in polite, respectful English. Follow this structure:
+
+1. Introductory Message
+   "Good morning/afternoon! This call is from ${values.municipalityName}.
+   We are calling to bring to the attention of ${values.targetName} that your property tax of ₹${values.dueAmount} is still pending.
+   Please pay this tax as soon as possible to avoid penalty charges.
+   If you have already made the payment, please disregard this call."
+
+2. Handle Questions (if asked):
+   
+   Q: "How can I check my property tax status?"
+   A: "You can check your property tax information on our website ${values.websiteUrl}. You will need your property ID or information from your previous receipt for this."
+
+   Q: "What is the due date?"
+   A: "Please pay the tax before ${values.dueDate}. Late payment may result in penalty charges or interest being applied."
+
+   Q: "Where and how can I make the payment?"
+   A: "You can pay the tax online using UPI, Net Banking, or card payment. Alternatively, you can visit the nearest tax collection center and pay in person."
+
+   Q: "I have already paid. Why am I getting this call?"
+   A: "Sometimes there are delays in system updates. Please verify your payment receipt on the website or contact our office for confirmation."
+
+   Q: "I don't remember my property ID."
+   A: "Please visit the nearest ward office with your old receipt or property documents."
+
+3. Closing Message
+   "Once again, we kindly request you to pay the ₹${values.dueAmount} property tax as soon as possible.
+   For more information, please visit: ${values.websiteUrl}
+   Or call our helpdesk: ${values.helpdeskNumber}
+   Thank you! ${values.municipalityName}."
+
+Important Guidelines:
+- Be respectful and patient throughout the call
+- If they say they already paid, politely ask them to check online or visit the office
+- If they need help with payment methods, provide detailed guidance
+- Always end with contact information for further assistance
+- Don't be pushy or aggressive about payment
+- Maintain a professional and helpful tone
+      `.trim();
+    }
   }
 ];
 
