@@ -23,6 +23,11 @@ const callTemplates: CallTemplate[] = [
     fields: [],
     generateFlow: () => {
       return `
+IMPORTANT: Always speak numbers, amounts, dates, and percentages in WORDS, not digits. For example:
+- Say "five thousand rupees" instead of "5000 rupees"
+- Say "fifteen percent" instead of "15%"
+- Say "twenty-fifth January" instead of "25th January"
+
 1. Greet, identify & confirm customer  
    "Hello! This is the AI assistant from Voice AI. May I know your name please?"
    → Wait for response and use their name throughout the conversation
@@ -35,6 +40,7 @@ const callTemplates: CallTemplate[] = [
    • Take note of specific requests or concerns.
    • Respond with relevant information based on the query.
    • Always use the customer's name when addressing them.
+   • Speak all numbers and amounts in words for voice clarity.
 
 4. Provide information or solutions  
    "Based on what you've shared [Customer Name], [provide appropriate information or solution]."
@@ -70,10 +76,16 @@ const callTemplates: CallTemplate[] = [
       }
     ],
     generateFlow: (values) => { 
-      return `The customer's name is ${values.name}; use it when greeting and throughout the conversation. 
+      return `IMPORTANT: Always speak ALL numbers, amounts, dates, percentages, and quantities in WORDS, not digits. Examples:
+      - Say "five thousand rupees" instead of "5000 rupees"
+      - Say "fifteen percent" instead of "15%"
+      - Say "twenty-fifth January" instead of "25th January"
+      - Say "ten years" instead of "10 years"
+      
+      The customer's name is ${values.name}; use it when greeting and throughout the conversation. 
       Always confirm you're speaking with the right person by asking "Am I speaking with ${values.name}?"
       Follow this expected conversation flow strictly: \n\n${values.expectedFlow}.\n\n
-      Important: When mentioning any monetary amounts, always say them in words (e.g., "five thousand rupees" instead of "5000 rupees").`
+      Remember: Speak ALL numbers in words for better voice clarity and natural conversation.`
     }
   },
   {
@@ -133,6 +145,11 @@ const callTemplates: CallTemplate[] = [
       const amountInWords = convertToWords(values.overdueAmount);
       
       return `
+IMPORTANT: Always speak ALL numbers, amounts, dates, and time periods in WORDS, not digits. Examples:
+- Say "rupees fifteen thousand" instead of "rupees 15000"
+- Say "thirty days" instead of "30 days"
+- Say "twenty-fifth December" instead of "25th December"
+
 1. Greet, identify & confirm customer  
    "Hello! This is ${values.aiName} calling from ${values.bankName}. Am I speaking with ${values.customerName}?"  
    → If confirmed: "Thank you, ${values.customerName}!"  
@@ -219,6 +236,11 @@ Important: Always use the customer's name throughout the conversation and speak 
     ],
     generateFlow: (values) => {
       return `
+IMPORTANT: Always speak ALL numbers, dates, times, and quantities in WORDS, not digits. Examples:
+- Say "two thirty PM" instead of "2:30 PM"
+- Say "twenty-fifth January" instead of "25th January"
+- Say "ten minutes early" instead of "10 minutes early"
+
 1. Greet, identify & confirm customer  
    "Hello! This is ${values.aiName} calling from ${values.businessName}. Am I speaking with ${values.customerName}?"  
    → If confirmed: "Thank you, ${values.customerName}!"  
@@ -282,6 +304,12 @@ Important: Always use the customer's name throughout the conversation for a pers
     ],
     generateFlow: (values) => {
       return `
+IMPORTANT: Always speak ALL numbers, percentages, dates, and years in WORDS, not digits. Examples:
+- Say "fifty percent" instead of "50%"
+- Say "forty-five percent" instead of "45%"
+- Say "twenty-fifth January two thousand twenty-five" instead of "25-01-2025"
+- Say "two minutes" instead of "2 minutes"
+
 Keep the conversation dynamic and engaging. Make sure you ask according to who is speaking to you. Don't hurry to end the call - explain about your offerings. Always use the person's name throughout the conversation.
 
 1. Greeting & Identification of student / parent of student
@@ -389,6 +417,12 @@ Important: Always address the person by their name throughout the conversation a
       const amountInWords = convertToWords(values.dueAmount);
 
       return `
+IMPORTANT: Always speak ALL numbers, amounts, dates, and phone numbers in WORDS, not digits. Examples:
+- Say "rupees fifteen thousand" instead of "rupees 15000"
+- Say "twenty-fifth January" instead of "25th January"
+- Say "twenty-four hours" instead of "24 hours"
+- Say phone numbers digit by digit: "nine eight seven six five four three two one zero"
+
 1. Introductory Message & Name Confirmation
    "Hello! This call is from ${values.municipalityName}. Am I speaking with ${values.targetPersonName}?"
    → If confirmed: "Thank you, ${values.targetPersonName}!"
