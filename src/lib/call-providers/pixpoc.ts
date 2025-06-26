@@ -23,7 +23,7 @@ function normalizeOverrides(
   language: string,
   name?: string,
   expectedFlow?: string
-): Record<string, any> {
+): Record<string, string | number | boolean | object> {
   const fromNumber = process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone;
   const gender = process.env.PIXPOC_GENDER || 'male';
   const maxCallDuration = parseInt(process.env.PIXPOC_MAX_CALL_DURATION || '300');
