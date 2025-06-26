@@ -16,6 +16,34 @@ interface PixPocVoiceCallResponse {
 }
 
 /**
+ * Get gender-appropriate AI assistant name
+ */
+function getAIAssistantName(gender: string): string {
+  const maleNames = ['Arjun', 'Raj', 'Vikram', 'Rohit', 'Amit'];
+  const femaleNames = ['Priya', 'Sakshi', 'Anjali', 'Meera', 'Kavya'];
+  
+  if (gender.toLowerCase() === 'female') {
+    return femaleNames[Math.floor(Math.random() * femaleNames.length)];
+  } else {
+    return maleNames[Math.floor(Math.random() * maleNames.length)];
+  }
+}
+
+/**
+ * Get gender-appropriate voice name
+ */
+function getVoiceName(gender: string): string {
+  const maleVoices = ['hitesh', 'arjun', 'raj'];
+  const femaleVoices = ['priya', 'kavya', 'meera'];
+  
+  if (gender.toLowerCase() === 'female') {
+    return femaleVoices[Math.floor(Math.random() * femaleVoices.length)];
+  } else {
+    return maleVoices[Math.floor(Math.random() * maleVoices.length)];
+  }
+}
+
+/**
  * Normalize overrides to match the new API schema expected by the backend
  */
 function normalizeOverrides(
@@ -33,6 +61,9 @@ function normalizeOverrides(
   const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
   const trackingId = `${timestampPart}${randomPart}`.slice(0, 10);
 
+  // Get AI assistant name based on gender
+  const aiAssistantName = getAIAssistantName(gender);
+
   // Build AI flow (renamed from ai_personality)
   const aiFlowParts: string[] = [];
   if (expectedFlow) {
@@ -41,9 +72,9 @@ function normalizeOverrides(
     }
     aiFlowParts.push(`Follow this expected conversation flow strictly: ${expectedFlow}`);
   } else {
-    // Default AI flow if no expectedFlow
+    // Default AI flow if no expectedFlow - now with gender-appropriate name
     const languageName = supportedLanguages.find(lang => lang.code === language)?.name || 'English';
-    aiFlowParts.push(`You are a helpful and friendly assistant.`);
+    aiFlowParts.push(`You are ${aiAssistantName}, a helpful and friendly AI assistant.`);
     aiFlowParts.push(`Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`);
   }
   const aiFlow = aiFlowParts.join(' ');
@@ -79,7 +110,7 @@ function normalizeOverrides(
     provider: 'twilio',
     
     // Voice settings (sensible defaults)
-    voice: 'hitesh',
+    voice: getVoiceName(gender),
     gender: gender,
     
     // Call settings with language nested
@@ -167,7 +198,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
         aiFlow = `Follow this expected conversation flow strictly: ${expectedFlow}`;
       }
     } else {
-      aiFlow = `You are a helpful and friendly assistant. Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`;
+      aiFlow = `You are ${getAIAssistantName(process.env.PIXPOC_GENDER || 'male')}, a helpful and friendly AI assistant. Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`;
     }
     
     // Generate JWT token with normalized overrides

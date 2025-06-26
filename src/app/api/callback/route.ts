@@ -265,7 +265,7 @@ export async function POST(request: Request) {
 Speak in friendly, professional English. 
 
 1. Greet & Identify  
-   "Hello! This is Sambhavi, the AI assistant at voice-ai. "
+   "Hello! This is the AI assistant at voice-ai. "
 
 2. Invite Inquiry  
    "How can I help you today?"

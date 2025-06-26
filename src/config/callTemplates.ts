@@ -24,7 +24,7 @@ const callTemplates: CallTemplate[] = [
     generateFlow: () => {
       return `
 1. Greet, identify & confirm customer  
-   "Hello! This is Sakshi from Voice AI"  
+   "Hello! This is the AI assistant from Voice AI"  
 
 2. Introduce purpose  
    "I'm calling on behalf of Voice AI to assist you. How may I help you today?"
