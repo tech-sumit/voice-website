@@ -19,8 +19,8 @@ interface PixPocVoiceCallResponse {
  * Get gender-appropriate AI assistant name
  */
 function getAIAssistantName(gender: string): string {
-  const maleNames = ['Arjun', 'Raj', 'Vikram', 'Rohit', 'Amit'];
-  const femaleNames = ['Priya', 'Sakshi', 'Anjali', 'Meera', 'Kavya'];
+  const maleNames = ['Hitesh'];
+  const femaleNames = ['Manisha'];
   
   if (gender.toLowerCase() === 'female') {
     return femaleNames[Math.floor(Math.random() * femaleNames.length)];
@@ -33,8 +33,8 @@ function getAIAssistantName(gender: string): string {
  * Get gender-appropriate voice name
  */
 function getVoiceName(gender: string): string {
-  const maleVoices = ['hitesh', 'arjun', 'raj'];
-  const femaleVoices = ['priya', 'kavya', 'meera'];
+  const maleVoices = ['hitesh'];
+  const femaleVoices = ['manisha'];
   
   if (gender.toLowerCase() === 'female') {
     return femaleVoices[Math.floor(Math.random() * femaleVoices.length)];
