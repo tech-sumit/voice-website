@@ -1,6 +1,7 @@
 import siteConfig from '@/config/site.json';
 import supportedLanguages from '@/config/languages';
 import jwt from 'jsonwebtoken';
+import { randomUUID } from 'crypto';
 
 interface PixPocVoiceCallParams {
   phoneNumber: string;
@@ -45,6 +46,7 @@ function getVoiceName(gender: string): string {
 
 /**
  * Normalize overrides to match the new API schema expected by the backend
+ * This function matches the _normalize_overrides function from the Python script
  */
 function normalizeOverrides(
   phoneNumber: string,
@@ -56,10 +58,8 @@ function normalizeOverrides(
   const gender = process.env.PIXPOC_GENDER || 'male';
   const maxCallDuration = parseInt(process.env.PIXPOC_MAX_CALL_DURATION || '300');
 
-  // Generate tracking ID
-  const timestampPart = (Date.now() % 1000000).toString().padStart(6, '0');
-  const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-  const trackingId = `${timestampPart}${randomPart}`.slice(0, 10);
+  // Generate dynamic tracking ID using UUID (matches Python script approach)
+  const trackingId = randomUUID();
 
   // Get AI assistant name based on gender
   const aiAssistantName = getAIAssistantName(gender);
@@ -96,7 +96,7 @@ function normalizeOverrides(
     console.warn('Missing NEXT_PUBLIC_SITE_URL environment variable. Call events will not be received.');
   }
 
-  // Build normalized overrides object with sensible defaults
+  // Build normalized overrides object matching Python script structure
   const overrides = {
     tracking_id: trackingId,
     ai_flow: aiFlow,
@@ -109,18 +109,18 @@ function normalizeOverrides(
     // Provider configuration (default to Twilio)
     provider: 'twilio',
     
-    // Voice settings (sensible defaults)
+    // Voice settings (moved from nested tts_options to root level)
     voice: getVoiceName(gender),
     gender: gender,
     
-    // Call settings with language nested
+    // Call settings with language nested (matches Python script structure)
     call_settings: {
       language: language,
       max_duration_seconds: maxCallDuration,
       enable_max_duration: true,
       allow_interruptions: true,
       auto_initial_greeting: true,
-      default_end_greeting: true,
+      auto_end_greeting: true,
     },
     
     // Idle detection settings (sensible defaults)
@@ -141,14 +141,10 @@ function normalizeOverrides(
 }
 
 /**
- * Generate a JWT token for the Voice API using normalized overrides
+ * Generate a JWT token for authentication only (no config overrides)
+ * This matches the Python script's generate_token function
  */
-function generateToken(
-  phoneNumber: string,
-  language: string,
-  name?: string,
-  expectedFlow?: string
-): string {
+function generateAuthToken(): string {
   const jwtSecret = process.env.PIXPOC_JWT_SECRET || '';
   const tokenMinutes = parseInt(process.env.PIXPOC_TOKEN_MINUTES || '10');
   
@@ -160,32 +156,43 @@ function generateToken(
   const now = Math.floor(Date.now() / 1000);
   const expiration = now + (tokenMinutes * 60);
 
-  // Get normalized overrides
-  const overrides = normalizeOverrides(phoneNumber, language, name, expectedFlow);
-
-  // Build JWT payload with overrides
+  // JWT payload now only contains authentication info, not config overrides
   const payload = {
     exp: expiration,
     iat: now,
-    ...overrides
   };
   
   return jwt.sign(payload, jwtSecret, { algorithm: 'HS256' });
 }
 
 /**
- * Initiates a phone call using the Voice API (matching Python script approach)
+ * Prepare call request data in the new API format with calls array
+ * This matches the Python script's prepare_call_requests function
+ */
+function prepareCallRequests(
+  phoneNumber: string,
+  language: string,
+  name?: string,
+  expectedFlow?: string
+): { calls: Record<string, string | number | boolean | object>[] } {
+  const callConfig = normalizeOverrides(phoneNumber, language, name, expectedFlow);
+  return { calls: [callConfig] };
+}
+
+/**
+ * Initiates a phone call using the Voice API (matching new Python script approach)
  */
 export async function initiateCallWithPixPoc({ phoneNumber, language, name, expectedFlow }: PixPocVoiceCallParams): Promise<PixPocVoiceCallResponse> {
   // Define these variables at function level so they're available in catch blocks
   let languageName = '';
   let aiFlow = '';
+  let trackingId = '';
   
   try {
     // Get API configuration from environment variables
     const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://wdmyy5nn0a.execute-api.ap-south-1.amazonaws.com/dev';
     const apiEndpoint = `${apiServerUrl}/initiate`;
-    const timeout = 30; // Fixed timeout instead of env variable
+    const timeout = 30; // Fixed timeout
     
     // Get language details for logging
     languageName = supportedLanguages.find(lang => lang.code === language)?.name || 'English';
@@ -201,22 +208,32 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
       aiFlow = `You are ${getAIAssistantName(process.env.PIXPOC_GENDER || 'male')}, a helpful and friendly AI assistant. Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`;
     }
     
-    // Generate JWT token with normalized overrides
-    const token = generateToken(phoneNumber, language, name, expectedFlow);
+    // Generate authentication token (simplified JWT)
+    const authToken = generateAuthToken();
+    
+    // Prepare request data with calls array
+    const requestData = prepareCallRequests(phoneNumber, language, name, expectedFlow);
+    
+    // Extract tracking ID for logging
+    trackingId = requestData.calls[0].tracking_id as string;
 
     // Log the API call details
     console.log(`[PIXPOC_CALL_INITIATED] Making API call to: ${apiEndpoint}`);
     console.log(`[PIXPOC_CALL_INITIATED] Method: POST`);
+    console.log(`[PIXPOC_CALL_INITIATED] Authentication: Bearer Token`);
     console.log(`[PIXPOC_CALL_INITIATED] To Number: ${phoneNumber}`);
     console.log(`[PIXPOC_CALL_INITIATED] From Number: ${process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone}`);
-    console.log(`[PIXPOC_CALL_INITIATED] Language: ${language}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Language: ${language} (${languageName})`);
     console.log(`[PIXPOC_CALL_INITIATED] Provider: twilio`);
+    console.log(`[PIXPOC_CALL_INITIATED] Voice: ${requestData.calls[0].voice}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Gender: ${requestData.calls[0].gender}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Tracking ID: ${trackingId}`);
     console.log(`[PIXPOC_CALL_INITIATED] Name: ${name || 'Not provided'}`);
     console.log(`[PIXPOC_CALL_INITIATED] Expected Flow: ${expectedFlow ? 'Provided' : 'Not provided'}`);
     console.log(`[PIXPOC_CALL_INITIATED] AI Flow: ${aiFlow}`);
-    console.log(`[PIXPOC_CALL_INITIATED] JWT Token Length: ${token.length} characters`);
+    console.log(`[PIXPOC_CALL_INITIATED] Request Data:`, JSON.stringify(requestData, null, 2));
     
-    // Make the API request (token-only approach like Python script)
+    // Make the API request with Bearer token authentication (new format)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout * 1000);
     
@@ -224,12 +241,11 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`, // Bearer token authentication
         'User-Agent': 'VoiceCallingAgent-Client/1.0',
         'Accept': 'application/json'
       },
-      body: JSON.stringify({
-        token: token // Token-only approach matching Python script
-      }),
+      body: JSON.stringify(requestData), // Calls array format
       signal: controller.signal
     });
     
@@ -241,7 +257,8 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
       console.error(`[PIXPOC_CALL_ERROR] API Error Response:`, {
         status: response.status,
         statusText: response.statusText,
-        errorText
+        errorText,
+        trackingId
       });
       throw new Error(`API request failed with status ${response.status}: ${errorText}`);
     }
@@ -253,6 +270,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
       callId: data.call_sid || data.id || data.callId,
       status: data.status,
       message: data.message,
+      trackingId,
       responseData: data
     });
     
@@ -271,6 +289,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
           language,
           languageName,
           timeout: 30,
+          trackingId,
           aiFlow
         }));
         return {
@@ -285,6 +304,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
           language,
           languageName,
           name: name || 'Not provided',
+          trackingId,
           aiFlow
         }));
         return {
@@ -300,7 +320,8 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
           toNumber: phoneNumber,
           fromNumber: process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone,
           language,
-          languageName
+          languageName,
+          trackingId
         }));
         return {
           success: false,
@@ -318,6 +339,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
         languageName,
         name: name || 'Not provided',
         expectedFlow: expectedFlow ? 'Provided' : 'Not provided',
+        trackingId,
         aiFlow
       }
     });
