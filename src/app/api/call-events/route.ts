@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.json';
+import jwt from 'jsonwebtoken';
+import { createHash } from 'crypto';
 
 // Initialize Resend with API key if available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -24,7 +26,7 @@ interface Resources {
   recording_s3_path?: string;
 }
 
-interface PanditaWebhookPayload {
+interface PixPocCallbackPayload {
   call_info: CallInfo;
   timing: Timing;
   errors: Array<{ code: string; message: string }>;
@@ -34,7 +36,28 @@ interface PanditaWebhookPayload {
 }
 
 /**
- * Handles webhook callbacks from PanditaAI.
+ * Verify the X-Callback-Signature JWT and ensure the hash of the
+ * raw request body matches the hash inside the JWT payload.
+ * Returns true if verification succeeds, false otherwise.
+ */
+function verifyCallbackSignature(rawBody: string, jwtToken: string, jwtSecret: string): boolean {
+  try {
+    // Decode & verify the JWT
+    const payload = jwt.verify(jwtToken, jwtSecret) as { iat: number; hash: string };
+
+    // Compute SHA-256 hash of the raw request body
+    const bodyHash = createHash('sha256').update(rawBody).digest('hex');
+
+    // Compare the computed hash with the hash from the JWT payload
+    return payload.hash === bodyHash;
+  } catch (error) {
+    console.error('🔒 Callback signature verification failed:', error);
+    return false;
+  }
+}
+
+/**
+ * Handles webhook callbacks from PixPoc Voice API.
  * This endpoint receives status updates about ongoing calls.
  */
 export async function POST(request: Request) {
@@ -42,12 +65,31 @@ export async function POST(request: Request) {
     // Get the raw request body
     const body = await request.text();
     
+    // ------------------------------------------------------------------
+    // 🔐 Optional callback signature verification
+    // ------------------------------------------------------------------
+    const jwtSecret = process.env.PIXPOC_JWT_SECRET || '';
+    const signatureToken = request.headers.get('x-callback-signature');
+    const securityEnabled = !!jwtSecret;
+
+    if (securityEnabled) {
+      if (!signatureToken) {
+        console.error('Missing X-Callback-Signature header while security is enabled');
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const isValidSignature = verifyCallbackSignature(body, signatureToken, jwtSecret);
+      if (!isValidSignature) {
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+      }
+    }
+    
     // Parse the JSON data
-    let payload: PanditaWebhookPayload;
+    let payload: PixPocCallbackPayload;
     try {
       payload = JSON.parse(body);
     } catch (e) {
-      console.error('Failed to parse PanditaAI webhook payload:', e);
+      console.error('Failed to parse PixPoc webhook payload:', e);
       return NextResponse.json(
         { error: 'Invalid JSON payload' },
         { status: 400 }
