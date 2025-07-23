@@ -3,8 +3,8 @@ import Hero from "@/components/sections/Hero";
 import FeatureSection from "@/components/sections/FeatureSection";
 import UseCaseSection from "@/components/sections/UseCaseSection";
 import HowItWorks from "@/components/sections/HowItWorks";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import FAQSection from "@/components/sections/FAQSection";
+// import TestimonialsSection from "@/components/sections/TestimonialsSection";
+// import FAQSection from "@/components/sections/FAQSection";
 import siteConfig from "@/config/site.json";
 import IntegrationsSection from "@/components/sections/IntegrationsSection";
 
