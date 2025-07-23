@@ -54,41 +54,6 @@ IMPORTANT: Always speak numbers, amounts, dates, and percentages in WORDS, not d
     }
   },
   {
-    id: 'custom',
-    name: 'Custom Flow',
-    description: 'Create your own custom conversation flow',
-    fields: [
-      {
-        name: 'name',
-        label: 'Customer Name',
-        type: 'text',
-        placeholder: 'Enter customer name',
-        maxLength: 20,
-        required: true
-      },
-      {
-        name: 'expectedFlow',
-        label: 'Expected Conversation Flow',
-        type: 'text',
-        placeholder: 'Describe the expected call flow',
-        maxLength: 1000,
-        required: true
-      }
-    ],
-    generateFlow: (values) => { 
-      return `IMPORTANT: Always speak ALL numbers, amounts, dates, percentages, and quantities in WORDS, not digits. Examples:
-      - Say "five thousand rupees" instead of "5000 rupees"
-      - Say "fifteen percent" instead of "15%"
-      - Say "twenty-fifth January" instead of "25th January"
-      - Say "ten years" instead of "10 years"
-      
-      The customer's name is ${values.name}; use it when greeting and throughout the conversation. 
-      Always confirm you're speaking with the right person by asking "Am I speaking with ${values.name}?"
-      Follow this expected conversation flow strictly: \n\n${values.expectedFlow}.\n\n
-      Remember: Speak ALL numbers in words for better voice clarity and natural conversation.`
-    }
-  },
-  {
     id: 'loan-reminder',
     name: 'Loan Payment Reminder',
     description: 'Reminder for overdue loan payments',

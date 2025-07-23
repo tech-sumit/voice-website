@@ -31,9 +31,9 @@ export default function Home() {
       <HowItWorks />
       <FeatureSection />
       <UseCaseSection />
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
       {/* <PricingPreview /> */}
-      <FAQSection />
+      {/* <FAQSection /> */}
     </div>
   );
 } 
