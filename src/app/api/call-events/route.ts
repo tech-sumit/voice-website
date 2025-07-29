@@ -144,7 +144,8 @@ export async function POST(request: Request) {
             duration: formattedDuration,
             endReason: end_reason || 'unknown',
             hasTranscript: !!resources.transcript_s3_path,
-            hasRecording: !!resources.recording_s3_path
+            hasRecording: !!resources.recording_s3_path,
+            rawPayload: payload
           });
         } catch (emailError) {
           console.error('Failed to send call completion email:', emailError);
@@ -183,6 +184,7 @@ async function sendCallCompletionEmail(data: {
   endReason: string;
   hasTranscript: boolean;
   hasRecording: boolean;
+  rawPayload: PixPocCallbackPayload;
 }) {
   if (!resend) return;
   
@@ -253,6 +255,13 @@ async function sendCallCompletionEmail(data: {
             </div>
             
             <p>Please check the dashboard for more details.</p>
+            
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+            
+            <h3>Raw Callback Data</h3>
+            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 10px 0;">
+              <pre style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 12px; margin: 0; overflow-x: auto;">${JSON.stringify(data.rawPayload, null, 2)}</pre>
+            </div>
           </div>
           <div class="footer">
             <p>&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
