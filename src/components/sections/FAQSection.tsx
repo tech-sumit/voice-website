@@ -40,41 +40,62 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-20 bg-surface-50 dark:bg-surface-900 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]"></div>
-      <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-primary-400/20 dark:bg-primary-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[35rem] h-[35rem] bg-accent-400/15 dark:bg-accent-500/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4"></div>
+    <section id="faq" className="py-12 bg-gradient-to-b from-surface-50 to-surface-100 dark:from-surface-900 dark:via-surface-800 dark:to-surface-900 relative overflow-hidden">
+      {/* Creative background elements */}
+      <div className="absolute inset-0">
+        {/* Dotted pattern overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="w-full h-full" style={{
+            backgroundImage: 'radial-gradient(circle, #9DC08B 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
+          }}></div>
+        </div>
+
+        {/* Geometric shapes */}
+        <div className="absolute top-10 left-10 w-32 h-32 border-2 border-secondary-600/20 rounded-lg rotate-12"></div>
+        <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-bright-600/20 rounded-full"></div>
+        <div className="absolute top-1/2 right-10 w-16 h-16 border-2 border-secondary-500/20 rotate-45"></div>
+
+        {/* Subtle gradient orbs */}
+        <div className="absolute top-20 right-1/3 w-64 h-64 bg-secondary-600/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-48 h-48 bg-bright-600/5 rounded-full blur-3xl"></div>
+      </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-4xl">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <motion.div 
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-3 py-1 rounded-full bg-accent-100 dark:bg-accent-900/30 border border-accent-200 dark:border-accent-800 text-accent-800 dark:text-accent-300 text-sm font-medium mb-3"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-block"
           >
-            <span className="flex h-2 w-2 rounded-full bg-accent-500 mr-2"></span>
-            FAQ
+            <div className="inline-flex items-center px-4 py-2 bg-secondary-100 dark:bg-secondary-900/30 border border-secondary-300 dark:border-secondary-600/30 rounded-full mb-4">
+              <div className="w-2 h-2 bg-secondary-600 dark:bg-secondary-500 rounded-full mr-3 animate-pulse"></div>
+              <span className="text-secondary-700 dark:text-secondary-400 text-sm font-medium tracking-wide uppercase">FAQ</span>
+            </div>
           </motion.div>
           
           <motion.h2 
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-white mb-4 leading-tight"
           >
-            Frequently <span className="text-gradient-primary">Asked</span> Questions
+            Frequently{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-bright-400">
+              Asked
+            </span>{" "}
+            Questions
           </motion.h2>
           
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-4 text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-base text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed"
           >
             Everything you need to know about VoiceAI
           </motion.p>
@@ -86,20 +107,20 @@ export default function FAQSection() {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="card overflow-hidden"
+              className="group bg-white/80 dark:bg-surface-800/50 backdrop-blur-sm border border-neutral-200 dark:border-surface-700/50 rounded-2xl overflow-hidden hover:bg-white dark:hover:bg-surface-700/50 hover:border-neutral-300 dark:hover:border-surface-600/50 transition-all duration-300 shadow-sm hover:shadow-md"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none"
+                className="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none group-hover:bg-neutral-50 dark:group-hover:bg-surface-700/30 transition-colors duration-300"
               >
-                <h3 className="text-lg font-medium text-neutral-900 dark:text-white">
+                <h3 className="text-lg font-medium text-neutral-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300">
                   {faq.question}
                 </h3>
                 <ChevronDownIcon 
-                  className={`h-5 w-5 text-accent-500 transition-transform duration-300 ${
-                    openIndex === index ? 'transform rotate-180' : ''
+                  className={`h-5 w-5 text-accent-600 dark:text-accent-500 transition-all duration-300 ${
+                    openIndex === index ? 'transform rotate-180 text-primary-500 dark:text-primary-400' : 'group-hover:text-primary-500 dark:group-hover:text-primary-400'
                   }`} 
                 />
               </button>
@@ -113,8 +134,8 @@ export default function FAQSection() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-4 text-neutral-600 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-700">
-                      <p className="pt-4">{faq.answer}</p>
+                    <div className="px-6 pb-4 text-neutral-600 dark:text-neutral-400 border-t border-neutral-200 dark:border-surface-700/50">
+                      <p className="pt-4 leading-relaxed">{faq.answer}</p>
                     </div>
                   </motion.div>
                 )}
@@ -124,23 +145,20 @@ export default function FAQSection() {
         </div>
         
         <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.8 }}
           className="text-center mt-12"
         >
-          <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-            Don&apos;t see your question here?
-          </p>
-          <Button 
-            href="/contact"
-            variant="gradient" 
-            size="lg" 
-            className="shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-[1.02]"
-          >
-            Contact Us
-          </Button>
+          <div className="inline-flex items-center space-x-4 px-8 py-4 bg-white/80 dark:bg-surface-800/30 backdrop-blur-sm border border-neutral-300 dark:border-surface-700/50 rounded-full shadow-sm">
+            <div className="flex space-x-1">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className={`w-2 h-2 rounded-full bg-secondary-600 dark:bg-secondary-500 animate-pulse`} style={{animationDelay: `${i * 0.2}s`}}></div>
+              ))}
+            </div>
+            <span className="text-neutral-600 dark:text-neutral-400 text-sm">Still have questions? We're here to help</span>
+          </div>
         </motion.div>
       </div>
     </section>

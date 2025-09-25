@@ -32,11 +32,11 @@
   },
   "cta": {
     "primary": {
-      "text": "Start Free Trial",
-      "url": "/signup"
+      "text": "Get Started",
+      "url": "/contact"
     },
     "secondary": {
-      "text": "Contact Sales",
+      "text": "Start Now",
       "url": "/contact"
     },
     "demo": {
@@ -113,31 +113,59 @@
   },
   "features": [
     {
-      "title": "Ultra-Realistic Voice",
-      "description": "Our AI voices are indistinguishable from humans, providing natural conversations.",
-      "icon": "microphone",
-      "color": "from-bright-500 to-bright-600",
-      "bgColor": "bg-bright-50 dark:bg-bright-900/20"
-    },
-    {
       "title": "24/7 Availability",
-      "description": "AI agents that never sleep, ensuring your business is always reachable.",
+      "description": "Operate around the clock with the ability to train or manage a team of agents.",
       "icon": "clock",
-      "color": "from-primary-500 to-primary-600",
+      "color": "from-primary-500 to-secondary-500",
       "bgColor": "bg-primary-50 dark:bg-primary-900/20"
     },
     {
-      "title": "Multi-Language Support",
-      "description": "Speak with customers in over 100 languages with natural fluency.",
+      "title": "Hyper-Realistic Voices",
+      "description": "Synthesize diverse voice options to craft the ideal customer experience.",
+      "icon": "microphone",
+      "color": "from-secondary-500 to-accent-500",
+      "bgColor": "bg-secondary-50 dark:bg-secondary-900/20"
+    },
+    {
+      "title": "Multilingual Support",
+      "description": "Choose from your preferred language to support Indian and global customers.",
       "icon": "globe",
-      "color": "from-accent-500 to-accent-600",
+      "color": "from-accent-500 to-bright-500",
       "bgColor": "bg-accent-50 dark:bg-accent-900/20"
     },
     {
-      "title": "CRM Integration",
-      "description": "Seamlessly connects with your existing business tools and CRM systems.",
+      "title": "Call Analysis",
+      "description": "Analyze conversations in real-time to extract insights, sentiment, and key metrics as per your requirements.",
+      "icon": "brain",  
+      "color": "from-primary-500 to-accent-500",
+      "bgColor": "bg-primary-50 dark:bg-primary-900/20"
+    },
+    {
+      "title": "High Concurrency",
+      "description": "Make or receive thousands of calls simultaneously with enterprise-grade infrastructure designed to scale with you.",
+      "icon": "phone",
+      "color": "from-primary-500 to-accent-500",
+      "bgColor": "bg-primary-50 dark:bg-primary-900/20"
+    },
+    {
+      "title": "Custom API Triggers",
+      "description": "Call external APIs in real-time during live conversations to fetch data, update records, and trigger workflows seamlessly.",
+      "icon": "triggers",
+      "color": "from-accent-500 to-primary-500",
+      "bgColor": "bg-accent-50 dark:bg-accent-900/20"
+    },
+    {
+      "title": "MCP Integration",
+      "description": "Connect multiple Model Context Protocols (MCPs) to expand your agent's capabilities and integrate with diverse systems.",
       "icon": "connection",
-      "color": "from-primary-400 to-bright-500",
+      "color": "from-bright-500 to-secondary-500",
+      "bgColor": "bg-bright-50 dark:bg-bright-900/20"
+    },
+    {
+      "title": "Natural Conversation",
+      "description": "Agents understand interruptions and context switches, responding with ultra-low <300ms latency for human-like interactions.",
+      "icon": "human",
+      "color": "from-primary-500 to-accent-500",
       "bgColor": "bg-primary-50 dark:bg-primary-900/20"
     }
   ],
@@ -243,8 +271,8 @@
         "Basic CRM integration",
         "Email support"
       ],
-      "cta": "Start Free Trial",
-      "ctaUrl": "/signup"
+      "cta": "Get Started",
+      "ctaUrl": "/contact"
     },
     {
       "name": "Professional",
@@ -260,8 +288,8 @@
         "Priority support",
         "Custom voice training"
       ],
-      "cta": "Start Trial",
-      "ctaUrl": "/signup"
+      "cta": "Get Started",
+      "ctaUrl": "/contact"
     },
     {
       "name": "Enterprise",
@@ -310,6 +338,202 @@
       {
         "question": "How quickly can I get started with VoiceAI?",
         "answer": "Most customers are up and running within 1-2 weeks. Our streamlined implementation process includes setup, integration with your systems, voice selection, conversation flow design, and testing. For simpler use cases, you can be live in as little as 3-5 days."
+      }
+    ]
+  },
+  "agentShowcase": {
+    "title": "Agents That Do More Than Talk",
+    "subtitle": "Build agents that sound natural, understand context, and scale with your business needs.",
+    "categories": [
+      {
+        "id": "ecommerce",
+        "name": "Ecommerce",
+        "agents": [
+          {
+            "id": "customer-support",
+            "name": "Customer Support Agent",
+            "category": "Customer Support",
+            "tags": ["English"],
+            "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
+            "phoneNumber": "+918035317400"
+          },
+          {
+            "id": "cart-abandonment",
+            "name": "Cart Abandonment Agent",
+            "category": "Cart Abandonment",
+            "tags": ["English + Hindi"],
+            "description": "Calls customers with abandoned items in carts, recovering sales",
+            "phoneNumber": "+918035317449"
+          },
+          {
+            "id": "cod-confirmation",
+            "name": "COD Confirmation Agent",
+            "category": "COD Confirmation",
+            "tags": ["English + Hindi"],
+            "description": "Handles a variety of last mile logistics tasks, saving human effort",
+            "phoneNumber": "+918035317450"
+          },
+          {
+            "id": "recruitment-ecom",
+            "name": "Recruitment Agent",
+            "category": "Recruitment",
+            "tags": ["English"],
+            "description": "AI agents that screen, interview, and onboard candidates at scale",
+            "phoneNumber": "+918035317441"
+          }
+        ]
+      },
+      {
+        "id": "edtech",
+        "name": "EdTech",
+        "agents": [
+          {
+            "id": "recruitment-edtech",
+            "name": "Recruitment Agent",
+            "category": "Recruitment",
+            "tags": ["English"],
+            "description": "AI agents that screen, interview, and onboard candidates at scale",
+            "phoneNumber": "+918035317441"
+          },
+          {
+            "id": "lead-qualification",
+            "name": "Lead Qualification Agent",
+            "category": "Lead Qualification",
+            "tags": ["Hindi"],
+            "description": "Calls every lead to ask qualifying questions, answer FAQs, and warmly introduce the business",
+            "phoneNumber": "+918035317443"
+          },
+          {
+            "id": "onboarding-edtech",
+            "name": "Onboarding Agent",
+            "category": "Onboarding",
+            "tags": ["English"],
+            "description": "Conducts personalized guidance calls to warmly onboard users",
+            "phoneNumber": "+918035317448"
+          },
+          {
+            "id": "announcements-edtech",
+            "name": "Announcements Agent",
+            "category": "Announcements",
+            "tags": ["English + Hindi"],
+            "description": "Keeps users engaged with all feature upgrades and product launches",
+            "phoneNumber": "+918035317403"
+          }
+        ]
+      },
+      {
+        "id": "health-tech",
+        "name": "Health Tech",
+        "agents": [
+          {
+            "id": "onboarding-health",
+            "name": "Onboarding Agent",
+            "category": "Onboarding",
+            "tags": ["English"],
+            "description": "Conducts personalized guidance calls to warmly onboard users",
+            "phoneNumber": "+918035317448"
+          },
+          {
+            "id": "customer-support-health",
+            "name": "Customer Support Agent",
+            "category": "Customer Support",
+            "tags": ["English"],
+            "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
+            "phoneNumber": "+918035317400"
+          },
+          {
+            "id": "reminders-health",
+            "name": "Reminders Agent",
+            "category": "Reminders",
+            "tags": ["English + Hindi"],
+            "description": "Automates all reminders, from EMIs and collections to form filling deadlines",
+            "phoneNumber": "+918035317402"
+          },
+          {
+            "id": "front-desk-health",
+            "name": "Front Desk Agent",
+            "category": "Front Desk",
+            "tags": ["English"],
+            "description": "Answers every call to handle clinic, hotel, and office scheduling",
+            "phoneNumber": "+918035317405"
+          }
+        ]
+      },
+      {
+        "id": "bfsi",
+        "name": "BFSI",
+        "agents": [
+          {
+            "id": "reminders-bfsi",
+            "name": "Reminders Agent",
+            "category": "Reminders",
+            "tags": ["English + Hindi"],
+            "description": "Automates all reminders, from EMIs and collections to form filling deadlines",
+            "phoneNumber": "+918035317402"
+          },
+          {
+            "id": "customer-support-bfsi",
+            "name": "Customer Support Agent",
+            "category": "Customer Support",
+            "tags": ["English"],
+            "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
+            "phoneNumber": "+918035317400"
+          },
+          {
+            "id": "lead-qualification-bfsi",
+            "name": "Lead Qualification Agent",
+            "category": "Lead Qualification",
+            "tags": ["Hindi"],
+            "description": "Calls every lead to ask qualifying questions, answer FAQs, and warmly introduces the business",
+            "phoneNumber": "+918035317443"
+          },
+          {
+            "id": "announcements-bfsi",
+            "name": "Announcements Agent",
+            "category": "Announcements",
+            "tags": ["English + Hindi"],
+            "description": "Keeps users engaged with all feature upgrades and product launches",
+            "phoneNumber": "+918035317403"
+          }
+        ]
+      },
+      {
+        "id": "hospitality",
+        "name": "Hospitality",
+        "agents": [
+          {
+            "id": "front-desk-hospitality",
+            "name": "Front Desk Agent",
+            "category": "Front Desk",
+            "tags": ["English"],
+            "description": "Answers every call to handle clinic, hotel, and office scheduling",
+            "phoneNumber": "+918035317405"
+          },
+          {
+            "id": "surveys-hospitality",
+            "name": "Surveys Agent",
+            "category": "Surveys",
+            "tags": ["English"],
+            "description": "Automated NPS, feedback & product surveys with detailed personalised questioning",
+            "phoneNumber": "+918035317408"
+          },
+          {
+            "id": "onboarding-hospitality",
+            "name": "Onboarding Agent",
+            "category": "Onboarding",
+            "tags": ["English"],
+            "description": "Conducts personalized guidance calls to warmly onboard users",
+            "phoneNumber": "+918035317448"
+          },
+          {
+            "id": "announcements-hospitality",
+            "name": "Announcements Agent",
+            "category": "Announcements",
+            "tags": ["English + Hindi"],
+            "description": "Keeps users engaged with all feature upgrades and product launches",
+            "phoneNumber": "+918035317403"
+          }
+        ]
       }
     ]
   }

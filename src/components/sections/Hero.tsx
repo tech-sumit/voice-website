@@ -406,29 +406,29 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-800 min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden bg-gradient-to-b from-accent-50 to-accent-100 dark:from-surface-800 dark:to-surface-900 min-h-[70vh] flex items-center">
       {/* Load reCAPTCHA Enterprise script */}
       <Script
         src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
         onLoad={handleRecaptchaLoad}
       />
       
-      {/* Gradient background blobs - subtle and modern */}
+      {/* Color Hunt palette background elements - earthy and natural */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
-          className="absolute top-0 left-[10%] w-[40rem] h-[40rem] rounded-full bg-primary-400/20 dark:bg-primary-500/10 blur-[100px]"
+          className="absolute top-0 left-[10%] w-[40rem] h-[40rem] rounded-full bg-primary-400/15 dark:bg-primary-600/20 blur-[100px]"
           variants={blobVariants}
           animate="animate"
           custom={1}
         />
         <motion.div 
-          className="absolute bottom-0 right-[5%] w-[35rem] h-[35rem] rounded-full bg-accent-400/15 dark:bg-accent-500/10 blur-[100px]"
+          className="absolute bottom-0 right-[5%] w-[35rem] h-[35rem] rounded-full bg-secondary-400/12 dark:bg-secondary-600/15 blur-[100px]"
           variants={blobVariants}
           animate="animate"
           custom={2}
         />
         <motion.div 
-          className="absolute top-[40%] right-[15%] w-[25rem] h-[25rem] rounded-full bg-secondary-400/15 dark:bg-secondary-500/10 blur-[80px]"
+          className="absolute top-[40%] right-[15%] w-[25rem] h-[25rem] rounded-full bg-accent-300/8 dark:bg-accent-500/10 blur-[80px]"
           variants={blobVariants}
           animate="animate"
           custom={3}
@@ -438,110 +438,63 @@ export default function Hero() {
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left column - Text */}
           <div className="max-w-2xl">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ 
-                duration: 0.8,
-                type: "spring",
-                stiffness: 100
+                duration: 0.5,
+                ease: "easeOut"
               }}
               className="space-y-6"
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="inline-flex items-center px-3 py-1 rounded-full bg-accent-100 dark:bg-accent-900/30 border border-accent-200 dark:border-accent-800 text-accent-800 dark:text-accent-300 text-sm font-medium mb-4"
-              >
-                <motion.span 
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="flex h-2 w-2 rounded-full bg-accent-500 mr-2"
-                />
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 text-primary-800 dark:text-primary-300 text-sm font-medium mb-4">
+                <span className="flex h-2 w-2 rounded-full bg-primary-500 mr-2"></span>
                 Revolutionary Voice AI Technology
-              </motion.div>
+              </div>
             
-              <motion.h1
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white"
-              >
-                <motion.span 
-                  className="text-gradient-primary inline-block"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                >
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-bright-500 dark:text-accent-100">
+                <span className="text-primary-500 dark:text-primary-400 inline-block">
                   {siteConfig.name}
-                </motion.span>{" "}
+                </span>{" "}
                 <br />
-                <motion.span
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.8 }} 
-                  className="text-gradient-secondary inline-block mt-1"
-                >
+                <span className="text-bright-600 dark:text-accent-200 inline-block mt-1">
                   {siteConfig.description}
-                </motion.span>
-              </motion.h1>
+                </span>
+              </h1>
               
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.8 }}
-                className="text-xl text-neutral-700 dark:text-neutral-300 max-w-xl"
-              >
+              <p className="text-xl text-bright-600 dark:text-accent-300 max-w-xl">
                 AI phone agents that sound human, speak any language, and work 24/7. 
                 Integrate seamlessly with your CRM and business tools.
-              </motion.p>
+              </p>
               
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.6 }}
-                className="flex flex-wrap gap-5 pt-4"
-              >
+              <div className="flex flex-wrap gap-5 pt-4">
                 <Button 
                   href={siteConfig.cta.secondary.url} 
                   variant="outline" 
                   size="lg"
-                  className="border-2 border-accent-500/50 text-accent-600 dark:text-accent-400 hover:bg-accent-500/10 hover:scale-[1.02] transition-all duration-300"
+                  className="border-2 border-primary-500/50 text-primary-600 dark:text-primary-400 hover:bg-primary-500/10 hover:scale-[1.02] transition-all duration-300"
                 >
                   {siteConfig.cta.secondary.text}
                 </Button>
-              </motion.div>
+              </div>
               
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.1, duration: 0.8 }}
-                className="pt-8"
-              >
+              <div className="pt-8">
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 flex items-center">
-                  <motion.svg 
+                  <svg 
                     xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5 mr-2 text-accent-500" 
+                    className="h-5 w-5 mr-2 text-primary-500" 
                     viewBox="0 0 20 20" 
                     fill="currentColor"
-                    animate={{ rotate: [0, 10, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                   >
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </motion.svg>
+                  </svg>
                   Trusted by innovative companies worldwide
                 </p>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
 
@@ -637,7 +590,7 @@ export default function Hero() {
                   {/* AI Assistant Visual */}
                   <div className="relative mb-6">
                     <motion.div 
-                      className="w-full h-40 rounded-2xl bg-gradient-to-r from-primary-400 to-secondary-400 dark:from-primary-600 dark:to-secondary-600 overflow-hidden"
+                      className="w-full h-40 rounded-2xl bg-gradient-to-r from-primary-500 to-secondary-500 dark:from-primary-600 dark:to-secondary-600 overflow-hidden"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ 
                         opacity: animationStage >= 1 ? 1 : 0, 
@@ -680,7 +633,7 @@ export default function Hero() {
 
                     {/* Dynamic Voice Assistant Icon */}
                     <motion.div 
-                      className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary-500 dark:bg-primary-600 flex items-center justify-center border-4 border-white dark:border-surface-900 shadow-lg"
+                      className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary-600 dark:bg-primary-700 flex items-center justify-center border-4 border-white dark:border-surface-900 shadow-lg"
                       animate={{ 
                         scale: animationStage >= 2 ? [1, 1.1, 1] : 1,
                         boxShadow: animationStage >= 2 ? [
