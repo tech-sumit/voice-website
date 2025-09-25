@@ -22,11 +22,24 @@ export const metadata: Metadata = {
   description: siteConfig.metadata.description,
   keywords: siteConfig.metadata.keywords,
   authors: siteConfig.metadata.authors,
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.png',
+    apple: '/logo-square.png',
+  },
   openGraph: {
     type: "website",
     title: siteConfig.metadata.ogTitle,
     description: siteConfig.metadata.ogDescription,
     siteName: siteConfig.metadata.ogSiteName,
+    images: [
+      {
+        url: siteConfig.logo,
+        width: 200,
+        height: 50,
+        alt: siteConfig.name,
+      },
+    ],
   },
   themeColor: siteConfig.metadata.themeColor,
 };

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import siteConfig from '@/config/site.json';
 
 export default function Footer() {
@@ -8,8 +9,14 @@ export default function Footer() {
         <div className="py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
             <div className="col-span-1 md:col-span-1 lg:col-span-2">
-              <Link href="/" className="text-2xl font-bold text-gradient-primary">
-                {siteConfig.name}
+              <Link href="/" className="flex items-center">
+                <Image
+                  src={siteConfig.logo}
+                  alt={siteConfig.name}
+                  width={200}
+                  height={120}
+                  className="h-6 w-auto sm:h-8"
+                />
               </Link>
               <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-xs">
                 {siteConfig.description}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import siteConfig from "@/config/site.json";
@@ -37,9 +38,14 @@ export default function Navbar() {
         <div className="flex justify-between h-16 sm:h-20 items-center">
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-gradient-primary">
-                {siteConfig.name}
-              </span>
+              <Image
+                src={siteConfig.logo}
+                alt={siteConfig.name}
+                width={200}
+                height={120}
+                className="h-8 w-auto sm:h-10"
+                priority
+              />
             </Link>
           </div>
           
