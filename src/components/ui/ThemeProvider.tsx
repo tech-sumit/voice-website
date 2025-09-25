@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, ReactNode } from 'react';
 
 type ThemeProviderProps = {
   children: ReactNode;
@@ -14,38 +14,18 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // Always use light mode - dark mode is disabled
+  const isDarkMode = false;
 
   useEffect(() => {
-    // Check for user preference in localStorage
-    const storedPreference = localStorage.getItem('theme');
-    
-    if (storedPreference === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      // Default to light mode unless explicitly set to dark
-      setIsDarkMode(false);
-      document.documentElement.classList.remove('dark');
-      // Set light mode as default in localStorage if no preference exists
-      if (!storedPreference) {
-        localStorage.setItem('theme', 'light');
-      }
-    }
+    // Ensure dark mode is always disabled
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
   }, []);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => {
-      const newMode = !prev;
-      if (newMode) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      }
-      return newMode;
-    });
+    // No-op function since dark mode is disabled
+    console.log('Dark mode is disabled');
   };
 
   return (

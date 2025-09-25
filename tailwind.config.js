@@ -3,7 +3,6 @@ const theme = require('./src/config/theme').default;
 
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: "class",
   theme: {
     extend: {
       colors: theme.colors,
