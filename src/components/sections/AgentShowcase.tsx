@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PlayIcon, PhoneIcon } from "@heroicons/react/24/solid";
+import { PhoneIcon } from "@heroicons/react/24/solid";
 import siteConfig from "@/config/site.json";
 
 interface Agent {
@@ -181,42 +181,19 @@ export default function AgentShowcase() {
                         {agent.name}
                       </h3>
                       
-                      {/* Tags */}
+                      {/* Category Tag */}
                       <div className="flex flex-wrap gap-2">
                         <span className="px-3 py-1 text-xs font-medium bg-primary-900/30 text-primary-400 rounded-full border border-primary-600/20">
                           {agent.category}
                         </span>
-                        {agent.tags.map((tag, tagIndex) => (
-                          <span key={tagIndex} className="px-3 py-1 text-xs bg-surface-700/50 text-neutral-400 rounded-full">
-                            {tag}
-                          </span>
-                        ))}
                       </div>
                     </div>
                   </div>
                   
                   {/* Description - flexible height */}
-                  <p className="text-neutral-400 leading-relaxed mb-6 group-hover:text-neutral-300 transition-colors duration-300 flex-1 line-clamp-4">
+                  <p className="text-neutral-400 leading-relaxed group-hover:text-neutral-300 transition-colors duration-300 flex-1 line-clamp-4">
                     {agent.description}
                   </p>
-                  
-                  {/* Action Buttons - always at bottom */}
-                  <div className="flex items-center justify-between mt-auto">
-                    <motion.button 
-                      className={`px-4 py-2 bg-gradient-to-r ${gradient} text-white text-sm font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <PlayIcon className="w-4 h-4 inline mr-2" />
-                      Try Agent
-                    </motion.button>
-                    
-                    {/* Status indicator */}
-                    <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-xs text-neutral-500">Live</span>
-                    </div>
-                  </div>
                 </div>
                 
                 {/* Hover effect line */}
