@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PhoneIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 import siteConfig from "@/config/site.json";
 
 interface Agent {
@@ -48,10 +49,10 @@ export default function AgentShowcase() {
       {/* Creative background elements */}
       <div className="absolute inset-0">
         {/* Dotted grid pattern */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-10">
           <div className="w-full h-full" style={{
-            backgroundImage: 'radial-gradient(circle, #40513B 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
+            backgroundImage: 'radial-gradient(circle, #EDF1D6 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
           }}></div>
         </div>
 
@@ -168,7 +169,7 @@ export default function AgentShowcase() {
                   <div className="flex items-start space-x-3 mb-4">
                     <div className={`relative w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg flex-shrink-0`}>
                       {agent.avatar ? (
-                        <img src={agent.avatar} alt={agent.name} className="w-full h-full object-cover rounded-xl" />
+                        <Image src={agent.avatar} alt={agent.name} width={56} height={56} className="w-full h-full object-cover rounded-xl" />
                       ) : (
                         <PhoneIcon className="w-7 h-7 text-white" />
                       )}
