@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import siteConfig from "@/config/site.json";
 import ClientClassManager from "../components/layout/ClientClassManager";
@@ -57,6 +58,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
+          <ThemeToggle />
         </ThemeProvider>
       </body>
     </html>

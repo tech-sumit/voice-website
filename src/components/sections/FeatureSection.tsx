@@ -71,7 +71,7 @@ export default function FeatureSection() {
   };
 
   return (
-      <section id="features" className="py-12 bg-gradient-to-b from-surface-50 via-surface-100 to-surface-50 relative overflow-hidden">
+    <section id="features" className="py-12 bg-gradient-to-b from-surface-900 via-surface-800 to-surface-900 relative overflow-hidden">
       {/* Creative background elements */}
       <div className="absolute inset-0">
         {/* Dotted pattern overlay */}
@@ -102,10 +102,10 @@ export default function FeatureSection() {
             transition={{ duration: 0.6 }}
             className="inline-block"
           >
-                    <div className="inline-flex items-center px-4 py-2 bg-accent-100 border border-accent-300 rounded-full mb-6">
-                      <div className="w-2 h-2 bg-accent-600 rounded-full mr-3 animate-pulse"></div>
-                      <span className="text-accent-700 text-sm font-medium tracking-wide uppercase">FEATURES</span>
-                    </div>
+            <div className="inline-flex items-center px-4 py-2 bg-accent-900/30 border border-accent-600/30 rounded-full mb-6">
+              <div className="w-2 h-2 bg-accent-500 rounded-full mr-3 animate-pulse"></div>
+              <span className="text-accent-400 text-sm font-medium tracking-wide uppercase">FEATURES</span>
+            </div>
           </motion.div>
           
           <motion.h2 
@@ -113,7 +113,7 @@ export default function FeatureSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-                    className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 mb-4 leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
           >
             Features That Power{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-300">
@@ -126,7 +126,7 @@ export default function FeatureSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-                    className="text-base text-neutral-600 max-w-2xl mx-auto leading-relaxed"
+            className="text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed"
           >
             With integrated speech, telephony, and APIs, Bolna equips you with everything 
             required to move from idea to live deployment quickly and securely.
@@ -166,7 +166,7 @@ export default function FeatureSection() {
                   <motion.div 
                     key={feature.title}
                     variants={item}
-                    className="group relative p-6 bg-white/80 backdrop-blur-sm border border-neutral-200 rounded-2xl hover:bg-white hover:border-neutral-300 transition-all duration-300 shadow-sm hover:shadow-md"
+                    className="group relative p-6 bg-surface-800/50 backdrop-blur-sm border border-surface-700/50 rounded-2xl hover:bg-surface-700/50 hover:border-surface-600/50 transition-all duration-300"
                     whileHover={{ y: -8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -181,11 +181,11 @@ export default function FeatureSection() {
                     </div>
 
                     {/* Content */}
-                    <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-primary-500 transition-colors duration-300">
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary-400 transition-colors duration-300">
                       {feature.title}
                     </h3>
 
-                    <p className="text-neutral-600 leading-relaxed group-hover:text-neutral-700 transition-colors duration-300">
+                    <p className="text-neutral-400 leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
                       {feature.description}
                     </p>
 
@@ -206,14 +206,14 @@ export default function FeatureSection() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="flex justify-center mt-12"
         >
-                  <div className="flex items-center space-x-2 px-6 py-3 bg-white/80 border border-neutral-300 rounded-full shadow-sm">
-                    <div className="flex space-x-1">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className={`w-2 h-2 rounded-full bg-primary-600 animate-pulse`} style={{animationDelay: `${i * 0.2}s`}}></div>
-                      ))}
-                    </div>
-                    <span className="text-neutral-600 text-sm ml-3">Powered by cutting-edge AI</span>
-                  </div>
+          <div className="flex items-center space-x-2 px-6 py-3 bg-surface-800/50 border border-neutral-700/50 rounded-full">
+            <div className="flex space-x-1">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className={`w-2 h-2 rounded-full bg-primary-500 animate-pulse`} style={{animationDelay: `${i * 0.2}s`}}></div>
+              ))}
+            </div>
+            <span className="text-neutral-400 text-sm ml-3">Powered by cutting-edge AI</span>
+          </div>
         </motion.div>
       </div>
     </section>
