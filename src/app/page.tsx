@@ -6,6 +6,7 @@ import UseCaseSection from "@/components/sections/UseCaseSection";
 import HowItWorks from "@/components/sections/HowItWorks";
 // import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import FAQSection from "@/components/sections/FAQSection";
+import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
 import siteConfig from "@/config/site.json";
 import IntegrationsSection from "@/components/sections/IntegrationsSection";
@@ -55,6 +56,10 @@ export default function Home() {
       
       {/* 9. FAQ - Address final concerns */}
       <FAQSection />
+      
+      {/* 10. Final CTA - Convert visitors */}
+      <CTASection />
+      
       <Footer />
     </div>
   );

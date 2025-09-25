@@ -36,8 +36,8 @@
       "url": "/contact"
     },
     "secondary": {
-      "text": "Learn More",
-      "url": "#features"
+      "text": "Start Now",
+      "url": "/contact"
     },
     "demo": {
       "text": "See it in action",
