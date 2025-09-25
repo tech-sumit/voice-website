@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { Button } from "@/components/ui/Button";
 
 const faqs = [
   {
@@ -157,7 +156,7 @@ export default function FAQSection() {
                 <div key={i} className={`w-2 h-2 rounded-full bg-secondary-600 dark:bg-secondary-500 animate-pulse`} style={{animationDelay: `${i * 0.2}s`}}></div>
               ))}
             </div>
-            <span className="text-neutral-600 dark:text-neutral-400 text-sm">Still have questions? We're here to help</span>
+            <span className="text-neutral-600 dark:text-neutral-400 text-sm">Still have questions? We&apos;re here to help</span>
           </div>
         </motion.div>
       </div>

@@ -71,7 +71,7 @@ export default function CareersPage() {
               Join Our <span className="text-primary-500 dark:text-primary-400">Team</span>
             </h1>
             <p className="text-xl text-bright-600 dark:text-accent-300 mb-8 leading-relaxed">
-              Help us build the future of AI voice technology. We're looking for passionate individuals 
+              Help us build the future of AI voice technology. We&apos;re looking for passionate individuals 
               who want to make a real impact in the world of conversational AI.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm text-neutral-500 dark:text-neutral-500">
@@ -92,7 +92,7 @@ export default function CareersPage() {
               Why Join VoiceAI?
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-              We're building something revolutionary, and we need talented people to help us get there.
+              We&apos;re building something revolutionary, and we need talented people to help us get there.
             </p>
           </div>
 
@@ -189,10 +189,10 @@ export default function CareersPage() {
       <section className="py-16 bg-primary-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Don't See Your Role?
+            Don&apos;t See Your Role?
           </h2>
           <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            We're always looking for talented individuals. Send us your resume and tell us how you'd like to contribute.
+            We&apos;re always looking for talented individuals. Send us your resume and tell us how you&apos;d like to contribute.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

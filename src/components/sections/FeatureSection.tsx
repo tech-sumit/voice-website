@@ -159,19 +159,8 @@ export default function FeatureSection() {
               "from-secondary-500 to-accent-600"
             ];
             
-            const bgColors = [
-              "bg-primary-900/20 border-primary-600/20",
-              "bg-secondary-900/20 border-secondary-600/20",
-              "bg-accent-900/20 border-accent-600/20",
-              "bg-bright-900/20 border-bright-600/20",
-              "bg-primary-900/20 border-primary-600/20",
-              "bg-accent-900/20 border-accent-600/20",
-              "bg-bright-900/20 border-bright-600/20",
-              "bg-secondary-900/20 border-secondary-600/20"
-            ];
             
                 const gradient = gradients[actualIndex % gradients.length];
-                const bgColor = bgColors[actualIndex % bgColors.length];
             
                 return (
                   <motion.div 

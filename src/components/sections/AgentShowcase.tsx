@@ -148,7 +148,7 @@ export default function AgentShowcase() {
           animate="show"
           className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
         >
-          {currentCategory?.agents.map((agent: Agent, index) => {
+          {currentCategory?.agents.map((agent: Agent) => {
             // Use consistent primary gradient for all cards
             const gradient = "from-primary-500 to-primary-600";
             

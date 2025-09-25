@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { Button } from "@/components/ui/Button";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 export default function HowItWorks() {
   const steps = [
@@ -113,14 +112,8 @@ export default function HowItWorks() {
               "from-accent-500 to-accent-600"
             ];
             
-            const bgColors = [
-              "bg-primary-900/20 border-primary-600/20",
-              "bg-secondary-900/20 border-secondary-600/20",
-              "bg-accent-900/20 border-accent-600/20"
-            ];
 
             const gradient = gradients[index % gradients.length];
-            const bgColor = bgColors[index % bgColors.length];
 
             return (
               <motion.div

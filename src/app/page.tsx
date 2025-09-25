@@ -2,14 +2,12 @@ import { Metadata } from "next";
 import Hero from "@/components/sections/Hero";
 import FeatureSection from "@/components/sections/FeatureSection";
 import AgentShowcase from "@/components/sections/AgentShowcase";
-import UseCaseSection from "@/components/sections/UseCaseSection";
 import HowItWorks from "@/components/sections/HowItWorks";
 // import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
 import siteConfig from "@/config/site.json";
-import IntegrationsSection from "@/components/sections/IntegrationsSection";
 
 export const metadata: Metadata = {
   title: siteConfig.metadata.title,
