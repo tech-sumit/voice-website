@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Line clamp utilities for consistent text truncation */
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
 /* 
  * Modern Professional UI Styling
  * Inspired by Apple, Google, Synthflow, and Bland.ai design systems

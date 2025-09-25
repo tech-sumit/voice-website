@@ -43,131 +43,132 @@ type ColorConfig = {
 
 const theme: ThemeConfig = {
   colors: {
-    // Modern blue inspired by Synthflow and Bland.ai - professional, innovative
+    // Forest Green - Primary brand color from new Color Hunt palette
+    // https://colorhunt.co/palette/edf1d69dc08b60996640513b
     primary: {
-      DEFAULT: "#2563EB",
-      50: "#EFF6FF",
-      100: "#DBEAFE",
-      200: "#BFDBFE",
-      300: "#93C5FD",
-      400: "#60A5FA",
-      500: "#2563EB", // Modern blue
-      600: "#1D4ED8",
-      700: "#1E40AF",
-      800: "#1E3A8A",
-      900: "#172554",
+      DEFAULT: "#609966", // Forest green - main
+      50: "#F0F4F0", // Very light forest
+      100: "#E1E9E1", // Light forest
+      200: "#C3D3C3", // Medium light forest
+      300: "#A5BDA5", // Medium forest
+      400: "#87A787", // Medium dark forest
+      500: "#609966", // Color Hunt forest green - main
+      600: "#4D7A52", // Darker forest
+      700: "#3A5B3E", // Dark forest
+      800: "#273C2A", // Very dark forest
+      900: "#141D16", // Darkest forest
     },
-    // Vibrant teal/green - elegant, fresh from Bland.ai
+    // Sage Green - Secondary color from new Color Hunt palette
     secondary: {
-      DEFAULT: "#0EA5E9",
-      50: "#F0F9FF",
-      100: "#E0F2FE",
-      200: "#BAE6FD",
-      300: "#7DD3FC",
-      400: "#38BDF8",
-      500: "#0EA5E9", // Sky blue
-      600: "#0284C7",
-      700: "#0369A1",
-      800: "#075985",
-      900: "#0C4A6E",
+      DEFAULT: "#9DC08B", // Color Hunt sage green - main
+      50: "#F4F7F2", // Very light sage
+      100: "#E9EFE5", // Light sage
+      200: "#D3DFCB", // Medium light sage
+      300: "#BDCFB1", // Medium sage
+      400: "#A7BF97", // Medium dark sage
+      500: "#9DC08B", // Color Hunt sage green - main
+      600: "#7DA06F", // Darker sage
+      700: "#5D8053", // Dark sage
+      800: "#3D6037", // Very dark sage
+      900: "#1D401B", // Darkest sage
     },
-    // Soft purple/violet from Synthflow - creative, premium
+    // Light Cream - Accent color from new Color Hunt palette
     accent: {
-      DEFAULT: "#7C3AED",
-      50: "#F5F3FF",
-      100: "#EDE9FE",
-      200: "#DDD6FE",
-      300: "#C4B5FD",
-      400: "#A78BFA",
-      500: "#7C3AED", // Vibrant purple
-      600: "#6D28D9",
-      700: "#5B21B6",
-      800: "#4C1D95",
-      900: "#2E1065",
+      DEFAULT: "#EDF1D6", // Color Hunt light cream - main
+      50: "#F8FAF4", // Lightest cream
+      100: "#EDF1D6", // Color Hunt light cream - main
+      200: "#E3E7C6", // Light cream
+      300: "#D9DDB6", // Medium light cream
+      400: "#CFD3A6", // Medium cream
+      500: "#C5C996", // Medium dark cream
+      600: "#BBBF86", // Dark cream
+      700: "#B1B576", // Darker cream
+      800: "#A7AB66", // Very dark cream
+      900: "#9DA156", // Darkest cream
     },
-    // Modern orange/red - energy, call-to-action
+    // Dark Forest Green - Text and strong elements
     bright: {
-      DEFAULT: "#F97316",
-      50: "#FFF7ED",
-      100: "#FFEDD5",
-      200: "#FED7AA",
-      300: "#FDBA74",
-      400: "#FB923C",
-      500: "#F97316", // Vibrant orange
-      600: "#EA580C",
-      700: "#C2410C",
-      800: "#9A3412",
-      900: "#7C2D12",
+      DEFAULT: "#40513B", // Dark forest green
+      50: "#F2F4F1", // Very light forest
+      100: "#E5E9E3", // Light forest
+      200: "#CBD3C7", // Medium light forest
+      300: "#B1BDAB", // Medium forest
+      400: "#97A78F", // Medium dark forest
+      500: "#40513B", // Dark forest green - main
+      600: "#33412F", // Darker forest
+      700: "#263123", // Very dark forest
+      800: "#192117", // Darkest forest
+      900: "#0C110B", // Deepest forest
     },
-    // Refined neutral palette - sophisticated, balanced
+    // Neutral palette based on forest green tones
     neutral: {
-      DEFAULT: "#64748B",
-      50: "#F8FAFC",
-      100: "#F1F5F9",
-      200: "#E2E8F0",
-      300: "#CBD5E1",
-      400: "#94A3B8",
-      500: "#64748B", // Slate
-      600: "#475569",
-      700: "#334155",
-      800: "#1E293B",
-      900: "#0F172A",
+      DEFAULT: "#40513B", // Dark forest for text
+      50: "#F2F4F1", // Very light forest
+      100: "#E5E9E3", // Light forest
+      200: "#CBD3C7", // Medium light forest
+      300: "#B1BDAB", // Medium forest
+      400: "#97A78F", // Medium dark forest
+      500: "#40513B", // Dark forest - main
+      600: "#33412F", // Darker forest
+      700: "#263123", // Very dark forest
+      800: "#192117", // Darkest forest
+      900: "#0C110B", // Deepest forest
     },
-    // Success green - positive feedback
+    // Success - using forest green
     success: {
-      DEFAULT: "#10B981",
-      50: "#ECFDF5",
-      100: "#D1FAE5",
-      200: "#A7F3D0",
-      300: "#6EE7B7",
-      400: "#34D399",
-      500: "#10B981", // Emerald green
-      600: "#059669",
-      700: "#047857",
-      800: "#065F46",
-      900: "#064E3B",
+      DEFAULT: "#609966", // Forest green for success
+      50: "#F0F4F0", // Very light forest
+      100: "#E1E9E1", // Light forest
+      200: "#C3D3C3", // Medium light forest
+      300: "#A5BDA5", // Medium forest
+      400: "#87A787", // Medium dark forest
+      500: "#609966", // Color Hunt forest green - main
+      600: "#4D7A52", // Darker forest
+      700: "#3A5B3E", // Dark forest
+      800: "#273C2A", // Very dark forest
+      900: "#141D16", // Darkest forest
     },
-    // Warning yellow - caution, attention
+    // Warning - warm earth tone
     warning: {
-      DEFAULT: "#F59E0B",
-      50: "#FFFBEB",
-      100: "#FEF3C7",
-      200: "#FDE68A",
-      300: "#FCD34D",
-      400: "#FBBF24",
-      500: "#F59E0B", // Amber
-      600: "#D97706",
-      700: "#B45309",
-      800: "#92400E",
-      900: "#78350F",
+      DEFAULT: "#B8860B", // Dark goldenrod
+      50: "#FDF9F0", // Very light goldenrod
+      100: "#FBF3E1", // Light goldenrod
+      200: "#F7E7C3", // Medium light goldenrod
+      300: "#F3DBA5", // Medium goldenrod
+      400: "#EFCF87", // Medium dark goldenrod
+      500: "#B8860B", // Dark goldenrod - main
+      600: "#966B09", // Darker goldenrod
+      700: "#745007", // Very dark goldenrod
+      800: "#523505", // Darkest goldenrod
+      900: "#301A03", // Deepest goldenrod
     },
-    // Error red - alerts, critical actions
+    // Error - muted red tone
     error: {
-      DEFAULT: "#EF4444",
-      50: "#FEF2F2",
-      100: "#FEE2E2",
-      200: "#FECACA",
-      300: "#FCA5A5",
-      400: "#F87171",
-      500: "#EF4444", // Modern red
-      600: "#DC2626",
-      700: "#B91C1C",
-      800: "#991B1B",
-      900: "#7F1D1D",
+      DEFAULT: "#B85450", // Muted red
+      50: "#FDF5F5", // Very light red
+      100: "#FAEAEA", // Light red
+      200: "#F5D5D5", // Medium light red
+      300: "#F0C0C0", // Medium red
+      400: "#E5ABAB", // Medium dark red
+      500: "#B85450", // Muted red - main
+      600: "#A64B47", // Dark red
+      700: "#94423E", // Darker red
+      800: "#823935", // Very dark red
+      900: "#70302C", // Darkest red
     },
-    // Surface colors - clean, minimal
+    // Surface - light cream background
     surface: {
-      DEFAULT: "#FFFFFF",
-      50: "#FFFFFF",
-      100: "#FAFAFA", // Slightly off-white for subtle cards
-      200: "#F4F4F5", // Very light gray for hover states
-      300: "#E4E4E7",
-      400: "#D4D4D8",
-      500: "#A1A1AA",
-      600: "#71717A",
-      700: "#52525B",
-      800: "#27272A", // Dark gray for dark mode elements
-      900: "#18181B", // Near black for dark mode background
+      DEFAULT: "#EDF1D6", // Color Hunt light cream
+      50: "#F8FAF4", // Lightest cream
+      100: "#EDF1D6", // Color Hunt light cream - main
+      200: "#E3E7C6", // Light cream
+      300: "#D9DDB6", // Medium light cream
+      400: "#CFD3A6", // Medium cream
+      500: "#C5C996", // Medium dark cream
+      600: "#BBBF86", // Dark cream
+      700: "#B1B576", // Darker cream
+      800: "#40513B", // Dark forest for dark mode
+      900: "#2D3A2A", // Darker forest for dark mode background
     },
   },
   fonts: {
@@ -175,12 +176,12 @@ const theme: ThemeConfig = {
     mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New"],
   },
   darkMode: {
-    backgroundColor: "#18181B", // Zinc 900 for dark mode background
-    textColor: "#F4F4F5", // Zinc 100 for dark mode text
+    backgroundColor: "#2D3A2A", // Dark forest for dark mode background
+    textColor: "#EDF1D6", // Light cream for dark mode text
   },
   lightMode: {
-    backgroundColor: "#FFFFFF", // Clean white
-    textColor: "#0F172A", // Slate 900 for better contrast than pure black
+    backgroundColor: "#EDF1D6", // Color Hunt light cream background
+    textColor: "#40513B", // Dark forest for text - excellent contrast
   },
   animations: {
     "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
