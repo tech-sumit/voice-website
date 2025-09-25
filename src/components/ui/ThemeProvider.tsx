@@ -23,15 +23,13 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     if (storedPreference === 'dark') {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
-    } else if (storedPreference === 'light') {
+    } else {
+      // Default to light mode unless explicitly set to dark
       setIsDarkMode(false);
       document.documentElement.classList.remove('dark');
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDarkMode(prefersDark);
-      if (prefersDark) {
-        document.documentElement.classList.add('dark');
+      // Set light mode as default in localStorage if no preference exists
+      if (!storedPreference) {
+        localStorage.setItem('theme', 'light');
       }
     }
   }, []);
