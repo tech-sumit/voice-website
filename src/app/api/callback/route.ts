@@ -4,8 +4,8 @@ import siteConfig from '@/config/site.json';
 import supportedLanguages from '@/config/languages';
 import { initiateCall, logCallRequest } from '@/lib/call';
 
-// Initialize Resend with your API key
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Do NOT initialize Resend at module scope to avoid build-time errors
+// when RESEND_API_KEY is not set. Initialize within the handler after checks.
 
 // Define maximum length for phone field
 const MAX_LENGTH = {
@@ -315,6 +315,8 @@ Speak in friendly, professional English.
       console.log({ phoneNumber: sanitizedPhone });
       emailResult = { success: false };
     } else {
+      // Initialize Resend only when the API key is present
+      const resend = new Resend(process.env.RESEND_API_KEY as string);
       // Format the email notification with a professional template
       const emailHtml = `
         <!DOCTYPE html>

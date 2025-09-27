@@ -5,7 +5,8 @@ import siteConfig from '@/config/site.json';
 // Initialize Resend with your API key
 // Get your API key from https://resend.com after signing up
 // Add RESEND_API_KEY to your .env.local file
-const resend = new Resend(process.env.RESEND_API_KEY);
+// NOTE: Do not initialize Resend at module scope to avoid build-time errors
+// when RESEND_API_KEY is not set. Initialize inside the handler after checks.
 
 // Define maximum lengths for fields
 const MAX_LENGTHS = {
@@ -263,6 +264,9 @@ export async function POST(request: Request) {
         warning: 'Email not sent - email service not configured' 
       });
     }
+    
+    // Initialize Resend only when the API key is present
+    const resend = new Resend(process.env.RESEND_API_KEY as string);
     
     // Format the email content with a beautiful, professional template
     const emailHtml = `

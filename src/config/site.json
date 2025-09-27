@@ -536,5 +536,96 @@
         ]
       }
     ]
+  },
+  "careers": {
+    "title": "Join Our Team",
+    "subtitle": "Help us build the future of AI voice technology. We're looking for passionate individuals who want to make a real impact in the world of conversational AI.",
+    "benefits": [
+      "Remote-first",
+      "Competitive salary",
+      "Equity options",
+      "Health benefits"
+    ],
+    "whyJoin": {
+      "title": "Why Join VoiceAI?",
+      "description": "We're building something revolutionary, and we need talented people to help us get there.",
+      "features": [
+        {
+          "title": "Cutting-Edge Technology",
+          "description": "Work with the latest AI models and voice technologies that are shaping the future.",
+          "icon": "🚀"
+        },
+        {
+          "title": "Global Impact",
+          "description": "Help businesses worldwide communicate better with AI-powered voice solutions.",
+          "icon": "🌍"
+        },
+        {
+          "title": "Innovation Culture",
+          "description": "Be part of a team that encourages creativity, experimentation, and bold ideas.",
+          "icon": "💡"
+        }
+      ]
+    },
+    "positions": [
+      {
+        "title": "Senior AI Engineer",
+        "department": "Engineering",
+        "location": "Remote / Pune, India",
+        "type": "Full-time",
+        "description": "Lead the development of our next-generation voice AI models and conversational systems.",
+        "requirements": [
+          "5+ years experience in AI/ML engineering",
+          "Expertise in NLP and speech processing",
+          "Experience with transformer architectures",
+          "Strong Python and PyTorch skills"
+        ]
+      },
+      {
+        "title": "Product Manager",
+        "department": "Product",
+        "location": "Remote / Pune, India",
+        "type": "Full-time",
+        "description": "Drive product strategy and roadmap for our voice AI platform.",
+        "requirements": [
+          "3+ years product management experience",
+          "Experience with AI/ML products",
+          "Strong analytical and communication skills",
+          "B2B SaaS experience preferred"
+        ]
+      },
+      {
+        "title": "Frontend Developer",
+        "department": "Engineering",
+        "location": "Remote / Pune, India",
+        "type": "Full-time",
+        "description": "Build beautiful, responsive user interfaces for our voice AI platform.",
+        "requirements": [
+          "3+ years frontend development experience",
+          "Expertise in React, TypeScript, and Next.js",
+          "Experience with Tailwind CSS",
+          "Strong UI/UX sensibilities"
+        ]
+      },
+      {
+        "title": "Customer Success Manager",
+        "department": "Customer Success",
+        "location": "Remote / Pune, India",
+        "type": "Full-time",
+        "description": "Help our customers achieve success with our voice AI solutions.",
+        "requirements": [
+          "2+ years customer success experience",
+          "Strong technical communication skills",
+          "Experience with enterprise software",
+          "AI/ML knowledge preferred"
+        ]
+      }
+    ],
+    "cta": {
+      "title": "Don't See Your Role?",
+      "description": "We're always looking for talented individuals. Send us your resume and tell us how you'd like to contribute.",
+      "primaryButton": "Send Resume",
+      "secondaryButton": "Contact Us"
+    }
   }
 } 

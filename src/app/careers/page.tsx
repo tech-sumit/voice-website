@@ -7,60 +7,8 @@ export const metadata: Metadata = {
 };
 
 export default function CareersPage() {
-  const positions = [
-    {
-      title: "Senior AI Engineer",
-      department: "Engineering",
-      location: "Remote / Pune, India",
-      type: "Full-time",
-      description: "Lead the development of our next-generation voice AI models and conversational systems.",
-      requirements: [
-        "5+ years experience in AI/ML engineering",
-        "Expertise in NLP and speech processing",
-        "Experience with transformer architectures",
-        "Strong Python and PyTorch skills"
-      ]
-    },
-    {
-      title: "Product Manager",
-      department: "Product",
-      location: "Remote / Pune, India",
-      type: "Full-time",
-      description: "Drive product strategy and roadmap for our voice AI platform.",
-      requirements: [
-        "3+ years product management experience",
-        "Experience with AI/ML products",
-        "Strong analytical and communication skills",
-        "B2B SaaS experience preferred"
-      ]
-    },
-    {
-      title: "Frontend Developer",
-      department: "Engineering",
-      location: "Remote / Pune, India",
-      type: "Full-time",
-      description: "Build beautiful, responsive user interfaces for our voice AI platform.",
-      requirements: [
-        "3+ years frontend development experience",
-        "Expertise in React, TypeScript, and Next.js",
-        "Experience with Tailwind CSS",
-        "Strong UI/UX sensibilities"
-      ]
-    },
-    {
-      title: "Customer Success Manager",
-      department: "Customer Success",
-      location: "Remote / Pune, India",
-      type: "Full-time",
-      description: "Help our customers achieve success with our voice AI solutions.",
-      requirements: [
-        "2+ years customer success experience",
-        "Strong technical communication skills",
-        "Experience with enterprise software",
-        "AI/ML knowledge preferred"
-      ]
-    }
-  ];
+  const careersData = siteConfig.careers;
+  const positions = careersData.positions;
 
   return (
     <div className="min-h-screen bg-accent-50 dark:bg-surface-800">
@@ -69,17 +17,15 @@ export default function CareersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold text-bright-500 dark:text-accent-100 mb-6">
-              Join Our <span className="text-primary-500 dark:text-primary-400">Team</span>
+              {careersData.title.split(' ').slice(0, -1).join(' ')} <span className="text-primary-500 dark:text-primary-400">Team</span>
             </h1>
             <p className="text-xl text-bright-600 dark:text-accent-300 mb-8 leading-relaxed">
-              Help us build the future of AI voice technology. We&apos;re looking for passionate individuals 
-              who want to make a real impact in the world of conversational AI.
+              {careersData.subtitle}
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm text-neutral-500 dark:text-neutral-500">
-              <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full">Remote-first</span>
-              <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full">Competitive salary</span>
-              <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full">Equity options</span>
-              <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full">Health benefits</span>
+              {careersData.benefits.map((benefit, index) => (
+                <span key={index} className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full">{benefit}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -90,49 +36,27 @@ export default function CareersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
-              Why Join VoiceAI?
+              {careersData.whyJoin.title}
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-              We&apos;re building something revolutionary, and we need talented people to help us get there.
+              {careersData.whyJoin.description}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="p-6 bg-surface-0 dark:bg-surface-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
-              <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">🚀</span>
+            {careersData.whyJoin.features.map((feature, index) => (
+              <div key={index} className="p-6 bg-surface-0 dark:bg-surface-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">{feature.icon}</span>
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
-                Cutting-Edge Technology
-              </h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Work with the latest AI models and voice technologies that are shaping the future.
-              </p>
-            </div>
-
-            <div className="p-6 bg-surface-0 dark:bg-surface-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
-              <div className="w-12 h-12 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">🌍</span>
-              </div>
-              <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
-                Global Impact
-              </h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Help businesses worldwide communicate better with AI-powered voice solutions.
-              </p>
-            </div>
-
-            <div className="p-6 bg-surface-0 dark:bg-surface-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
-              <div className="w-12 h-12 bg-accent-100 dark:bg-accent-900/30 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">💡</span>
-              </div>
-              <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
-                Innovation Culture
-              </h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Be part of a team that encourages creativity, experimentation, and bold ideas.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -190,23 +114,23 @@ export default function CareersPage() {
       <section className="py-16 bg-primary-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Don&apos;t See Your Role?
+            {careersData.cta.title}
           </h2>
           <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            We&apos;re always looking for talented individuals. Send us your resume and tell us how you&apos;d like to contribute.
+            {careersData.cta.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href={`mailto:${siteConfig.company.email}`}
               className="px-8 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors duration-200 font-medium"
             >
-              Send Resume
+              {careersData.cta.primaryButton}
             </a>
             <a
               href="/contact"
               className="px-8 py-3 border-2 border-white text-white rounded-lg hover:bg-white hover:text-primary-600 transition-colors duration-200 font-medium"
             >
-              Contact Us
+              {careersData.cta.secondaryButton}
             </a>
           </div>
         </div>
