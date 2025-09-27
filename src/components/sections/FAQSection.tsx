@@ -3,36 +3,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-
-const faqs = [
-  {
-    question: "How accurate is the AI voice technology?",
-    answer: "Our AI voice technology is remarkably accurate, with a 98.5% success rate in understanding and responding to customer inquiries. The voices sound natural and human-like, with appropriate pauses, intonations, and conversational flow."
-  },
-  {
-    question: "Can I customize how the AI voice agents sound?",
-    answer: "Yes, you can fully customize your AI voice agents. Choose from our library of 50+ voice options across different accents and languages, or work with us to create a custom voice that matches your brand identity."
-  },
-  {
-    question: "How does VoiceAI integrate with my existing systems?",
-    answer: "VoiceAI offers seamless integration with popular CRMs, calendars, and business tools through our API. We provide pre-built connectors for systems like Salesforce, HubSpot, Google Calendar, and many more. Our team can also help with custom integrations for specialized systems."
-  },
-  {
-    question: "What languages do your AI agents support?",
-    answer: "Our AI agents can speak and understand over 100 languages fluently, including English, Spanish, French, German, Japanese, Mandarin, Hindi, Arabic, and many more. Each language maintains natural conversational abilities and accurate pronunciation."
-  },
-  {
-    question: "Is my customer data secure with VoiceAI?",
-    answer: "Absolutely. We implement bank-level encryption and security protocols. VoiceAI is SOC 2 Type II compliant, HIPAA compliant (for healthcare clients), and GDPR compliant. We never sell or share your data, and you retain full ownership of all conversation data."
-  },
-  {
-    question: "How quickly can I get started with VoiceAI?",
-    answer: "Most customers are up and running within 1-2 weeks. Our streamlined implementation process includes setup, integration with your systems, voice selection, conversation flow design, and testing. For simpler use cases, you can be live in as little as 3-5 days."
-  }
-];
+import siteConfig from "@/config/site.json";
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  
+  // Get data from siteConfig
+  const faqData = siteConfig.faq;
+  const faqs = faqData.questions;
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -82,11 +60,10 @@ export default function FAQSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-white mb-4 leading-tight"
           >
-            Frequently{" "}
+            Frequently Asked{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-bright-400">
-              Asked
-            </span>{" "}
-            Questions
+              Questions
+            </span>
           </motion.h2>
           
           <motion.p
@@ -96,7 +73,7 @@ export default function FAQSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-base text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed"
           >
-            Everything you need to know about VoiceAI
+            {faqData.description}
           </motion.p>
         </div>
         

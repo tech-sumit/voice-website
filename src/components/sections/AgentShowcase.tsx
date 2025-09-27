@@ -89,17 +89,10 @@ export default function AgentShowcase() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
           >
-            {agentShowcaseData.title.split(" ").map((word, index) => (
-              <span key={index}>
-                        {word === "More" || word === "Talk" ? (
-                          <span className="text-transparent bg-clip-text bg-gradient-to-r from-bright-400 to-bright-300">
-                            {word}
-                          </span>
-                        ) : (
-                          word
-                        )}{" "}
-              </span>
-            ))}
+            Agents That Do{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bright-400 to-bright-300">
+              More Than Talk
+            </span>
           </motion.h2>
           
           <motion.p

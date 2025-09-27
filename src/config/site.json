@@ -1,7 +1,7 @@
 {
   "name": "VoiceAI",
   "description": "Ultra-realistic AI Phone Calls for Business",
-  "url": "https://voiceai.example.com",
+  "url": "https://pixpoc.ai",
   "logo": "/logo.svg",
   "nav": [
     { "name": "Home", "path": "/" },
@@ -22,7 +22,7 @@
   "company": {
     "name": "VoiceAI Inc.",
     "address": "Pune, Maharashtra, India",
-    "email": "21.shitijagrawal@gmail.com",
+    "email": "founders@pixpoc.ai",
     "phone": "+919172879779",
     "social": {
       "twitter": "",

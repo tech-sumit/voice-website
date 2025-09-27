@@ -61,7 +61,7 @@ export default function Navbar() {
             {navItems.map((item) => (
               <Link 
                 key={item.path} 
-                href={item.path} 
+                href={item.isAnchor ? `/${item.path}` : item.path}
                 className="px-4 py-2 rounded-lg text-bright-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-primary-800/30 hover:text-primary-600 dark:hover:text-primary-300 transition-all duration-200 font-medium border border-transparent hover:border-primary-200 dark:hover:border-primary-700 flex items-center gap-1"
               >
                 {item.name}
@@ -105,7 +105,7 @@ export default function Navbar() {
             {navItems.map((item) => (
               <Link
                 key={item.path}
-                href={item.path}
+                href={item.isAnchor ? `/${item.path}` : item.path}
                 className="flex items-center justify-between py-3 px-4 rounded-lg text-bright-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-primary-800/30 hover:text-primary-600 dark:hover:text-primary-300 transition-all duration-200 font-medium border border-transparent hover:border-primary-200 dark:hover:border-primary-700"
                 onClick={() => setMobileMenuOpen(false)}
               >

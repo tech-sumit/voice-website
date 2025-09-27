@@ -66,7 +66,7 @@ export default function CTASection() {
             <Button
               href="/contact"
               size="lg"
-              className="bg-accent-200 text-primary-900 hover:bg-accent-100 hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-2xl font-semibold px-10 py-5 text-lg border-2 border-accent-300/50"
+              className="bg-primary-500 text-white hover:bg-primary-600 hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-2xl font-semibold px-10 py-5 text-lg border-2 border-primary-400/50 focus:ring-2 focus:ring-primary-500/50"
             >
               <PhoneIcon className="w-6 h-6 mr-3" />
               Contact Now

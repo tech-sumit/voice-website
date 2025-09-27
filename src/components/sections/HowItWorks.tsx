@@ -2,28 +2,12 @@
 
 import { motion } from "framer-motion";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import siteConfig from "@/config/site.json";
 
 export default function HowItWorks() {
-  const steps = [
-    {
-      number: "01",
-      title: "Design Your Agent",
-      description: "Create your ideal AI voice agent. Choose voices, set guidelines, and define how conversations should flow.",
-      color: "from-primary-400 to-primary-600",
-    },
-    {
-      number: "02",
-      title: "Connect Your Systems",
-      description: "Integrate with your CRM, calendar, or business software. Our API makes it simple to connect with the tools you already use.",
-      color: "from-secondary-400 to-secondary-600",
-    },
-    {
-      number: "03",
-      title: "Launch & Scale",
-      description: "Deploy your AI agents to handle unlimited calls simultaneously. Monitor performance and scale effortlessly as your needs grow.",
-      color: "from-accent-400 to-accent-600",
-    },
-  ];
+  // Get data from siteConfig
+  const howItWorksData = siteConfig.howItWorks;
+  const steps = howItWorksData.steps;
 
   const container = {
     hidden: { opacity: 0 },
@@ -85,7 +69,10 @@ export default function HowItWorks() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-white mb-4 leading-tight"
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-secondary-300">Simple</span> & <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-500 to-secondary-400">Effective</span> Process
+            Simple & Effective{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-secondary-300">
+              Process
+            </span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -94,7 +81,7 @@ export default function HowItWorks() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-base text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed"
           >
-            Get started in minutes, not months. Our platform makes it easy to deploy voice AI.
+            {howItWorksData.description}
           </motion.p>
         </div>
 
@@ -112,7 +99,6 @@ export default function HowItWorks() {
               "from-accent-500 to-accent-600"
             ];
             
-
             const gradient = gradients[index % gradients.length];
 
             return (

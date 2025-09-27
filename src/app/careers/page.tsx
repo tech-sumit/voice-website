@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import siteConfig from '@/config/site.json';
 
 export const metadata: Metadata = {
   title: "Careers - VoiceAI",
@@ -196,7 +197,7 @@ export default function CareersPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:careers@voiceai.com"
+              href={`mailto:${siteConfig.company.email}`}
               className="px-8 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors duration-200 font-medium"
             >
               Send Resume
