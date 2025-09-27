@@ -510,18 +510,17 @@ export default function Hero() {
             }}
             className="flex justify-center lg:justify-end"
           >
-            <div className="relative w-full max-w-[370px]">
+            <div className="relative w-full max-w-[320px] sm:max-w-[340px] h-[750px]">
               {/* 3D Phone Device Frame */}
-              <motion.div 
-                className="w-full bg-gradient-to-b from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 rounded-[40px] overflow-hidden shadow-2xl border border-neutral-400/20 dark:border-neutral-600/20"
+              <motion.div
+                className="absolute inset-0 w-full bg-gradient-to-b from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 rounded-[40px] overflow-hidden shadow-2xl border border-neutral-400/20 dark:border-neutral-600/20"
                 initial={{ rotateY: 0 }}
-                animate={{ 
+                animate={{
                   rotateY: animationStage >= 1 ? [0, -15, 0, -5, 0] : 0,
-                  y: [0, -8, 0],
+                  scale: 0.88
                 }}
-                transition={{ 
-                  rotateY: { duration: 1.5, ease: "easeInOut" },
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                transition={{
+                  rotateY: { duration: 1.5, ease: "easeInOut" }
                 }}
                 style={{
                   transformStyle: "preserve-3d",
@@ -531,9 +530,9 @@ export default function Hero() {
               >
                 {/* Phone Notch */}
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-7 bg-neutral-800 dark:bg-neutral-950 rounded-b-xl z-10" />
-                
+
                 {/* Phone Screen with High-Definition Visuals */}
-                <div className="pt-9 pb-10 px-4 min-h-[650px] bg-surface-50/90 dark:bg-surface-900/90 backdrop-blur-md">
+                <div className="pt-8 pb-4 px-3 min-h-[650px] bg-surface-50/90 dark:bg-surface-900/90 backdrop-blur-md">
                   {/* Status Bar */}
                   <div className="flex justify-between text-xs text-neutral-800 dark:text-neutral-200 mb-4">
                     <span>9:41 AM</span>
@@ -655,7 +654,7 @@ export default function Hero() {
                   </div>
 
                   {/* Animated Message Area - No AnimatePresence */}
-                  <div className="mt-12 pt-2">
+                  <div className="mt-6 pt-2">
                     {/* Assistant message */}
                     {animationStage >= 2 && (
                       <motion.div
@@ -703,19 +702,19 @@ export default function Hero() {
                           stiffness: 500, 
                           damping: 25 
                         }}
-                        className="relative bg-white dark:bg-neutral-800 rounded-2xl p-5 shadow-xl border border-neutral-200 dark:border-neutral-700"
+                        className="relative bg-white dark:bg-neutral-800 rounded-2xl p-4 shadow-xl border border-neutral-200 dark:border-neutral-700"
                         style={{
                           boxShadow: "0 20px 30px -10px rgba(0, 0, 0, 0.15), 0 0 10px rgba(0, 0, 0, 0.1)"
                         }}
                       >
-                        <h3 className="text-lg font-bold text-center text-neutral-900 dark:text-white mb-4">
+                        <h3 className="text-lg font-bold text-center text-neutral-900 dark:text-white mb-3">
                           Get a Personal Demo
                         </h3>
-                        <p className="text-sm text-center text-neutral-600 dark:text-neutral-300 mb-4">
+                        <p className="text-sm text-center text-neutral-600 dark:text-neutral-300 mb-3">
                           Enter your phone number and we&apos;ll call you back instantly
                         </p>
 
-                        <form onSubmit={handleSubmit} className="space-y-3">
+                        <form onSubmit={handleSubmit} className="space-y-2">
                           {/* Settings icon triggers modal */}
                           <button
                             type="button"
@@ -815,28 +814,28 @@ export default function Hero() {
                               }}
                               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             >
-                              <div className="flex flex-col sm:flex-row gap-2">
+                              <div className="flex flex-col sm:flex-row gap-1">
                                 {/* Country code dropdown */}
                                 <select
                                   value={countryCode}
                                   onChange={(e) => setCountryCode(e.target.value)}
-                                  className="w-full sm:w-auto px-2 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  className="w-full sm:w-auto px-2 py-2 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300 text-sm"
                                   aria-label="Country code"
-                            >
+                                >
                                   {countryCodes.map((country) => (
                                     <option key={country.code} value={country.code}>
                                       {country.code} {country.name}
                                     </option>
                                   ))}
                                 </select>
-                                
+
                                 {/* Phone input */}
                               <input
                                 type="tel"
                                   placeholder="123-456-7890"
                                 value={phoneNumber}
                                 onChange={(e) => setPhoneNumber(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                className="w-full px-3 py-2 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300 text-sm"
                                   pattern="[0-9-\s\(\)\.]{7,}"
                                   title="Please enter a valid phone number (7-15 digits)"
                                 required
@@ -844,7 +843,7 @@ export default function Hero() {
                               </div>
 
                               {/* Language selection dropdown */}
-                              <div className="mt-3">
+                              <div className="mt-2">
                                 <label htmlFor="language-select" className="block text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1">
                                   Preferred Language
                                 </label>
@@ -852,7 +851,7 @@ export default function Hero() {
                                   id="language-select"
                                   value={language}
                                   onChange={(e) => setLanguage(e.target.value)}
-                                  className="w-full px-4 py-3 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300"
+                                  className="w-full px-3 py-2 rounded-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-700 border-2 border-transparent focus:border-primary-500 focus:outline-none transition-all duration-300 text-sm"
                                   aria-label="Preferred language"
                                   required
                                 >
@@ -870,7 +869,7 @@ export default function Hero() {
                           </div>
 
                           {/* Security badge instead of visible CAPTCHA */}
-                          <div className="flex flex-col items-center mt-2">
+                          <div className="flex flex-col items-center mt-1">
                             <div className="bg-neutral-50 dark:bg-neutral-700 rounded-xl p-2 flex items-center text-xs text-secondary-600 dark:text-secondary-300">
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-green-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -878,13 +877,13 @@ export default function Hero() {
                               Protected by reCAPTCHA Enterprise
                             </div>
                           </div>
-                        
+
                           <motion.button
                             type="submit"
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
                             disabled={isSubmitting}
-                            className={`w-full py-3 rounded-xl border border-primary-500 bg-primary-600 dark:bg-gradient-primary text-white dark:text-white font-bold shadow-lg shadow-primary-500/20 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`w-full py-2.5 mt-2 rounded-xl border border-primary-500 bg-primary-600 dark:bg-gradient-primary text-white dark:text-white font-bold shadow-lg shadow-primary-500/20 text-sm ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                           >
                             {isSubmitting ? (
                               <span className="flex items-center justify-center">
