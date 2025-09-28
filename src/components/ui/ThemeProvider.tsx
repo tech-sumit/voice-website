@@ -17,21 +17,24 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    // Check for user preference in localStorage
+    // Force light theme by default, but allow user to override with dark
     const storedPreference = localStorage.getItem('theme');
     
     if (storedPreference === 'dark') {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
-    } else if (storedPreference === 'light') {
+      document.documentElement.classList.remove('light');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      // Default to light theme (even if no preference stored)
       setIsDarkMode(false);
       document.documentElement.classList.remove('dark');
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDarkMode(prefersDark);
-      if (prefersDark) {
-        document.documentElement.classList.add('dark');
+      document.documentElement.classList.add('light');
+      document.documentElement.setAttribute('data-theme', 'light');
+      
+      // If no preference is stored, set light as the default
+      if (!storedPreference) {
+        localStorage.setItem('theme', 'light');
       }
     }
   }, []);
@@ -41,9 +44,13 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       const newMode = !prev;
       if (newMode) {
         document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
       } else {
         document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
       }
       return newMode;
