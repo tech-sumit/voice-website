@@ -726,16 +726,16 @@ export default function Hero() {
                           
                           {/* Template Settings Modal */}
                           {showSettings && (
-                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                              <div className="bg-white dark:bg-neutral-800 rounded-lg p-6 w-96 max-h-[80vh] overflow-y-auto relative">
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+                              <div className="bg-white dark:bg-neutral-800 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto relative shadow-2xl">
                                 <button
                                   type="button"
-                                  className="absolute top-2 right-2 text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100"
+                                  className="absolute top-4 right-4 z-10 p-1 text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-full transition-colors"
                                   onClick={() => setShowSettings(false)}
                                 >
                                   <XMarkIcon className="h-5 w-5" />
                                 </button>
-                                <h2 className="text-lg font-semibold mb-4">Conversation Settings</h2>
+                                <h2 className="text-lg font-semibold mb-4 pr-8">Conversation Settings</h2>
                                 
                                 {/* Template selection dropdown */}
                                 <div className="mb-4">
@@ -759,23 +759,26 @@ export default function Hero() {
                                 </div>
                                 
                                 {/* Dynamic form fields based on selected template */}
-                                <div className="space-y-4">
+                                <div className="space-y-4 pb-4">
                                   {selectedTemplate.fields.map(field => (
-                                    <label key={field.name} className="block text-sm font-medium">
-                                      {field.label}
-                                    <div className="relative">
+                                    <div key={field.name} className="block text-sm font-medium">
+                                      <label className="block mb-1">
+                                        {field.label}
+                                        {field.required && <span className="text-red-500 ml-1">*</span>}
+                                      </label>
+                                      <div className="relative">
                                         {field.type === 'text' && field.name === 'expectedFlow' ? (
                                           <textarea
                                             value={templateValues[field.name] || ''}
                                             onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
-                                            className="mt-1 block w-full px-3 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:text-white"
+                                            className="mt-1 block w-full px-3 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:text-white resize-none"
                                             placeholder={field.placeholder}
                                             maxLength={field.maxLength}
-                                            rows={5}
+                                            rows={4}
                                             required={field.required}
                                           />
                                         ) : field.type === 'date' ? (
-                                      <input
+                                          <input
                                             type="date"
                                             value={templateValues[field.name] || ''}
                                             onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
@@ -792,15 +795,15 @@ export default function Hero() {
                                             placeholder={field.placeholder}
                                             maxLength={field.maxLength}
                                             required={field.required}
-                                      />
+                                          />
                                         )}
                                         {field.maxLength && (
-                                      <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+                                          <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
                                             {(templateValues[field.name] || '').length}/{field.maxLength}
-                                      </div>
+                                          </div>
                                         )}
+                                      </div>
                                     </div>
-                                  </label>
                                   ))}
                                 </div>
                               </div>
