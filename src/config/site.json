@@ -5,8 +5,6 @@
   "logo": "/logo.svg",
   "nav": [
     { "name": "Home", "path": "/" },
-    { "name": "Features", "path": "/features" },
-    { "name": "Pricing", "path": "/pricing" },
     { "name": "Contact", "path": "/contact" }
   ],
   "metadata": {
@@ -258,57 +256,6 @@
       { "name": "Stripe", "category": "Payment", "icon": "stripe.svg" }
     ]
   },
-  "pricing": [
-    {
-      "name": "Starter",
-      "price": 39,
-      "period": "mo",
-      "description": "Perfect for small businesses",
-      "color": "from-accent-500 to-accent-600",
-      "features": [
-        "1,000 minutes per month",
-        "Business hours availability",
-        "Basic CRM integration",
-        "Email support"
-      ],
-      "cta": "Get Started",
-      "ctaUrl": "/contact"
-    },
-    {
-      "name": "Professional",
-      "price": 99,
-      "period": "mo",
-      "description": "For growing companies",
-      "color": "from-primary-500 to-primary-600",
-      "featured": true,
-      "features": [
-        "5,000 minutes per month",
-        "24/7 availability",
-        "Advanced CRM integration",
-        "Priority support",
-        "Custom voice training"
-      ],
-      "cta": "Get Started",
-      "ctaUrl": "/contact"
-    },
-    {
-      "name": "Enterprise",
-      "price": "Custom",
-      "period": "",
-      "description": "For large organizations",
-      "color": "from-bright-500 to-bright-600",
-      "features": [
-        "Unlimited minutes",
-        "24/7 availability",
-        "Full API access",
-        "Dedicated account manager",
-        "Custom integrations",
-        "SLA guarantees"
-      ],
-      "cta": "Contact Sales",
-      "ctaUrl": "/contact"
-    }
-  ],
   "faq": {
     "title": "Frequently Asked Questions",
     "description": "Everything you need to know about VoiceAI",
