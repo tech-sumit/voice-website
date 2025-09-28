@@ -17,6 +17,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
+    // Set initial theme immediately to prevent flash
+    document.documentElement.classList.add('light');
+    document.documentElement.setAttribute('data-theme', 'light');
+    
     // Force light theme by default, but allow user to override with dark
     const storedPreference = localStorage.getItem('theme');
     

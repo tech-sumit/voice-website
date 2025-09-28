@@ -3,7 +3,6 @@ import Hero from "@/components/sections/Hero";
 import FeatureSection from "@/components/sections/FeatureSection";
 import AgentShowcase from "@/components/sections/AgentShowcase";
 import HowItWorks from "@/components/sections/HowItWorks";
-// import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
@@ -19,7 +18,6 @@ export const metadata: Metadata = {
     description: siteConfig.metadata.ogDescription,
     siteName: siteConfig.metadata.ogSiteName,
   },
-  themeColor: siteConfig.metadata.themeColor,
 };
 
 export default function Home() {
@@ -37,25 +35,10 @@ export default function Home() {
       {/* 4. Agent Showcase - Real examples and use cases (proof) */}
       <AgentShowcase />
       
-      {/* 5. Use Cases - Industry applications (relevance) */}
-      {/* <UseCaseSection /> */}
-      
-      {/* 6. Integrations - Technical compatibility (reduces friction) */}
-      {/* <IntegrationsSection /> */}
-      
-      {/* Future sections for complete user journey */}
-      {/* 7. Social Proof */}
-      {/* <LogoCarousel /> */}
-      {/* <StatsSection /> */}
-      {/* <TestimonialsSection /> */}
-      
-      {/* 8. Pricing - After value is established */}
-      {/* <PricingPreview /> */}
-      
-      {/* 9. FAQ - Address final concerns */}
+      {/* 5. FAQ - Address final concerns */}
       <FAQSection />
       
-      {/* 10. Final CTA - Convert visitors */}
+      {/* 6. Final CTA - Convert visitors */}
       <CTASection />
       
       <Footer />

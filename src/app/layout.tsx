@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: siteConfig.metadata.title,
   description: siteConfig.metadata.description,
   keywords: siteConfig.metadata.keywords,
@@ -41,6 +42,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+};
+
+export const viewport: Viewport = {
   themeColor: siteConfig.metadata.themeColor,
 };
 
@@ -50,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth light" data-theme="light">
+    <html lang="en" className="scroll-smooth">
       <body suppressHydrationWarning>
         <ClientClassManager 
           fontClasses={[geistSans.variable, geistMono.variable]} 

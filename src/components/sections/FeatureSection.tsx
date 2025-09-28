@@ -9,13 +9,13 @@ import {
   BookOpenIcon, 
   PhoneIcon, 
   CpuChipIcon,
-  ArrowsPointingOutIcon,  // for scale
-  BoltIcon,  // for triggers
-  UserIcon,  // for human in loop
-  ArrowPathIcon,  // for workflow
-  CurrencyDollarIcon,  // for plans
-  LockClosedIcon,  // for privacy
-  CogIcon  // for model switch
+  ArrowsPointingOutIcon,
+  BoltIcon,
+  UserIcon,
+  ArrowPathIcon,
+  CurrencyDollarIcon,
+  LockClosedIcon,
+  CogIcon
 } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
