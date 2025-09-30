@@ -16,6 +16,25 @@ interface PixPocVoiceCallResponse {
   error?: string;
 }
 
+interface CallRecipient {
+  to_number: string;
+  ai_flow: string;
+  tracking_id: string;
+}
+
+interface PixPocRequestBody {
+  provider: string;
+  from_number: string;
+  method: string;
+  voice: string;
+  gender: string;
+  call_settings: Record<string, string | number | boolean>;
+  idle_detection: Record<string, string | number | boolean>;
+  messages: Record<string, string | number | boolean>;
+  callback: Record<string, string | number | boolean>;
+  numbers_to_call: CallRecipient[];
+}
+
 /**
  * Get gender-appropriate AI assistant name
  */
@@ -175,25 +194,25 @@ function prepareCallRequests(
   language: string,
   name?: string,
   expectedFlow?: string
-): Record<string, any> {
+): PixPocRequestBody {
   const callConfig = normalizeOverrides(phoneNumber, language, name, expectedFlow);
   
   // Build request body in new bulk format
-  const requestBody = {
-    provider: callConfig.provider,
-    from_number: callConfig.from_number,
-    method: callConfig.method,
-    voice: callConfig.voice,
-    gender: callConfig.gender,
-    call_settings: callConfig.call_settings,
-    idle_detection: callConfig.idle_detection,
+  const requestBody: PixPocRequestBody = {
+    provider: callConfig.provider as string,
+    from_number: callConfig.from_number as string,
+    method: callConfig.method as string,
+    voice: callConfig.voice as string,
+    gender: callConfig.gender as string,
+    call_settings: callConfig.call_settings as Record<string, string | number | boolean>,
+    idle_detection: callConfig.idle_detection as Record<string, string | number | boolean>,
     messages: {},
-    callback: callConfig.callback,
+    callback: callConfig.callback as Record<string, string | number | boolean>,
     numbers_to_call: [
       {
-        to_number: callConfig.to_number,
-        ai_flow: callConfig.ai_flow,
-        tracking_id: callConfig.tracking_id
+        to_number: callConfig.to_number as string,
+        ai_flow: callConfig.ai_flow as string,
+        tracking_id: callConfig.tracking_id as string
       }
     ]
   };
