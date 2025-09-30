@@ -44,6 +44,32 @@ function getVoiceName(gender: string): string {
   }
 }
 
+
+/**
+ * Generate a JWT token for authentication only (no config overrides)
+ * This matches the Python script's generate_token function
+ */
+function generateAuthToken(): string {
+  const jwtSecret = process.env.PIXPOC_JWT_SECRET || '';
+  const tokenMinutes = parseInt(process.env.PIXPOC_TOKEN_MINUTES || '10');
+  
+  if (!jwtSecret) {
+    throw new Error('PIXPOC_JWT_SECRET environment variable not configured');
+  }
+
+  // Set expiration time
+  const now = Math.floor(Date.now() / 1000);
+  const expiration = now + (tokenMinutes * 60);
+
+  // JWT payload now only contains authentication info, not config overrides
+  const payload = {
+    exp: expiration,
+    iat: now,
+  };
+  
+  return jwt.sign(payload, jwtSecret, { algorithm: 'HS256' });
+}
+
 /**
  * Normalize overrides to match the new API schema expected by the backend
  * This function matches the _normalize_overrides function from the Python script
@@ -141,32 +167,7 @@ function normalizeOverrides(
 }
 
 /**
- * Generate a JWT token for authentication only (no config overrides)
- * This matches the Python script's generate_token function
- */
-function generateAuthToken(): string {
-  const jwtSecret = process.env.PIXPOC_JWT_SECRET || '';
-  const tokenMinutes = parseInt(process.env.PIXPOC_TOKEN_MINUTES || '10');
-  
-  if (!jwtSecret) {
-    throw new Error('PIXPOC_JWT_SECRET environment variable not configured');
-  }
-
-  // Set expiration time
-  const now = Math.floor(Date.now() / 1000);
-  const expiration = now + (tokenMinutes * 60);
-
-  // JWT payload now only contains authentication info, not config overrides
-  const payload = {
-    exp: expiration,
-    iat: now,
-  };
-  
-  return jwt.sign(payload, jwtSecret, { algorithm: 'HS256' });
-}
-
-/**
- * Prepare call request data in the new API format with calls array
+ * Prepare call request data in the new API format with numbers_to_call array
  * This matches the Python script's prepare_call_requests function
  */
 function prepareCallRequests(
@@ -174,9 +175,30 @@ function prepareCallRequests(
   language: string,
   name?: string,
   expectedFlow?: string
-): { calls: Record<string, string | number | boolean | object>[] } {
+): Record<string, any> {
   const callConfig = normalizeOverrides(phoneNumber, language, name, expectedFlow);
-  return { calls: [callConfig] };
+  
+  // Build request body in new bulk format
+  const requestBody = {
+    provider: callConfig.provider,
+    from_number: callConfig.from_number,
+    method: callConfig.method,
+    voice: callConfig.voice,
+    gender: callConfig.gender,
+    call_settings: callConfig.call_settings,
+    idle_detection: callConfig.idle_detection,
+    messages: {},
+    callback: callConfig.callback,
+    numbers_to_call: [
+      {
+        to_number: callConfig.to_number,
+        ai_flow: callConfig.ai_flow,
+        tracking_id: callConfig.tracking_id
+      }
+    ]
+  };
+
+  return requestBody;
 }
 
 /**
@@ -187,10 +209,10 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
   let languageName = '';
   let aiFlow = '';
   let trackingId = '';
-  
+
   try {
     // Get API configuration from environment variables
-    const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://wdmyy5nn0a.execute-api.ap-south-1.amazonaws.com/dev';
+    const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://lxjihu6hrj.execute-api.ap-south-1.amazonaws.com/dev';
     const apiEndpoint = `${apiServerUrl}/initiate`;
     const timeout = 30; // Fixed timeout
     
@@ -211,11 +233,11 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
     // Generate authentication token (simplified JWT)
     const authToken = generateAuthToken();
     
-    // Prepare request data with calls array
+    // Prepare request data in new bulk format
     const requestData = prepareCallRequests(phoneNumber, language, name, expectedFlow);
     
     // Extract tracking ID for logging
-    trackingId = requestData.calls[0].tracking_id as string;
+    trackingId = requestData.numbers_to_call[0].tracking_id as string;
 
     // Log the API call details
     console.log(`[PIXPOC_CALL_INITIATED] Making API call to: ${apiEndpoint}`);
@@ -225,8 +247,8 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
     console.log(`[PIXPOC_CALL_INITIATED] From Number: ${process.env.PIXPOC_FROM_NUMBER || siteConfig.company.phone}`);
     console.log(`[PIXPOC_CALL_INITIATED] Language: ${language} (${languageName})`);
     console.log(`[PIXPOC_CALL_INITIATED] Provider: twilio`);
-    console.log(`[PIXPOC_CALL_INITIATED] Voice: ${requestData.calls[0].voice}`);
-    console.log(`[PIXPOC_CALL_INITIATED] Gender: ${requestData.calls[0].gender}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Voice: ${requestData.voice}`);
+    console.log(`[PIXPOC_CALL_INITIATED] Gender: ${requestData.gender}`);
     console.log(`[PIXPOC_CALL_INITIATED] Tracking ID: ${trackingId}`);
     console.log(`[PIXPOC_CALL_INITIATED] Name: ${name || 'Not provided'}`);
     console.log(`[PIXPOC_CALL_INITIATED] Expected Flow: ${expectedFlow ? 'Provided' : 'Not provided'}`);
@@ -245,7 +267,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
         'User-Agent': 'VoiceCallingAgent-Client/1.0',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(requestData), // Calls array format
+      body: JSON.stringify(requestData), // New bulk format
       signal: controller.signal
     });
     
