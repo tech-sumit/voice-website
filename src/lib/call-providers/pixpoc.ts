@@ -50,16 +50,34 @@ function getAIAssistantName(gender: string): string {
 }
 
 /**
- * Get gender-appropriate voice name
+ * Get gender-appropriate voice name based on language
  */
-function getVoiceName(gender: string): string {
-  const maleVoices = ['hitesh'];
-  const femaleVoices = ['manisha'];
+function getVoiceName(gender: string, language: string): string {
+  // LMNT TTS supported languages (Ultra-Low Latency)
+  const lmntLanguages = [
+    'ar', 'zh', 'nl', 'en-US', 'fr', 'de', 'hi-NE', 
+    'id', 'it', 'ja', 'ko', 'pl', 'pt', 'ru', 
+    'es', 'sv', 'th', 'tr', 'uk', 'ur', 'vi'
+  ];
   
-  if (gender.toLowerCase() === 'female') {
-    return femaleVoices[Math.floor(Math.random() * femaleVoices.length)];
+  // Check if this language uses LMNT TTS
+  if (lmntLanguages.includes(language)) {
+    // LMNT TTS voices - using Autumn (female) as default for all LMNT languages
+    if (gender.toLowerCase() === 'female') {
+      return 'autumn'; // Warm, friendly with professional yet approachable tone
+    } else {
+      return 'ryan'; // Rhythmic voice with theatrical flair - excellent for customer service
+    }
   } else {
-    return maleVoices[Math.floor(Math.random() * maleVoices.length)];
+    // Sarvam TTS voices (Indian Languages)
+    const maleVoices = ['hitesh'];
+    const femaleVoices = ['manisha'];
+    
+    if (gender.toLowerCase() === 'female') {
+      return femaleVoices[Math.floor(Math.random() * femaleVoices.length)];
+    } else {
+      return maleVoices[Math.floor(Math.random() * maleVoices.length)];
+    }
   }
 }
 
@@ -155,7 +173,7 @@ function normalizeOverrides(
     provider: 'twilio',
     
     // Voice settings (moved from nested tts_options to root level)
-    voice: getVoiceName(gender),
+    voice: getVoiceName(gender, language),
     gender: gender,
     
     // Call settings with language nested (matches Python script structure)
