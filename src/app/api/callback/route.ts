@@ -228,17 +228,17 @@ export async function POST(request: Request) {
     // Validate input length and format
     const validationErrors = [];
     
+    // Check if phone number starts with +91 (Indian numbers only) - check this first
+    if (!phoneNumber.startsWith('+91')) {
+      validationErrors.push('Currently, we only support Indian phone numbers starting with +91');
+    }
+    
     if (phoneNumber.length > MAX_LENGTH.phone) {
       validationErrors.push(`Phone number must be ${MAX_LENGTH.phone} characters or less`);
     }
     
     if (!isValidPhone(phoneNumber)) {
       validationErrors.push('Please provide a valid phone number');
-    }
-    
-    // Check if phone number starts with +91 (Indian numbers only)
-    if (!phoneNumber.includes('+91')) {
-      validationErrors.push('Currently, we only support Indian phone numbers (+91)');
     }
     
     // Validate expected flow
