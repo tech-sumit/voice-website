@@ -236,6 +236,11 @@ export async function POST(request: Request) {
       validationErrors.push('Please provide a valid phone number');
     }
     
+    // Check if phone number starts with +91 (Indian numbers only)
+    if (!phoneNumber.startsWith('+91')) {
+      validationErrors.push('Currently, we only support Indian phone numbers (+91)');
+    }
+    
     // Validate expected flow
     if (!expectedFlow) {
       validationErrors.push('Conversation flow is required');
