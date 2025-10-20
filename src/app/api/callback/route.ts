@@ -237,7 +237,7 @@ export async function POST(request: Request) {
     }
     
     // Check if phone number starts with +91 (Indian numbers only)
-    if (!phoneNumber.startsWith('+91')) {
+    if (!phoneNumber.includes('+91')) {
       validationErrors.push('Currently, we only support Indian phone numbers (+91)');
     }
     
@@ -416,18 +416,19 @@ Speak in friendly, professional English.
     
     // Return success if either email or call was successful
     if (emailResult.success || callResult.success) {
-      return NextResponse.json({ 
+      const response = NextResponse.json({ 
         success: true,
         callInitiated: callResult.success,
         emailSent: emailResult.success
-      }, {
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-          'Surrogate-Control': 'no-store'
-        }
       });
+      
+      // Set cache control headers
+      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      response.headers.set('Pragma', 'no-cache');
+      response.headers.set('Expires', '0');
+      response.headers.set('Surrogate-Control', 'no-store');
+      
+      return response;
     } else {
       // Both email and call failed
       return NextResponse.json(
