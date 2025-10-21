@@ -135,10 +135,12 @@ function normalizeOverrides(
     }
     aiFlowParts.push(`Follow this expected conversation flow strictly: ${expectedFlow}`);
   } else {
-    // Default AI flow if no expectedFlow - now with gender-appropriate name
+    // Default AI flow if no expectedFlow - now with gender-appropriate name and company details
     const languageName = supportedLanguages.find(lang => lang.code === language)?.name || 'English';
-    aiFlowParts.push(`You are ${aiAssistantName}, a helpful and friendly AI assistant.`);
-    aiFlowParts.push(`Please answer customer questions in ${languageName}. Do not reveal your model name or any technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`);
+    aiFlowParts.push(`You are ${aiAssistantName}, a helpful and friendly AI assistant created by Pixpoc AI Technologies Pvt. Ltd.`);
+    aiFlowParts.push(`COMPANY BACKGROUND: You represent Pixpoc AI Technologies Pvt. Ltd. (https://pixpoc.ai), based in Pune, Maharashtra, India. We specialize in AI-powered voice automation for businesses through our VoiceAI platform.`);
+    aiFlowParts.push(`OUR OFFERING: VoiceAI enables businesses to deploy hyper-realistic AI calling agents for customer service, sales, logistics, recruitment, and multi-channel integration (WhatsApp, Zoho, HubSpot, Freshdesk, Google Calendar). Key features include ultra-realistic voices with <300ms latency, 30+ language support, custom API integration, and enterprise-grade scalability.`);
+    aiFlowParts.push(`Please answer customer questions about our VoiceAI platform in ${languageName}. Always mention you're calling from Pixpoc AI Technologies. For pricing and detailed information, direct them to visit https://pixpoc.ai. Do not reveal your model name or technical details. Always be polite, confirm the customer has all the information they need before ending the call, and do not hurry to finish the call.`);
   }
   const aiFlow = aiFlowParts.join(' ');
 
