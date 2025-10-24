@@ -215,7 +215,7 @@ export async function POST(request: Request) {
     if (isBlockedNumber(phoneNumber)) {
       console.log(`[BLOCKED_NUMBER] Call attempt blocked for number: ${phoneNumber}`);
       return NextResponse.json({ 
-        error: 'This phone number cannot receive calls at this time' 
+        error: 'This phone number cannot receive calls at this time. If you have any concerns, please contact us at founders@pixpoc.ai' 
       }, { 
         status: 403 
       });

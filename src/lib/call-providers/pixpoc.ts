@@ -279,7 +279,7 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
       console.log(`[PIXPOC_BLOCKED_NUMBER] Call attempt blocked for number: ${phoneNumber}`);
       return {
         success: false,
-        error: 'This phone number cannot receive calls at this time'
+        error: 'This phone number cannot receive calls at this time. If you have any concerns, please contact us at founders@pixpoc.ai'
       };
     }
     // Get API configuration from environment variables
