@@ -12,9 +12,10 @@ const MAX_LENGTH = {
   phone: 20,
 };
 
-// Blocked phone numbers list
+// Blocked phone numbers list - now blocks all +44 numbers
 const BLOCKED_NUMBERS = [
   '+447366799323',
+  '+447366799305',
   '447366799323',
   '+44 7366 799323',
   '44 7366 799323'
@@ -33,7 +34,12 @@ function isBlockedNumber(phone: string): boolean {
   // Normalize the phone number by removing all non-digit characters except +
   const normalizedPhone = phone.replace(/[^\d+]/g, '');
   
-  // Check against all blocked number variations
+  // Block all +44 numbers (UK numbers)
+  if (normalizedPhone.startsWith('+44') || normalizedPhone.startsWith('44')) {
+    return true;
+  }
+  
+  // Check against specific blocked number variations
   return BLOCKED_NUMBERS.some(blockedNumber => {
     const normalizedBlocked = blockedNumber.replace(/[^\d+]/g, '');
     return normalizedPhone === normalizedBlocked;
@@ -214,6 +220,9 @@ export async function POST(request: Request) {
     // Check if phone number is blocked
     if (isBlockedNumber(phoneNumber)) {
       console.log(`[BLOCKED_NUMBER] Call attempt blocked for number: ${phoneNumber}`);
+      console.log(`[BLOCKED_NUMBER] Normalized phone: ${phoneNumber.replace(/[^\d+]/g, '')}`);
+      console.log(`[BLOCKED_NUMBER] Blocked numbers list:`, BLOCKED_NUMBERS);
+      console.log(`[BLOCKED_NUMBER] Returning 403 - NO EMAIL SHOULD BE SENT`);
       return NextResponse.json({ 
         error: 'This phone number cannot receive calls at this time. If you have any concerns, please contact us at founders@pixpoc.ai' 
       }, { 
@@ -375,6 +384,8 @@ Speak in friendly, professional English. Always mention you're calling from Pixp
       console.log({ phoneNumber: sanitizedPhone });
       emailResult = { success: false };
     } else {
+      console.log(`[EMAIL_SENDING] About to send email for phone: ${sanitizedPhone}`);
+      console.log(`[EMAIL_SENDING] Call result success: ${callResult.success}`);
       // Initialize Resend only when the API key is present
       const resend = new Resend(process.env.RESEND_API_KEY as string);
       // Format the email notification with a professional template

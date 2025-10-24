@@ -3,7 +3,7 @@ import supportedLanguages from '@/config/languages';
 import jwt from 'jsonwebtoken';
 import { randomUUID } from 'crypto';
 
-// Blocked phone numbers list
+// Blocked phone numbers list - now blocks all +44 numbers
 const BLOCKED_NUMBERS = [
   '+447366799323',
   '447366799323',
@@ -20,7 +20,12 @@ function isBlockedNumber(phone: string): boolean {
   // Normalize the phone number by removing all non-digit characters except +
   const normalizedPhone = phone.replace(/[^\d+]/g, '');
   
-  // Check against all blocked number variations
+  // Block all +44 numbers (UK numbers)
+  if (normalizedPhone.startsWith('+44') || normalizedPhone.startsWith('44')) {
+    return true;
+  }
+  
+  // Check against specific blocked number variations
   return BLOCKED_NUMBERS.some(blockedNumber => {
     const normalizedBlocked = blockedNumber.replace(/[^\d+]/g, '');
     return normalizedPhone === normalizedBlocked;
