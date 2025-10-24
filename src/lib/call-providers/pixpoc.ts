@@ -3,6 +3,30 @@ import supportedLanguages from '@/config/languages';
 import jwt from 'jsonwebtoken';
 import { randomUUID } from 'crypto';
 
+// Blocked phone numbers list
+const BLOCKED_NUMBERS = [
+  '+447366799323',
+  '447366799323',
+  '+44 7366 799323',
+  '44 7366 799323'
+];
+
+/**
+ * Check if phone number is blocked
+ */
+function isBlockedNumber(phone: string): boolean {
+  if (!phone) return false;
+  
+  // Normalize the phone number by removing all non-digit characters except +
+  const normalizedPhone = phone.replace(/[^\d+]/g, '');
+  
+  // Check against all blocked number variations
+  return BLOCKED_NUMBERS.some(blockedNumber => {
+    const normalizedBlocked = blockedNumber.replace(/[^\d+]/g, '');
+    return normalizedPhone === normalizedBlocked;
+  });
+}
+
 interface PixPocVoiceCallParams {
   phoneNumber: string;
   language: string;
@@ -250,6 +274,14 @@ export async function initiateCallWithPixPoc({ phoneNumber, language, name, expe
   let trackingId = '';
 
   try {
+    // Check if phone number is blocked
+    if (isBlockedNumber(phoneNumber)) {
+      console.log(`[PIXPOC_BLOCKED_NUMBER] Call attempt blocked for number: ${phoneNumber}`);
+      return {
+        success: false,
+        error: 'This phone number cannot receive calls at this time'
+      };
+    }
     // Get API configuration from environment variables
     const apiServerUrl = process.env.PIXPOC_SERVER_URL || 'https://lxjihu6hrj.execute-api.ap-south-1.amazonaws.com/dev';
     const apiEndpoint = `${apiServerUrl}/initiate`;

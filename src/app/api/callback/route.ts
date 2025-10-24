@@ -12,11 +12,33 @@ const MAX_LENGTH = {
   phone: 20,
 };
 
+// Blocked phone numbers list
+const BLOCKED_NUMBERS = [
+  '+447366799323',
+  '447366799323',
+  '+44 7366 799323',
+  '44 7366 799323'
+];
+
 // Simple in-memory rate limiting (reset on server restart)
 // In production, use Redis or similar for persistent rate limiting
 const ipRequestCounts = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_MAX = 50; // Max requests per window
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
+
+// Check if phone number is blocked
+function isBlockedNumber(phone: string): boolean {
+  if (!phone) return false;
+  
+  // Normalize the phone number by removing all non-digit characters except +
+  const normalizedPhone = phone.replace(/[^\d+]/g, '');
+  
+  // Check against all blocked number variations
+  return BLOCKED_NUMBERS.some(blockedNumber => {
+    const normalizedBlocked = blockedNumber.replace(/[^\d+]/g, '');
+    return normalizedPhone === normalizedBlocked;
+  });
+}
 
 // Validate phone number format
 function isValidPhone(phone: string): boolean {
@@ -186,6 +208,16 @@ export async function POST(request: Request) {
         error: 'Phone number is required' 
       }, { 
         status: 400 
+      });
+    }
+    
+    // Check if phone number is blocked
+    if (isBlockedNumber(phoneNumber)) {
+      console.log(`[BLOCKED_NUMBER] Call attempt blocked for number: ${phoneNumber}`);
+      return NextResponse.json({ 
+        error: 'This phone number cannot receive calls at this time' 
+      }, { 
+        status: 403 
       });
     }
     
