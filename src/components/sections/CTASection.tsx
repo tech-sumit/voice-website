@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
-import { ArrowRightIcon, PhoneIcon } from "@heroicons/react/24/solid";
 
 export default function CTASection() {
     return (

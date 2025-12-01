@@ -63,7 +63,7 @@ export default function HowItWorks() {
           {/* Connecting "Cables" for Desktop */}
           <div className="hidden md:block absolute top-[60px] left-[16%] right-[16%] h-2 bg-[var(--hw-text-main)] -z-10 rounded-full"></div>
 
-          {steps.map((step, index) => {
+          {steps.map((step) => {
             return (
               <motion.div
                 key={step.number}

@@ -101,7 +101,7 @@ export default function FeatureSection() {
           viewport={{ once: true }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {siteConfig.features.map((feature, index) => {
+          {siteConfig.features.map((feature) => {
             const IconComponent = getIconComponent(feature.icon);
             
             return (

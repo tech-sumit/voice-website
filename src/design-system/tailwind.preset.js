@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import { tokens } from './tokens';
 
-export default {
+const preset = {
   darkMode: "class",
   theme: {
     extend: {
@@ -27,4 +27,6 @@ export default {
   },
   plugins: [],
 };
+
+export default preset;
 
