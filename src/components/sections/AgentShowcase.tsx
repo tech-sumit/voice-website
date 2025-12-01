@@ -44,154 +44,109 @@ export default function AgentShowcase() {
   const agentShowcaseData = siteConfig.agentShowcase;
   const currentCategory = agentShowcaseData.categories.find((cat: Category) => cat.id === activeCategory);
 
-  return (
-    <section id="agents" className="py-12 bg-gradient-to-b from-surface-800 to-surface-900 relative overflow-hidden">
-      {/* Creative background elements */}
-      <div className="absolute inset-0">
-        {/* Dotted grid pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full" style={{
-            backgroundImage: 'radial-gradient(circle, #EDF1D6 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
-          }}></div>
-        </div>
-
-        {/* Geometric decorations */}
-        <div className="absolute top-20 left-20 w-24 h-24 border border-bright-600/20 rounded-lg rotate-45"></div>
-        <div className="absolute bottom-32 right-32 w-32 h-32 border border-bright-500/20 rounded-full"></div>
-        <div className="absolute top-1/3 right-20 w-16 h-16 border border-bright-400/20 rotate-12"></div>
-
-        {/* Gradient orbs */}
-        <div className="absolute top-40 left-1/4 w-72 h-72 bg-bright-600/3 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-40 right-1/4 w-64 h-64 bg-bright-500/3 rounded-full blur-3xl"></div>
-      </div>
+    return (
+    <section id="agents" className="py-24 bg-[var(--hw-chassis)] relative overflow-hidden border-t border-[var(--hw-border)]">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-noise mix-blend-overlay"></div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Enhanced Header */}
-        <div className="text-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block"
-          >
-            <div className="inline-flex items-center px-4 py-2 bg-bright-900/30 border border-bright-600/30 rounded-full mb-6">
-              <div className="w-2 h-2 bg-bright-500 rounded-full mr-3 animate-pulse"></div>
-              <span className="text-bright-400 text-sm font-medium tracking-wide uppercase">OUR AGENTS</span>
-            </div>
-          </motion.div>
-          
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
-          >
-            Agents That Do{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bright-400 to-bright-300">
-              More Than Talk
-            </span>
-          </motion.h2>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed"
-          >
+        {/* Section Header - File Cabinet Style */}
+        <div className="flex flex-col items-center text-center mb-16">
+          <div className="bg-[var(--hw-border)] px-8 py-4 rounded-lg shadow-[inset_0_2px_4px_rgba(255,255,255,0.5),0_4px_8px_rgba(0,0,0,0.05)] border border-[var(--hw-border)] mb-6">
+             <h2 className="text-3xl md:text-4xl font-bold text-[var(--hw-text-main)] tracking-tight uppercase">
+               Agent <span className="text-[#1A5C54] dark:text-[#4DB6AC]">Library</span>
+             </h2>
+          </div>
+          <p className="text-[var(--hw-text-muted)] max-w-2xl leading-relaxed font-medium">
             {agentShowcaseData.subtitle}
-          </motion.p>
+          </p>
         </div>
 
-        {/* Enhanced Category Tabs */}
+        {/* Category Tabs - Physical Folder Tabs */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-2 mb-12"
         >
           {agentShowcaseData.categories.map((category: Category) => (
-            <motion.button
+            <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className={`relative px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+              className={`relative px-6 py-3 rounded-t-xl font-bold text-sm uppercase tracking-wide transition-all duration-200 border-t-2 border-x-2 ${
                 activeCategory === category.id
-                  ? "bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg"
-                  : "bg-surface-800/50 backdrop-blur-sm border border-surface-700 text-neutral-300 hover:bg-surface-700/50 hover:text-white hover:border-surface-600"
+                  ? "bg-[#1A5C54] text-[#F5F1E8] dark:bg-[#4DB6AC] dark:text-[#0F0F0F] border-[#1A5C54] dark:border-[#4DB6AC] translate-y-1 shadow-[0_-4px_0_rgba(0,0,0,0.1)]"
+                  : "bg-[var(--hw-border)] text-[var(--hw-text-muted)] border-[var(--hw-border)] hover:bg-[var(--hw-chassis)] translate-y-2"
               }`}
             >
-              {activeCategory === category.id && (
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl blur-lg opacity-30"></div>
-              )}
-              <span className="relative">{category.name}</span>
-            </motion.button>
+              {category.name}
+            </button>
           ))}
+          {/* Tab Base Line */}
+          <div className="w-full h-2 bg-[#1A5C54] dark:bg-[#4DB6AC] rounded-full mt-[-8px] z-10 relative"></div>
         </motion.div>
 
-        {/* Redesigned Agent Cards */}
+        {/* Cartridge Grid */}
         <motion.div 
           key={activeCategory}
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
+          className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
         >
           {currentCategory?.agents.map((agent: Agent) => {
-            // Use consistent primary gradient for all cards
-            const gradient = "from-primary-500 to-primary-600";
-            
             return (
               <motion.div 
                 key={agent.id}
                 variants={item}
-                className="group relative bg-surface-800/40 backdrop-blur-sm border border-surface-700/50 rounded-2xl overflow-hidden hover:bg-surface-700/40 hover:border-surface-600/50 transition-all duration-300 h-full flex flex-col"
-                whileHover={{ y: -8, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                className="group relative"
               >
-                {/* Card header with gradient */}
-                <div className={`h-2 bg-gradient-to-r ${gradient}`}></div>
-                
-                <div className="p-6 flex flex-col flex-1">
-                  {/* Agent Avatar and Info */}
-                  <div className="flex items-start space-x-3 mb-4">
-                    <div className={`relative w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg flex-shrink-0`}>
-                      {agent.avatar ? (
-                        <Image src={agent.avatar} alt={agent.name} width={56} height={56} className="w-full h-full object-cover rounded-xl" />
-                      ) : (
-                        <PhoneIcon className="w-7 h-7 text-white" />
-                      )}
-                      {/* Glow effect */}
-                      <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`}></div>
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary-400 transition-colors duration-300 line-clamp-2">
-                        {agent.name}
-                      </h3>
-                      
-                      {/* Category Tag */}
-                      <div className="flex flex-wrap gap-2">
-                        <span className="px-3 py-1 text-xs font-medium bg-primary-900/30 text-primary-400 rounded-full border border-primary-600/20">
-                          {agent.category}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                {/* The Cartridge Body */}
+                <div className="bg-[var(--hw-cartridge)] rounded-t-[4px] rounded-b-[20px] p-4 pb-8 shadow-[10px_10px_20px_rgba(0,0,0,0.15)] transform transition-transform duration-300 group-hover:-translate-y-4 relative overflow-hidden">
                   
-                  {/* Description - flexible height */}
-                  <p className="text-neutral-400 leading-relaxed group-hover:text-neutral-300 transition-colors duration-300 flex-1 line-clamp-4">
-                    {agent.description}
-                  </p>
+                  {/* Top Grip Texture */}
+                  <div className="h-12 w-full border-b-4 border-[var(--hw-panel)] mb-4 flex justify-center gap-1 pt-2">
+                     {[...Array(8)].map((_, i) => (
+                       <div key={i} className="w-1 h-6 bg-[var(--hw-panel)] rounded-full"></div>
+                     ))}
+                  </div>
+
+                  {/* The Label Area */}
+                  <div className="bg-[var(--hw-label)] rounded-lg p-5 min-h-[200px] shadow-[inset_0_0_10px_rgba(0,0,0,0.1)] relative">
+                     {/* Label "Tape" */}
+                     <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-[#FF5722] opacity-80 rotate-[-2deg]"></div>
+
+                     {/* Header */}
+                     <div className="flex items-start gap-4 mb-4 border-b-2 border-[var(--hw-border)] pb-4">
+                        <div className="w-12 h-12 bg-[var(--hw-chassis)] rounded-md flex items-center justify-center border border-[var(--hw-border)]">
+                          {agent.avatar ? (
+                             <Image src={agent.avatar} alt={agent.name} width={40} height={40} className="rounded" />
+                          ) : (
+                             <PhoneIcon className="w-6 h-6 text-[var(--hw-text-muted)]" />
+                          )}
+                        </div>
+                        <div>
+                           <h3 className="text-lg font-bold text-[var(--hw-text-main)] leading-tight">{agent.name}</h3>
+                           <span className="text-xs font-mono text-[#1A5C54] dark:text-[#4DB6AC] bg-[var(--hw-chassis)] px-2 py-0.5 rounded mt-1 inline-block">
+                             {agent.category}
+                           </span>
+                        </div>
+                     </div>
+
+                     <p className="text-[var(--hw-text-muted)] text-sm leading-relaxed font-medium">
+                       {agent.description}
+                     </p>
+                  </div>
+
+                  {/* Connector Pins at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-4 bg-[var(--hw-panel)] flex justify-center gap-2 px-8">
+                     {[...Array(6)].map((_, i) => (
+                       <div key={i} className="w-4 h-full bg-[#FFD700] opacity-80 rounded-t-sm"></div>
+                     ))}
+                  </div>
                 </div>
                 
-                {/* Hover effect line */}
-                <div className={`absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r ${gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></div>
+                {/* Slot Shadow (stays on ground) */}
+                <div className="absolute -bottom-4 left-4 right-4 h-4 bg-black/20 blur-lg rounded-full transition-all duration-300 group-hover:scale-75 group-hover:opacity-10"></div>
               </motion.div>
             );
           })}
@@ -203,16 +158,13 @@ export default function AgentShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-12"
+          className="text-center mt-16"
         >
-          <div className="inline-flex items-center space-x-4 px-8 py-4 bg-surface-800/30 backdrop-blur-sm border border-surface-700/50 rounded-full">
-            <div className="flex space-x-1">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className={`w-2 h-2 rounded-full bg-secondary-500 animate-pulse`} style={{animationDelay: `${i * 0.15}s`}}></div>
-              ))}
-            </div>
-            <span className="text-neutral-400 text-sm">Ready to deploy across industries</span>
-          </div>
+           <div className="inline-block border-2 border-[var(--hw-border)] rounded px-6 py-2">
+              <span className="text-[var(--hw-text-muted)] text-xs font-mono uppercase tracking-widest">
+                End of Library // {agentShowcaseData.categories.length} Categories Loaded
+              </span>
+           </div>
         </motion.div>
       </div>
     </section>

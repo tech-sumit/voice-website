@@ -1,47 +1,4 @@
-export type ThemeConfig = {
-  colors: {
-    primary: ColorConfig;
-    secondary: ColorConfig;
-    accent: ColorConfig;
-    bright: ColorConfig;
-    neutral: ColorConfig;
-    success: ColorConfig;
-    warning: ColorConfig;
-    error: ColorConfig;
-    surface: ColorConfig;
-  };
-  fonts: {
-    sans: string[];
-    mono: string[];
-  };
-  darkMode: {
-    backgroundColor: string;
-    textColor: string;
-  };
-  lightMode: {
-    backgroundColor: string;
-    textColor: string;
-  };
-  animations: {
-    [key: string]: string;
-  };
-};
-
-type ColorConfig = {
-  DEFAULT: string;
-  50: string;
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
-};
-
-const theme: ThemeConfig = {
+export const tokens = {
   colors: {
     // Dark Teal - Primary brand color inspired by retro-modern aesthetic
     primary: {
@@ -174,14 +131,6 @@ const theme: ThemeConfig = {
     sans: ["var(--font-geist-sans)", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial"],
     mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New"],
   },
-  darkMode: {
-    backgroundColor: "#0F3A34", // Dark teal for dark mode background
-    textColor: "#F5F1E8", // Warm cream for dark mode text
-  },
-  lightMode: {
-    backgroundColor: "#F5F1E8", // Warm cream background
-    textColor: "#3D3935", // Warm dark gray for text - excellent contrast
-  },
   animations: {
     "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
     "bounce-slow": "bounce 3s infinite",
@@ -191,4 +140,3 @@ const theme: ThemeConfig = {
   },
 };
 
-export default theme; 

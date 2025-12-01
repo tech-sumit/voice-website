@@ -5,7 +5,6 @@ import Navbar from "@/components/layout/Navbar";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import siteConfig from "@/config/site.json";
-import ClientClassManager from "../components/layout/ClientClassManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,11 +53,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body suppressHydrationWarning>
-        <ClientClassManager 
-          fontClasses={[geistSans.variable, geistMono.variable]} 
-        />
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body 
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

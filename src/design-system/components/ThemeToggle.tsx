@@ -29,4 +29,5 @@ export default function ThemeToggle({ isFixed = true, className = "" }: { isFixe
       </motion.div>
     </motion.button>
   );
-} 
+}
+

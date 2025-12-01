@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
-import siteConfig from "@/config/site.json";
+import Logo from "@/components/ui/Logo";
 import { motion } from "framer-motion";
 
 export default function Navbar() {
@@ -34,50 +33,48 @@ export default function Navbar() {
     { name: "Careers", path: "/careers", isAnchor: false, hasArrow: true },
   ];
 
-  return (
+    return (
     <nav 
-      className={`sticky top-0 z-50 transition-all duration-300 border-b-2
+      className={`sticky top-0 z-50 transition-all duration-300 border-b-[4px] border-[var(--hw-border)]
       ${scrolled 
-        ? "bg-accent-100/95 dark:bg-surface-800/95 shadow-lg border-primary-200 dark:border-primary-700" 
-        : "bg-accent-50/80 dark:bg-surface-800/80 border-primary-200 dark:border-primary-800"}`}
+        ? "bg-[var(--hw-border)] shadow-md py-2" 
+        : "bg-[var(--hw-chassis)] py-4"}`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 sm:h-20 items-center">
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center group">
-              <Image
-                src={siteConfig.logo}
-                alt={siteConfig.name}
-                width={200}
-                height={120}
-                className="h-8 w-auto sm:h-10 group-hover:opacity-80 transition-opacity duration-200"
-                priority
-              />
+        <div className="flex justify-between items-center">
+          {/* Brand Label */}
+          <div className="flex-shrink-0 relative group">
+            <div className="absolute -inset-2 bg-white/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <Link href="/" className="flex items-center relative z-10">
+              <Logo className="h-10 w-auto text-[var(--hw-text-main)] transition-transform duration-300 group-hover:scale-105" />
             </Link>
           </div>
           
-          {/* Desktop menu */}
-          <div className="hidden md:flex space-x-1 lg:space-x-2">
+          {/* Desktop Control Array */}
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3 bg-[var(--hw-border)] p-1 rounded-lg shadow-[inset_1px_1px_3px_rgba(0,0,0,0.1)]">
             {navItems.map((item) => (
               <Link 
                 key={item.path} 
                 href={item.isAnchor ? `/${item.path}` : item.path}
-                className="px-4 py-2 rounded-lg text-bright-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-primary-800/30 hover:text-primary-600 dark:hover:text-primary-300 transition-all duration-200 font-medium border border-transparent hover:border-primary-200 dark:hover:border-primary-700 flex items-center gap-1"
+                className={`px-4 py-2 rounded-md text-sm font-bold uppercase tracking-wider transition-all duration-150 flex items-center gap-1
+                  ${item.name === 'Contact' || item.name === 'Careers' 
+                    ? 'bg-[var(--hw-text-main)] text-[var(--hw-panel)] shadow-[0_2px_0_rgba(0,0,0,0.2)] hover:bg-[#FF5722] hover:shadow-none hover:translate-y-[2px]' 
+                    : 'text-[var(--hw-text-muted)] hover:text-[var(--hw-text-main)] hover:bg-[var(--hw-chassis)] hover:shadow-[0_1px_2px_rgba(0,0,0,0.1)] active:translate-y-[1px] active:shadow-none'
+                  }`}
               >
                 {item.name}
                 {item.hasArrow && (
-                  <ArrowTopRightOnSquareIcon className="w-3 h-3" />
+                  <ArrowTopRightOnSquareIcon className="w-3 h-3 opacity-70" />
                 )}
               </Link>
             ))}
           </div>
           
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            
-            {/* Mobile menu button */}
+          <div className="flex items-center space-x-2 sm:space-x-4 md:hidden">
+            {/* Mobile Toggle Switch */}
             <motion.button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-lg text-bright-600 dark:text-accent-300 md:hidden hover:bg-primary-100 dark:hover:bg-primary-800/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+              className="inline-flex items-center justify-center p-2 rounded-md bg-[var(--hw-border)] text-[var(--hw-text-main)] shadow-[2px_2px_0_var(--hw-border)] active:shadow-none active:translate-y-[2px] border border-[var(--hw-border)]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileTap={{ scale: 0.95 }}
             >
@@ -92,21 +89,21 @@ export default function Navbar() {
         </div>
       </div>
       
-      {/* Mobile menu */}
+      {/* Mobile Control Panel */}
       {mobileMenuOpen && (
         <motion.div 
-          className="md:hidden border-t-2 border-primary-200 dark:border-primary-800"
+          className="md:hidden bg-[var(--hw-chassis)] border-b-4 border-[var(--hw-border)]"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="pt-4 pb-6 space-y-2 px-4 sm:px-6 bg-accent-50/95 dark:bg-surface-800/95 backdrop-blur-md">
+          <div className="px-4 pt-4 pb-6 space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 href={item.isAnchor ? `/${item.path}` : item.path}
-                className="flex items-center justify-between py-3 px-4 rounded-lg text-bright-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-primary-800/30 hover:text-primary-600 dark:hover:text-primary-300 transition-all duration-200 font-medium border border-transparent hover:border-primary-200 dark:hover:border-primary-700"
+                className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--hw-panel)] border border-[var(--hw-border)] text-[var(--hw-text-main)] font-bold shadow-sm active:shadow-inner active:bg-[var(--hw-chassis)] transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span>{item.name}</span>
@@ -120,4 +117,4 @@ export default function Navbar() {
       )}
     </nav>
   );
-} 
+}

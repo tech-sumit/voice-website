@@ -130,59 +130,85 @@ export default function ContactPage() {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 via-surface-100 to-surface-50 dark:from-surface-900 dark:via-surface-800 dark:to-surface-900">
+    <div className="min-h-screen bg-[var(--hw-chassis)] relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-noise mix-blend-overlay"></div>
+      
       {/* Load reCAPTCHA Enterprise script */}
       <Script
         src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
         onLoad={handleRecaptchaLoad}
       />
       
-      <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
           <div className="max-w-3xl mx-auto text-center mb-8">
-            <h1 className="heading-1 text-bright-900 dark:text-accent-100 mb-6">
-              Contact Us
+            <div className="inline-block bg-[var(--hw-border)] px-4 py-1 rounded border border-[var(--hw-border)] mb-6 shadow-sm">
+               <span className="text-[var(--hw-text-muted)] text-xs font-bold tracking-[0.2em] uppercase">Communication Channel</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-[var(--hw-text-main)] mb-6 tracking-tight">
+              Initiate <span className="text-[#FF5722]">Contact</span>
             </h1>
-            <p className="body-lg text-bright-600 dark:text-accent-200 mb-8">
-              Have questions about our services or need a custom solution? Get in touch with our team using the form below.
+            <p className="text-lg text-[var(--hw-text-muted)] max-w-2xl mx-auto font-medium">
+              Transmit your inquiry directly to our central processing unit. 
+              Standard response time: &lt; 24 hours.
             </p>
           </div>
           
-          <div className="card-glass max-w-3xl mx-auto w-full">
-            <h2 className="heading-3 text-bright-900 dark:text-accent-100 mb-6">
-              Send us a message
+          {/* The Clipboard / Form Container */}
+          <div className="max-w-3xl mx-auto w-full bg-[var(--hw-panel)] rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.1),0_1px_0_rgba(0,0,0,0.1)] border-t-[12px] border-[var(--hw-text-main)] relative p-8 md:p-12">
+            
+            {/* Clip Mechanism Visual */}
+            <div className="absolute -top-[20px] left-1/2 transform -translate-x-1/2 w-32 h-4 bg-[#5D5955] rounded-b-lg shadow-md"></div>
+            <div className="absolute -top-[35px] left-1/2 transform -translate-x-1/2 w-40 h-8 bg-[var(--hw-text-main)] rounded-lg shadow-lg flex items-center justify-center">
+               <div className="w-20 h-1 bg-[#5D5955] rounded-full"></div>
+            </div>
+
+            <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-8 border-b-2 border-[var(--hw-border)] pb-4 uppercase tracking-wide flex justify-between items-center">
+              <span>Service Request Form</span>
+              <span className="text-xs font-mono text-[var(--hw-text-muted)] font-normal">REF: CX-900</span>
             </h2>
           
           {submitSuccess ? (
-            <div className="bg-success-50 dark:bg-success-900/30 border border-success-200 dark:border-success-700 p-4 rounded-lg mb-6">
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-success-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <p className="ml-3 text-sm font-medium text-success-800 dark:text-success-200">
-                  Your message has been sent! We&apos;ll get back to you soon.
-                </p>
+            <div className="bg-[#E8F3F1] border-l-4 border-[var(--hw-screen)] p-6 rounded-r-md mb-6">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-[var(--hw-screen)] rounded-full flex items-center justify-center">
+                    <svg className="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-medium text-[var(--hw-screen)]">Transmission Successful</h3>
+                  <p className="mt-1 text-[var(--hw-text-muted)]">
+                    Your data packet has been received. Awaiting operator review.
+                  </p>
+                </div>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {submitError && (
-                <div className="bg-error-50 dark:bg-error-900/30 border border-error-200 dark:border-error-700 p-4 rounded-lg mb-6">
-                  <div className="flex items-center">
-                    <svg className="h-5 w-5 text-error-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                    <p className="ml-3 text-sm font-medium text-error-800 dark:text-error-200">
-                      {submitError}
-                    </p>
+                <div className="bg-[#FDF4F2] border-l-4 border-[#D84315] p-4 rounded-r-md mb-6">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg className="h-5 w-5 text-[#D84315]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm text-[#D84315] font-mono">
+                        ERROR: {submitError}
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
               
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="form-label text-bright-700 dark:text-accent-200">
-                    Name
+                  <label htmlFor="name" className="block text-xs font-bold text-[var(--hw-text-muted)] uppercase tracking-wider mb-2">
+                    Identity (Name)
                   </label>
                   <input
                     type="text"
@@ -191,12 +217,13 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="input focus:border-primary-500 focus:ring-primary-500/20"
+                    className="block w-full border-b-2 border-[var(--hw-border)] bg-[var(--hw-chassis)] focus:border-[#FF5722] focus:bg-[var(--hw-panel)] px-3 py-2 transition-colors outline-none font-mono text-[var(--hw-text-main)]"
+                    placeholder="John Doe"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="form-label text-bright-700 dark:text-accent-200">
-                    Email
+                  <label htmlFor="email" className="block text-xs font-bold text-[var(--hw-text-muted)] uppercase tracking-wider mb-2">
+                    Contact Frequency (Email)
                   </label>
                   <input
                     type="email"
@@ -205,15 +232,16 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="input focus:border-primary-500 focus:ring-primary-500/20"
+                    className="block w-full border-b-2 border-[var(--hw-border)] bg-[var(--hw-chassis)] focus:border-[#FF5722] focus:bg-[var(--hw-panel)] px-3 py-2 transition-colors outline-none font-mono text-[var(--hw-text-main)]"
+                    placeholder="john@company.com"
                   />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="company" className="form-label text-bright-700 dark:text-accent-200">
-                    Company
+                  <label htmlFor="company" className="block text-xs font-bold text-[var(--hw-text-muted)] uppercase tracking-wider mb-2">
+                    Organization
                   </label>
                   <input
                     type="text"
@@ -221,12 +249,13 @@ export default function ContactPage() {
                     name="company"
                     value={formData.company}
                     onChange={handleChange}
-                    className="input focus:border-primary-500 focus:ring-primary-500/20"
+                    className="block w-full border-b-2 border-[var(--hw-border)] bg-[var(--hw-chassis)] focus:border-[#FF5722] focus:bg-[var(--hw-panel)] px-3 py-2 transition-colors outline-none font-mono text-[var(--hw-text-main)]"
+                    placeholder="Acme Corp"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="form-label text-bright-700 dark:text-accent-200">
-                    Phone
+                  <label htmlFor="phone" className="block text-xs font-bold text-[var(--hw-text-muted)] uppercase tracking-wider mb-2">
+                    Comms Link (Phone)
                   </label>
                   <input
                     type="tel"
@@ -234,51 +263,54 @@ export default function ContactPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="input focus:border-primary-500 focus:ring-primary-500/20"
+                    className="block w-full border-b-2 border-[var(--hw-border)] bg-[var(--hw-chassis)] focus:border-[#FF5722] focus:bg-[var(--hw-panel)] px-3 py-2 transition-colors outline-none font-mono text-[var(--hw-text-main)]"
+                    placeholder="+1 (555) 000-0000"
                   />
                 </div>
               </div>
               
               <div>
-                <label htmlFor="message" className="form-label text-bright-700 dark:text-accent-200">
-                  Message
+                <label htmlFor="message" className="block text-xs font-bold text-[var(--hw-text-muted)] uppercase tracking-wider mb-2">
+                  Data Payload (Message)
                 </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="input focus:border-primary-500 focus:ring-primary-500/20 resize-none"
-                />
-              </div>
-              
-              {/* Security badge instead of visible CAPTCHA */}
-              <div className="mt-6">
-                <div className="bg-surface-100 dark:bg-surface-700 border border-surface-200 dark:border-surface-600 rounded-xl p-3 flex items-center justify-center space-x-2 text-bright-600 dark:text-accent-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-success-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-sm">Protected by reCAPTCHA Enterprise</span>
+                <div className="bg-[var(--hw-chassis)] p-2 rounded-sm border border-[var(--hw-border)] focus-within:border-[#FF5722] transition-colors">
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={6}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="block w-full bg-transparent outline-none font-mono text-[var(--hw-text-main)] text-sm resize-none"
+                    placeholder="Enter your specifications here..."
+                  />
                 </div>
               </div>
               
-              <div>
+              {/* Security badge instead of visible CAPTCHA */}
+              <div className="mt-4 flex justify-end">
+                <div className="inline-flex items-center space-x-2 text-[var(--hw-text-muted)] text-[10px] font-mono uppercase border border-[var(--hw-border)] px-2 py-1 rounded bg-[var(--hw-chassis)]">
+                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                  <span>Secured via reCAPTCHA Protocol</span>
+                </div>
+              </div>
+              
+              <div className="pt-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`btn-primary w-full py-3 px-6 text-lg font-medium ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                  className={`w-full py-4 px-6 text-lg font-bold uppercase tracking-wider text-white rounded shadow-[0_4px_0_#B33016] active:shadow-none active:translate-y-[4px] transition-all
+                    ${isSubmitting ? 'bg-[#CC3D1A] cursor-wait' : 'bg-[#FF5722] hover:bg-[#FF6D3F]'}`}
                 >
                   {isSubmitting ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <span className="flex items-center justify-center gap-3">
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Processing...
+                      TRANSMITTING...
                     </span>
-                  ) : "Send Message"}
+                  ) : "TRANSMIT DATA"}
                 </button>
               </div>
             </form>
