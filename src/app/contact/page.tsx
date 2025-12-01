@@ -27,6 +27,10 @@ export default function ContactPage() {
   const handleRecaptchaLoad = () => {
     setIsRecaptchaLoaded(true);
   };
+
+  const handleRecaptchaError = () => {
+    setSubmitError("Failed to load security system. Please check your internet connection or disable ad blockers.");
+  };
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,13 +38,18 @@ export default function ContactPage() {
     
     // Execute reCAPTCHA Enterprise
     if (!captchaToken) {
-      if (!isRecaptchaLoaded || typeof window.grecaptcha === 'undefined') {
-        setSubmitError("Security verification is still loading. Please try again in a moment.");
+      // Check if grecaptcha is available even if onLoad didn't fire
+      if (typeof window !== 'undefined' && window.grecaptcha && !isRecaptchaLoaded) {
+        setIsRecaptchaLoaded(true);
+      }
+
+      if ((!isRecaptchaLoaded && typeof window.grecaptcha === 'undefined') || !window.grecaptcha) {
+        setSubmitError("Security system is initializing. Please wait a few seconds and try again.");
         return;
       }
       
       try {
-    setIsSubmitting(true);
+        setIsSubmitting(true);
     
         // Execute reCAPTCHA Enterprise
         window.grecaptcha.enterprise.ready(async () => {
@@ -137,6 +146,8 @@ export default function ContactPage() {
       <Script
         src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
         onLoad={handleRecaptchaLoad}
+        onError={handleRecaptchaError}
+        strategy="afterInteractive"
       />
       
       <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">

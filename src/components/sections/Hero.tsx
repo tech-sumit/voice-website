@@ -150,7 +150,7 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative bg-surface-100 min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
+    <section className="relative bg-[#E0DDD5] dark:bg-[#050505] min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
       {/* Load reCAPTCHA */}
       <Script
         src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
@@ -301,14 +301,14 @@ export default function Hero() {
                 {/* Feedback Display Area */}
                 <div className="min-h-[24px]">
                   {error && (
-                    <p className="text-[#D84315] text-xs font-mono flex items-center gap-2">
-                      <span className="w-2 h-2 bg-[#D84315] rounded-full animate-pulse"></span>
+                    <p className="text-[#D84315] dark:text-[#FF8A65] text-xs font-mono flex items-center gap-2">
+                      <span className="w-2 h-2 bg-[#D84315] dark:bg-[#FF8A65] rounded-full animate-pulse"></span>
                       ERROR: {error}
                     </p>
                   )}
                   {isSubmitted && (
-                    <p className="text-[#1A5C54] text-xs font-mono flex items-center gap-2">
-                      <span className="w-2 h-2 bg-[#1A5C54] rounded-full animate-pulse"></span>
+                    <p className="text-[#1A5C54] dark:text-[#69F0AE] text-xs font-mono flex items-center gap-2">
+                      <span className="w-2 h-2 bg-[#1A5C54] dark:bg-[#69F0AE] rounded-full animate-pulse"></span>
                       TRANSMISSION SUCCESSFUL
                     </p>
                   )}
