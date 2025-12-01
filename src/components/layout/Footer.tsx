@@ -20,7 +20,6 @@ export default function Footer() {
               </Link>
               <p className="text-[var(--hw-text-muted)] text-sm font-mono leading-relaxed mb-6">
                 MANUFACTURER: PIXPOC AI<br/>
-                MODEL: VOICE_AGENT_X1<br/>
                 ORIGIN: PUNE, MH, IN
               </p>
               <div className="flex space-x-3">
@@ -38,7 +37,7 @@ export default function Footer() {
                 </a>
                 
                 <a 
-                  href="#" 
+                  href="https://www.instagram.com/pixpoc.ai/" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-[var(--hw-panel)] rounded flex items-center justify-center border border-[var(--hw-border)] hover:border-[#FF5722] hover:text-[#FF5722] text-[var(--hw-text-muted)] transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] group"
@@ -98,8 +97,6 @@ export default function Footer() {
               <div className="bg-[var(--hw-panel)] p-4 rounded border border-[var(--hw-border)] font-mono text-xs text-[var(--hw-text-muted)] space-y-2">
                 <p>EMAIL: founders@pixpoc.ai</p>
                 <p>HQ: PUNE, INDIA</p>
-                <div className="h-px bg-[var(--hw-border)] my-2"></div>
-                <p className="text-[var(--hw-text-muted)]">SERIAL NO: 8842-1920-X</p>
               </div>
             </div>
         </div>
@@ -117,4 +114,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}
