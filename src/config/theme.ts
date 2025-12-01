@@ -43,132 +43,131 @@ type ColorConfig = {
 
 const theme: ThemeConfig = {
   colors: {
-    // Forest Green - Primary brand color from new Color Hunt palette
-    // https://colorhunt.co/palette/edf1d69dc08b60996640513b
+    // Dark Teal - Primary brand color inspired by retro-modern aesthetic
     primary: {
-      DEFAULT: "#609966", // Forest green - main
-      50: "#F0F4F0", // Very light forest
-      100: "#E1E9E1", // Light forest
-      200: "#C3D3C3", // Medium light forest
-      300: "#A5BDA5", // Medium forest
-      400: "#87A787", // Medium dark forest
-      500: "#609966", // Color Hunt forest green - main
-      600: "#4D7A52", // Darker forest
-      700: "#3A5B3E", // Dark forest
-      800: "#273C2A", // Very dark forest
-      900: "#141D16", // Darkest forest
+      DEFAULT: "#1A5C54", // Rich teal - main
+      50: "#E8F3F1", // Very light teal
+      100: "#D1E7E3", // Light teal
+      200: "#A3CFC7", // Medium light teal
+      300: "#75B7AB", // Medium teal
+      400: "#479F8F", // Medium dark teal
+      500: "#1A5C54", // Rich teal - main
+      600: "#154A43", // Darker teal
+      700: "#103732", // Dark teal
+      800: "#0B2521", // Very dark teal
+      900: "#061211", // Darkest teal
     },
-    // Sage Green - Secondary color from new Color Hunt palette
+    // Medium Teal - Secondary color for depth
     secondary: {
-      DEFAULT: "#9DC08B", // Color Hunt sage green - main
-      50: "#F4F7F2", // Very light sage
-      100: "#E9EFE5", // Light sage
-      200: "#D3DFCB", // Medium light sage
-      300: "#BDCFB1", // Medium sage
-      400: "#A7BF97", // Medium dark sage
-      500: "#9DC08B", // Color Hunt sage green - main
-      600: "#7DA06F", // Darker sage
-      700: "#5D8053", // Dark sage
-      800: "#3D6037", // Very dark sage
-      900: "#1D401B", // Darkest sage
+      DEFAULT: "#2A7A6F", // Medium teal - main
+      50: "#EBF5F3", // Very light teal
+      100: "#D7EBE7", // Light teal
+      200: "#AFD7CF", // Medium light teal
+      300: "#87C3B7", // Medium teal
+      400: "#5FAF9F", // Medium dark teal
+      500: "#2A7A6F", // Medium teal - main
+      600: "#226259", // Darker teal
+      700: "#194943", // Dark teal
+      800: "#11312C", // Very dark teal
+      900: "#081816", // Darkest teal
     },
-    // Light Cream - Accent color from new Color Hunt palette
+    // Warm Cream - Accent color for breathing room
     accent: {
-      DEFAULT: "#EDF1D6", // Color Hunt light cream - main
-      50: "#F8FAF4", // Lightest cream
-      100: "#EDF1D6", // Color Hunt light cream - main
-      200: "#E3E7C6", // Light cream
-      300: "#D9DDB6", // Medium light cream
-      400: "#CFD3A6", // Medium cream
-      500: "#C5C996", // Medium dark cream
-      600: "#BBBF86", // Dark cream
-      700: "#B1B576", // Darker cream
-      800: "#A7AB66", // Very dark cream
-      900: "#9DA156", // Darkest cream
+      DEFAULT: "#F5F1E8", // Warm cream - main
+      50: "#FEFDFB", // Lightest cream
+      100: "#F5F1E8", // Warm cream - main
+      200: "#EBE3D5", // Light cream
+      300: "#E1D5C2", // Medium light cream
+      400: "#D7C7AF", // Medium cream
+      500: "#CDB99C", // Medium dark cream
+      600: "#C3AB89", // Dark cream
+      700: "#B99D76", // Darker cream
+      800: "#AF8F63", // Very dark cream
+      900: "#A58150", // Darkest cream
     },
-    // Dark Forest Green - Text and strong elements
+    // Bright Orange - For energy and calls-to-action
     bright: {
-      DEFAULT: "#40513B", // Dark forest green
-      50: "#F2F4F1", // Very light forest
-      100: "#E5E9E3", // Light forest
-      200: "#CBD3C7", // Medium light forest
-      300: "#B1BDAB", // Medium forest
-      400: "#97A78F", // Medium dark forest
-      500: "#40513B", // Dark forest green - main
-      600: "#33412F", // Darker forest
-      700: "#263123", // Very dark forest
-      800: "#192117", // Darkest forest
-      900: "#0C110B", // Deepest forest
+      DEFAULT: "#FF5722", // Vibrant orange - main
+      50: "#FFF3F0", // Very light orange
+      100: "#FFE7E1", // Light orange
+      200: "#FFCFC3", // Medium light orange
+      300: "#FFB7A5", // Medium orange
+      400: "#FF9F87", // Medium dark orange
+      500: "#FF5722", // Vibrant orange - main
+      600: "#E64A1E", // Darker orange
+      700: "#CC3D1A", // Dark orange
+      800: "#B33016", // Very dark orange
+      900: "#992312", // Darkest orange
     },
-    // Neutral palette based on forest green tones
+    // Neutral palette based on warm tones
     neutral: {
-      DEFAULT: "#40513B", // Dark forest for text
-      50: "#F2F4F1", // Very light forest
-      100: "#E5E9E3", // Light forest
-      200: "#CBD3C7", // Medium light forest
-      300: "#B1BDAB", // Medium forest
-      400: "#97A78F", // Medium dark forest
-      500: "#40513B", // Dark forest - main
-      600: "#33412F", // Darker forest
-      700: "#263123", // Very dark forest
-      800: "#192117", // Darkest forest
-      900: "#0C110B", // Deepest forest
+      DEFAULT: "#3D3935", // Warm dark gray for text
+      50: "#F9F8F7", // Very light warm gray
+      100: "#F3F1EF", // Light warm gray
+      200: "#E7E3DF", // Medium light warm gray
+      300: "#DBD5CF", // Medium warm gray
+      400: "#CFC7BF", // Medium dark warm gray
+      500: "#A09890", // Gray
+      600: "#6D6560", // Dark gray
+      700: "#3D3935", // Very dark warm gray - main
+      800: "#2A2622", // Darkest warm gray
+      900: "#171410", // Deepest warm gray
     },
-    // Success - using forest green
+    // Success - using teal
     success: {
-      DEFAULT: "#609966", // Forest green for success
-      50: "#F0F4F0", // Very light forest
-      100: "#E1E9E1", // Light forest
-      200: "#C3D3C3", // Medium light forest
-      300: "#A5BDA5", // Medium forest
-      400: "#87A787", // Medium dark forest
-      500: "#609966", // Color Hunt forest green - main
-      600: "#4D7A52", // Darker forest
-      700: "#3A5B3E", // Dark forest
-      800: "#273C2A", // Very dark forest
-      900: "#141D16", // Darkest forest
+      DEFAULT: "#1A5C54", // Teal for success
+      50: "#E8F3F1", // Very light teal
+      100: "#D1E7E3", // Light teal
+      200: "#A3CFC7", // Medium light teal
+      300: "#75B7AB", // Medium teal
+      400: "#479F8F", // Medium dark teal
+      500: "#1A5C54", // Rich teal - main
+      600: "#154A43", // Darker teal
+      700: "#103732", // Dark teal
+      800: "#0B2521", // Very dark teal
+      900: "#061211", // Darkest teal
     },
-    // Warning - warm earth tone
+    // Warning - orange tone
     warning: {
-      DEFAULT: "#B8860B", // Dark goldenrod
-      50: "#FDF9F0", // Very light goldenrod
-      100: "#FBF3E1", // Light goldenrod
-      200: "#F7E7C3", // Medium light goldenrod
-      300: "#F3DBA5", // Medium goldenrod
-      400: "#EFCF87", // Medium dark goldenrod
-      500: "#B8860B", // Dark goldenrod - main
-      600: "#966B09", // Darker goldenrod
-      700: "#745007", // Very dark goldenrod
-      800: "#523505", // Darkest goldenrod
-      900: "#301A03", // Deepest goldenrod
+      DEFAULT: "#FF9800", // Warm orange
+      50: "#FFF8F0", // Very light orange
+      100: "#FFF1E1", // Light orange
+      200: "#FFE3C3", // Medium light orange
+      300: "#FFD5A5", // Medium orange
+      400: "#FFC787", // Medium dark orange
+      500: "#FF9800", // Warm orange - main
+      600: "#E68900", // Darker orange
+      700: "#CC7A00", // Dark orange
+      800: "#B36B00", // Very dark orange
+      900: "#995C00", // Darkest orange
     },
-    // Error - muted red tone
+    // Error - muted red tone that fits the palette
     error: {
-      DEFAULT: "#B85450", // Muted red
-      50: "#FDF5F5", // Very light red
-      100: "#FAEAEA", // Light red
-      200: "#F5D5D5", // Medium light red
-      300: "#F0C0C0", // Medium red
-      400: "#E5ABAB", // Medium dark red
-      500: "#B85450", // Muted red - main
-      600: "#A64B47", // Dark red
-      700: "#94423E", // Darker red
-      800: "#823935", // Very dark red
-      900: "#70302C", // Darkest red
+      DEFAULT: "#D84315", // Warm red-orange
+      50: "#FDF4F2", // Very light red
+      100: "#FAE9E5", // Light red
+      200: "#F5D3CB", // Medium light red
+      300: "#F0BDB1", // Medium red
+      400: "#EBA797", // Medium dark red
+      500: "#D84315", // Warm red-orange - main
+      600: "#C33C13", // Dark red
+      700: "#AE3511", // Darker red
+      800: "#992E0F", // Very dark red
+      900: "#84270D", // Darkest red
     },
-    // Surface - light cream background
+    // Surface - warm cream background
     surface: {
-      DEFAULT: "#EDF1D6", // Color Hunt light cream
-      50: "#F8FAF4", // Lightest cream
-      100: "#EDF1D6", // Color Hunt light cream - main
-      200: "#E3E7C6", // Light cream
-      300: "#D9DDB6", // Medium light cream
-      400: "#CFD3A6", // Medium cream
-      500: "#C5C996", // Medium dark cream
-      600: "#BBBF86", // Dark cream
-      700: "#B1B576", // Darker cream
-      800: "#40513B", // Dark forest for dark mode
-      900: "#2D3A2A", // Darker forest for dark mode background
+      DEFAULT: "#F5F1E8", // Warm cream
+      50: "#FEFDFB", // Lightest cream
+      100: "#F5F1E8", // Warm cream - main
+      200: "#EBE3D5", // Light cream
+      300: "#E1D5C2", // Medium light cream
+      400: "#D7C7AF", // Medium cream
+      500: "#CDB99C", // Medium dark cream
+      600: "#C3AB89", // Dark cream
+      700: "#B99D76", // Darker cream
+      800: "#1A5C54", // Dark teal for dark mode
+      900: "#0F3A34", // Darker teal for dark mode background
     },
   },
   fonts: {
@@ -176,12 +175,12 @@ const theme: ThemeConfig = {
     mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New"],
   },
   darkMode: {
-    backgroundColor: "#2D3A2A", // Dark forest for dark mode background
-    textColor: "#EDF1D6", // Light cream for dark mode text
+    backgroundColor: "#0F3A34", // Dark teal for dark mode background
+    textColor: "#F5F1E8", // Warm cream for dark mode text
   },
   lightMode: {
-    backgroundColor: "#EDF1D6", // Color Hunt light cream background
-    textColor: "#40513B", // Dark forest for text - excellent contrast
+    backgroundColor: "#F5F1E8", // Warm cream background
+    textColor: "#3D3935", // Warm dark gray for text - excellent contrast
   },
   animations: {
     "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",

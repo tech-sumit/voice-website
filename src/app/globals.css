@@ -92,6 +92,35 @@
   --gradient-accent: linear-gradient(135deg, theme('colors.accent.400') 0%, theme('colors.accent.600') 100%);
   --gradient-success: linear-gradient(135deg, theme('colors.success.400') 0%, theme('colors.success.600') 100%);
   --gradient-subtle: linear-gradient(135deg, theme('colors.surface.100') 0%, theme('colors.surface.200') 100%);
+
+  /* Retro Hardware Theme Variables */
+  --hw-chassis: #E8E4D9;
+  --hw-panel: #F5F1E8;
+  --hw-border: #C8C4B8;
+  --hw-screen: #1A5C54;
+  --hw-text-main: #3D3935;
+  --hw-text-muted: #6D6560;
+  --hw-cartridge: #3D3935;
+  --hw-label: #F5F1E8;
+  --hw-shadow-inset: inset 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Noise Texture */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+}
+
+.cursor-wait {
+  cursor: wait;
+}
+
+/* CRT Screen Effect */
+.crt-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
 }
 
 .dark {
@@ -154,6 +183,17 @@
   --gradient-accent: linear-gradient(135deg, theme('colors.accent.500') 0%, theme('colors.accent.700') 100%);
   --gradient-success: linear-gradient(135deg, theme('colors.success.500') 0%, theme('colors.success.700') 100%);
   --gradient-subtle: linear-gradient(135deg, theme('colors.surface.800') 0%, theme('colors.surface.700') 100%);
+
+  /* Retro Hardware Theme Dark Mode */
+  --hw-chassis: #0F0F0F;
+  --hw-panel: #181818;
+  --hw-border: #333333;
+  --hw-screen: #05201D;
+  --hw-text-main: #F0F0F0;
+  --hw-text-muted: #888888;
+  --hw-cartridge: #222222;
+  --hw-label: #333333;
+  --hw-shadow-inset: inset 1px 1px 3px rgba(0,0,0,0.8);
 }
 
 body {

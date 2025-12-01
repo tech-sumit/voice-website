@@ -4,13 +4,13 @@ import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "./ThemeProvider";
 import { motion } from "framer-motion";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ isFixed = true, className = "" }: { isFixed?: boolean, className?: string }) {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
     <motion.button 
       onClick={toggleTheme}
-      className="dark-toggle"
+      className={`${isFixed ? 'dark-toggle' : 'p-2 rounded-md bg-[var(--hw-border)] text-[var(--hw-text-main)] shadow-sm hover:bg-[var(--hw-chassis)] border border-[var(--hw-border)] transition-all'} ${className}`}
       aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
