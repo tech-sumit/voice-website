@@ -71,8 +71,8 @@ export default function Footer() {
                     <Link href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} className="text-[var(--hw-text-muted)] hover:text-[#FF5722] text-sm font-mono transition-colors flex items-center gap-2 group">
                       <span className="w-1 h-1 bg-[var(--hw-text-main)] group-hover:bg-[#FF5722] transition-colors"></span>
                       {item}
-                    </Link>
-                  </li>
+                  </Link>
+                </li>
                 ))}
               </ul>
             </div>
@@ -85,8 +85,8 @@ export default function Footer() {
                     <Link href={`/${item.toLowerCase()}`} className="text-[var(--hw-text-muted)] hover:text-[#FF5722] text-sm font-mono transition-colors flex items-center gap-2 group">
                       <span className="w-1 h-1 bg-[var(--hw-text-main)] group-hover:bg-[#FF5722] transition-colors"></span>
                       {item}
-                    </Link>
-                  </li>
+                  </Link>
+                </li>
                 ))}
               </ul>
             </div>
@@ -97,8 +97,8 @@ export default function Footer() {
               <div className="bg-[var(--hw-panel)] p-4 rounded border border-[var(--hw-border)] font-mono text-xs text-[var(--hw-text-muted)] space-y-2">
                 <p>EMAIL: founders@pixpoc.ai</p>
                 <p>HQ: PUNE, INDIA</p>
-              </div>
             </div>
+          </div>
         </div>
         
         <div className="border-t border-[var(--hw-border)] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -114,4 +114,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+} 

@@ -16,13 +16,13 @@ export default function FAQSection() {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-    return (
+  return (
     <section id="faq" className="py-24 bg-[var(--hw-panel)] relative overflow-hidden border-t border-[var(--hw-border)]">
       <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-noise mix-blend-overlay"></div>
-      
+
       {/* CRT Scanline Overlay */}
       <div className="absolute inset-0 pointer-events-none crt-overlay opacity-10"></div>
-
+      
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-4xl">
         {/* Terminal Header */}
         <div className="mb-12 border-b border-[var(--hw-border)] pb-6 flex items-end justify-between">
@@ -34,7 +34,7 @@ export default function FAQSection() {
            </div>
            <div className="hidden sm:block text-right">
               <div className="text-[var(--hw-text-muted)] font-mono text-xs">ACCESS_LEVEL: PUBLIC</div>
-           </div>
+            </div>
         </div>
         
         <div className="space-y-4 font-mono">
@@ -55,8 +55,8 @@ export default function FAQSection() {
                    <span className="text-[var(--hw-text-muted)] text-xs">0{index + 1}</span>
                    <h3 className="text-base md:text-lg text-[var(--hw-text-muted)] group-hover:text-[var(--hw-text-main)] transition-colors duration-300">
                      <span className="text-[#FF5722] mr-2">&gt;</span>
-                     {faq.question}
-                   </h3>
+                  {faq.question}
+                </h3>
                 </div>
                 <ChevronDownIcon 
                   className={`h-5 w-5 text-[var(--hw-text-muted)] transition-all duration-300 ${
@@ -94,9 +94,9 @@ export default function FAQSection() {
            <div className="bg-[var(--hw-chassis)] border border-[var(--hw-border)] px-4 py-2 rounded flex items-center gap-2">
               <span className="w-2 h-2 bg-[#FF5722] rounded-full animate-pulse"></span>
               <span className="text-[var(--hw-text-muted)] font-mono text-xs">For advanced support, contact system admin</span>
-           </div>
-        </div>
+            </div>
+          </div>
       </div>
     </section>
   );
-}
+} 

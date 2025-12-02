@@ -112,19 +112,19 @@ export default function CareersPage() {
                 <div className="grid md:grid-cols-3 gap-6 border-t border-[var(--hw-chassis)] pt-6">
                    <div className="md:col-span-2">
                       <p className="text-[var(--hw-text-muted)] mb-4 leading-relaxed">
-                        {position.description}
-                      </p>
+                  {position.description}
+                </p>
                    </div>
                    <div className="bg-[var(--hw-chassis)] p-4 rounded text-sm">
                       <h4 className="font-bold text-[var(--hw-text-main)] mb-2 uppercase text-xs tracking-wider">Requirements:</h4>
                       <ul className="space-y-2">
-                        {position.requirements.map((req, reqIndex) => (
+                    {position.requirements.map((req, reqIndex) => (
                           <li key={reqIndex} className="flex items-start gap-2 text-[var(--hw-text-muted)]">
                             <span className="text-[#FF5722] mt-1">›</span>
                             {req}
                           </li>
-                        ))}
-                      </ul>
+                    ))}
+                  </ul>
                    </div>
                 </div>
               </div>

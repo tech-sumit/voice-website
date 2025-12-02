@@ -44,7 +44,7 @@ export default function AgentShowcase() {
   const agentShowcaseData = siteConfig.agentShowcase;
   const currentCategory = agentShowcaseData.categories.find((cat: Category) => cat.id === activeCategory);
 
-    return (
+  return (
     <section id="agents" className="py-24 bg-[var(--hw-chassis)] relative overflow-hidden border-t border-[var(--hw-border)]">
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-noise mix-blend-overlay"></div>
       
@@ -55,7 +55,7 @@ export default function AgentShowcase() {
              <h2 className="text-3xl md:text-4xl font-bold text-[var(--hw-text-main)] tracking-tight uppercase">
                Agent <span className="text-[#1A5C54] dark:text-[#4DB6AC]">Library</span>
              </h2>
-          </div>
+            </div>
           <p className="text-[var(--hw-text-muted)] max-w-2xl leading-relaxed font-medium">
             {agentShowcaseData.subtitle}
           </p>
@@ -108,8 +108,8 @@ export default function AgentShowcase() {
                      {[...Array(8)].map((_, i) => (
                        <div key={i} className="w-1 h-6 bg-[var(--hw-panel)] rounded-full"></div>
                      ))}
-                  </div>
-
+                    </div>
+                    
                   {/* The Label Area */}
                   <div className="bg-[var(--hw-label)] rounded-lg p-5 min-h-[200px] shadow-[inset_0_0_10px_rgba(0,0,0,0.1)] relative">
                      {/* Label "Tape" */}
@@ -127,16 +127,16 @@ export default function AgentShowcase() {
                         <div>
                            <h3 className="text-lg font-bold text-[var(--hw-text-main)] leading-tight">{agent.name}</h3>
                            <span className="text-xs font-mono text-[#1A5C54] dark:text-[#4DB6AC] bg-[var(--hw-chassis)] px-2 py-0.5 rounded mt-1 inline-block">
-                             {agent.category}
-                           </span>
-                        </div>
-                     </div>
+                          {agent.category}
+                        </span>
+                      </div>
+                    </div>
 
                      <p className="text-[var(--hw-text-muted)] text-sm leading-relaxed font-medium">
                        {agent.description}
                      </p>
                   </div>
-
+                  
                   {/* Connector Pins at Bottom */}
                   <div className="absolute bottom-0 left-0 right-0 h-4 bg-[var(--hw-panel)] flex justify-center gap-2 px-8">
                      {[...Array(6)].map((_, i) => (
@@ -164,7 +164,7 @@ export default function AgentShowcase() {
               <span className="text-[var(--hw-text-muted)] text-xs font-mono uppercase tracking-widest">
                 End of Library // {agentShowcaseData.categories.length} Categories Loaded
               </span>
-           </div>
+          </div>
         </motion.div>
       </div>
     </section>

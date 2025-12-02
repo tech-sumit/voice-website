@@ -156,7 +156,7 @@ export default function Hero() {
         src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}
         onLoad={handleRecaptchaLoad}
       />
-
+      
       {/* Main Device Chassis */}
       <div className="relative w-full max-w-6xl bg-[var(--hw-chassis)] rounded-[30px] sm:rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.15),inset_0_-10px_20px_rgba(0,0,0,0.05)] border-b-[8px] sm:border-b-[12px] border-r-[8px] sm:border-r-[12px] border-[var(--hw-border)] p-6 sm:p-10 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-16 z-10">
         
@@ -176,7 +176,7 @@ export default function Hero() {
         <div className="hidden sm:flex absolute bottom-6 right-6 w-4 h-4 rounded-full bg-[#B0ACA0] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] items-center justify-center">
           <div className="w-2 h-0.5 bg-[#908C80] rotate-0"></div>
           <div className="w-2 h-0.5 bg-[#908C80] rotate-90 absolute"></div>
-        </div>
+      </div>
 
         {/* Left Panel: The Display */}
         <div className="flex-1 flex flex-col">
@@ -191,8 +191,8 @@ export default function Hero() {
                 <span>System Online</span>
               </div>
               <span>VOICE_MOD_V2.0</span>
-            </div>
-
+              </div>
+            
             {/* Main Content */}
             <div className="relative z-10 space-y-6">
               <motion.h1 
@@ -205,7 +205,7 @@ export default function Hero() {
               </motion.h1>
               
               <p className="font-mono text-[#75B7AB] text-base sm:text-lg leading-relaxed max-w-md border-l-2 border-[#75B7AB]/30 pl-4">
-                {siteConfig.description}
+                  {siteConfig.description}
               </p>
             </div>
 
@@ -251,7 +251,7 @@ export default function Hero() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </button>
-              </div>
+          </div>
 
               {/* Main Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -344,8 +344,8 @@ export default function Hero() {
                 </p>
               </form>
             </div>
-          </div>
-          
+                  </div>
+
           {/* Under Deck Label */}
           <div className="mt-4 flex justify-center">
              <span className="text-[#A09890] text-xs font-bold tracking-[0.2em] uppercase">Control Deck B-02</span>
@@ -358,7 +358,7 @@ export default function Hero() {
         {showSettings && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
             {/* Backdrop */}
-            <motion.div 
+                      <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -367,9 +367,9 @@ export default function Hero() {
             />
             
             {/* Modal Panel */}
-            <motion.div 
+                      <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-md bg-[var(--hw-chassis)] rounded-2xl border-[4px] border-[var(--hw-border)] shadow-2xl overflow-hidden z-10"
             >
@@ -378,69 +378,69 @@ export default function Hero() {
                 <h3 className="text-[var(--hw-text-main)] font-bold tracking-widest uppercase text-sm flex items-center gap-2">
                   <span className="w-2 h-2 bg-[#FF5722] rounded-full animate-pulse"></span>
                   System Configuration
-                </h3>
-                <button 
-                  onClick={() => setShowSettings(false)}
+                        </h3>
+                                <button
+                                  onClick={() => setShowSettings(false)}
                   className="text-[var(--hw-text-muted)] hover:text-[var(--hw-text-main)] transition-colors"
-                >
+                                >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                                </button>
               </div>
-              
+                                
               {/* Modal Body */}
               <div className="p-6 bg-[var(--hw-chassis)] max-h-[70vh] overflow-y-auto">
                 <div className="space-y-6">
                   <div>
                     <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-2 block">Template Selection</label>
                     <div className="relative">
-                      <select 
-                        value={selectedTemplateId}
-                        onChange={(e) => handleTemplateChange(e.target.value)}
+                                  <select
+                                    value={selectedTemplateId}
+                                    onChange={(e) => handleTemplateChange(e.target.value)}
                         className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] font-medium rounded-lg px-4 py-3 border border-[var(--hw-border)] shadow-sm focus:border-[#FF5722] outline-none appearance-none"
-                      >
+                                  >
                         {callTemplates.map(t => (
                           <option key={t.id} value={t.id}>{t.name}</option>
-                        ))}
-                      </select>
+                                    ))}
+                                  </select>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--hw-text-muted)]">
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
                       </div>
                     </div>
                     <p className="mt-2 text-xs text-[var(--hw-text-muted)] font-mono bg-[var(--hw-border)] p-2 rounded">
-                      {selectedTemplate.description}
-                    </p>
-                  </div>
-
+                                    {selectedTemplate.description}
+                                  </p>
+                                </div>
+                                
                   {/* Dynamic Fields */}
                   <div className="space-y-4 border-t border-[var(--hw-border)] pt-4">
-                    {selectedTemplate.fields.map(field => (
+                                  {selectedTemplate.fields.map(field => (
                        <div key={field.name}>
                           <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-1 block">
                             {field.label} {field.required && <span className="text-[#FF5722]">*</span>}
-                          </label>
-                          {field.type === 'text' && field.name === 'expectedFlow' ? (
-                            <textarea 
-                              value={templateValues[field.name] || ''}
-                              onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
+                                      </label>
+                                        {field.type === 'text' && field.name === 'expectedFlow' ? (
+                                          <textarea
+                                            value={templateValues[field.name] || ''}
+                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
                               className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] rounded-lg px-3 py-2 border border-[var(--hw-border)] shadow-sm focus:border-[#FF5722] outline-none min-h-[100px] resize-y text-sm"
-                              placeholder={field.placeholder}
-                            />
-                          ) : (
-                            <input 
-                              type={field.type}
-                              value={templateValues[field.name] || ''}
-                              onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
+                                            placeholder={field.placeholder}
+                                          />
+                                        ) : (
+                                          <input
+                                            type={field.type}
+                                            value={templateValues[field.name] || ''}
+                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
                               className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] rounded-lg px-3 py-2 border border-[var(--hw-border)] shadow-sm focus:border-[#FF5722] outline-none text-sm"
-                              placeholder={field.placeholder}
-                            />
-                          )}
-                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                                            placeholder={field.placeholder}
+                                          />
+                                        )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
               
               {/* Modal Footer */}
               <div className="bg-[var(--hw-border)] px-6 py-4 border-t border-[var(--hw-border)] flex justify-end">
@@ -450,9 +450,9 @@ export default function Hero() {
                 >
                   Confirm Settings
                 </button>
-              </div>
-            </motion.div>
-          </div>
+                              </div>
+                            </motion.div>
+                          </div>
         )}
       </AnimatePresence>
       
@@ -460,4 +460,4 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-noise mix-blend-overlay"></div>
     </section>
   );
-}
+} 

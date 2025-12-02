@@ -27,7 +27,7 @@ export default function ContactPage() {
   const handleRecaptchaLoad = () => {
     setIsRecaptchaLoaded(true);
   };
-
+  
   const handleRecaptchaError = () => {
     setSubmitError("Failed to load security system. Please check your internet connection or disable ad blockers.");
   };
@@ -49,7 +49,7 @@ export default function ContactPage() {
       }
       
       try {
-        setIsSubmitting(true);
+    setIsSubmitting(true);
     
         // Execute reCAPTCHA Enterprise
         window.grecaptcha.enterprise.ready(async () => {
@@ -186,14 +186,14 @@ export default function ContactPage() {
                   <div className="w-8 h-8 bg-[var(--hw-screen)] rounded-full flex items-center justify-center">
                     <svg className="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
+                </svg>
                   </div>
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-[var(--hw-screen)]">Transmission Successful</h3>
                   <p className="mt-1 text-[var(--hw-text-muted)]">
                     Your data packet has been received. Awaiting operator review.
-                  </p>
+                </p>
                 </div>
               </div>
             </div>
@@ -204,13 +204,13 @@ export default function ContactPage() {
                   <div className="flex">
                     <div className="flex-shrink-0">
                       <svg className="h-5 w-5 text-[#D84315]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
                     </div>
                     <div className="ml-3">
                       <p className="text-sm text-[#D84315] font-mono">
                         ERROR: {submitError}
-                      </p>
+                    </p>
                     </div>
                   </div>
                 </div>
@@ -285,16 +285,16 @@ export default function ContactPage() {
                   Data Payload (Message)
                 </label>
                 <div className="bg-[var(--hw-chassis)] p-2 rounded-sm border border-[var(--hw-border)] focus-within:border-[#FF5722] transition-colors">
-                  <textarea
-                    id="message"
-                    name="message"
+                <textarea
+                  id="message"
+                  name="message"
                     rows={6}
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                     className="block w-full bg-transparent outline-none font-mono text-[var(--hw-text-main)] text-sm resize-none"
                     placeholder="Enter your specifications here..."
-                  />
+                />
                 </div>
               </div>
               

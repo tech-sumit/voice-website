@@ -38,7 +38,7 @@ export default function HowItWorks() {
            <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-
+      
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Plate Header */}
         <div className="text-center mb-16 relative">
@@ -47,7 +47,7 @@ export default function HowItWorks() {
              <h2 className="text-3xl font-bold text-[var(--hw-text-main)] tracking-widest uppercase border-4 border-[var(--hw-text-main)] px-6 py-2">
                Signal Flow
              </h2>
-          </div>
+            </div>
           <p className="mt-4 text-[var(--hw-text-muted)] font-mono text-sm tracking-tight max-w-2xl mx-auto">
             {howItWorksData.description}
           </p>
@@ -91,7 +91,7 @@ export default function HowItWorks() {
 
                    <h3 className="text-lg font-bold text-[var(--hw-text-main)] mb-2 uppercase tracking-wide">{step.title}</h3>
                    <p className="text-[var(--hw-text-muted)] text-sm leading-relaxed mb-4">{step.description}</p>
-                   
+                
                    <div className="flex items-center justify-center space-x-2 pt-3 border-t border-[var(--hw-chassis)]">
                      <CheckCircleIcon className="h-4 w-4 text-[#1A5C54]" />
                      <span className="text-xs font-mono text-[#1A5C54] uppercase">Synced</span>

@@ -90,7 +90,7 @@ export default function FeatureSection() {
                  ))}
               </div>
               <div className="font-mono text-[var(--hw-text-muted)] text-sm">SPECIFICATION_SHEET_V1</div>
-           </div>
+            </div>
         </div>
         
         {/* Features Grid - Keypad Style */}
@@ -104,10 +104,10 @@ export default function FeatureSection() {
           {siteConfig.features.map((feature) => {
             const IconComponent = getIconComponent(feature.icon);
             
-            return (
-              <motion.div 
-                key={feature.title}
-                variants={item}
+                return (
+                  <motion.div 
+                    key={feature.title}
+                    variants={item}
                 className="group relative"
               >
                 {/* The Physical Key Structure */}
@@ -121,7 +121,7 @@ export default function FeatureSection() {
                   {/* Icon Area - "Printed" on the key */}
                   <div className="mb-6 w-14 h-14 bg-[var(--hw-chassis)] rounded-xl flex items-center justify-center shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05)] group-hover:bg-[#FF5722] transition-colors duration-200">
                     <IconComponent className="h-7 w-7 text-[var(--hw-text-muted)] group-hover:text-white transition-colors duration-200" />
-                  </div>
+                    </div>
 
                   <div>
                     <h3 className="text-xl font-bold text-[var(--hw-text-main)] mb-3 group-hover:text-[#FF5722] transition-colors">
@@ -132,15 +132,15 @@ export default function FeatureSection() {
                       {feature.description}
                     </p>
                   </div>
-                  
+
                   {/* LED Indicator */}
                   <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-[var(--hw-border)] group-hover:bg-[#00C853] group-hover:shadow-[0_0_8px_#00C853] transition-all duration-300"></div>
                 </div>
-              </motion.div>
-            );
-          })}
+                  </motion.div>
+                );
+              })}
         </motion.div>
       </div>
     </section>
   );
-}
+} 

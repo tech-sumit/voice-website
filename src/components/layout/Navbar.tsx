@@ -28,6 +28,7 @@ export default function Navbar() {
     { name: "Features", path: "#features", isAnchor: true, hasArrow: false },
     { name: "How It Works", path: "#how-it-works", isAnchor: true, hasArrow: false },
     { name: "Agents", path: "#agents", isAnchor: true, hasArrow: false },
+    { name: "Pricing", path: "/pricing", isAnchor: false, hasArrow: false },
     { name: "FAQ", path: "#faq", isAnchor: true, hasArrow: false },
     { name: "Contact", path: "/contact", isAnchor: false, hasArrow: true },
     { name: "Careers", path: "/careers", isAnchor: false, hasArrow: true },
