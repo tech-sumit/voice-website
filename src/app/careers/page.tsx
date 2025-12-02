@@ -87,48 +87,21 @@ export default function CareersPage() {
             <h2 className="text-3xl font-bold text-[var(--hw-text-main)] uppercase tracking-tight">
               Open Positions
             </h2>
-            <span className="text-[var(--hw-text-muted)] font-mono text-sm hidden sm:block">STATUS: HIRING</span>
+            <span className="text-[var(--hw-text-muted)] font-mono text-sm hidden sm:block">STATUS: STANDBY</span>
           </div>
 
-          <div className="space-y-6">
-            {positions.map((position, index) => (
-              <div key={index} className="group bg-[var(--hw-panel)] border border-[var(--hw-border)] p-6 rounded hover:border-[#FF5722] transition-colors duration-200 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-[var(--hw-text-main)] mb-2 group-hover:text-[#FF5722] transition-colors">
-                      {position.title}
-                    </h3>
-                    <div className="flex flex-wrap gap-3 text-xs font-mono text-[var(--hw-text-muted)] uppercase tracking-wide">
-                      <span className="bg-[var(--hw-chassis)] px-2 py-1 rounded">{position.department}</span>
-                      <span className="bg-[var(--hw-chassis)] px-2 py-1 rounded">{position.location}</span>
-                      <span className="bg-[var(--hw-chassis)] px-2 py-1 rounded">{position.type}</span>
-                    </div>
-                  </div>
-                  <button className="mt-4 md:mt-0 px-6 py-2 bg-[var(--hw-text-main)] text-[var(--hw-panel)] text-sm font-bold uppercase tracking-wider rounded shadow-[0_4px_0_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-[4px] transition-all hover:bg-[#FF5722] hover:shadow-[0_4px_0_#B33016]">
-                    Apply
-                  </button>
-                </div>
-                
-                <div className="grid md:grid-cols-3 gap-6 border-t border-[var(--hw-chassis)] pt-6">
-                   <div className="md:col-span-2">
-                      <p className="text-[var(--hw-text-muted)] mb-4 leading-relaxed">
-                  {position.description}
-                </p>
-                   </div>
-                   <div className="bg-[var(--hw-chassis)] p-4 rounded text-sm">
-                      <h4 className="font-bold text-[var(--hw-text-main)] mb-2 uppercase text-xs tracking-wider">Requirements:</h4>
-                      <ul className="space-y-2">
-                    {position.requirements.map((req, reqIndex) => (
-                          <li key={reqIndex} className="flex items-start gap-2 text-[var(--hw-text-muted)]">
-                            <span className="text-[#FF5722] mt-1">›</span>
-                            {req}
-                          </li>
-                    ))}
-                  </ul>
-                   </div>
-                </div>
-              </div>
-            ))}
+          <div className="bg-[var(--hw-panel)] border border-[var(--hw-border)] p-12 rounded text-center shadow-sm">
+            <div className="w-16 h-16 bg-[var(--hw-chassis)] rounded-full flex items-center justify-center mx-auto mb-6 border border-[var(--hw-border)] shadow-inner">
+              <span className="text-2xl opacity-50">🔒</span>
+            </div>
+            <h3 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">
+              No Active Requisitions
+            </h3>
+            <p className="text-[var(--hw-text-muted)] max-w-lg mx-auto leading-relaxed mb-8 font-mono text-sm">
+              // SYSTEM NOTICE: All personnel slots are currently filled.
+              <br/>
+              We are not actively hiring at this time. Please check back later for future opportunities.
+            </p>
           </div>
         </div>
       </section>
@@ -149,7 +122,7 @@ export default function CareersPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <a
-              href={`mailto:${siteConfig.company.email}`}
+              href="mailto:founders@pixpoc.ai?subject=Career Application"
               className="px-8 py-4 bg-[#F5F1E8] dark:bg-[var(--hw-text-main)] text-[#3D3935] dark:text-[var(--hw-panel)] font-bold uppercase tracking-wider rounded hover:bg-white transition-colors duration-200 shadow-[0_4px_0_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-[4px]"
             >
               {careersData.cta.primaryButton}

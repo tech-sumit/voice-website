@@ -34,7 +34,7 @@ export default function Navbar() {
     { name: "Careers", path: "/careers", isAnchor: false, hasArrow: true },
   ];
 
-    return (
+  return (
     <nav 
       className={`sticky top-0 z-50 transition-all duration-300 border-b-[4px] border-[var(--hw-border)]
       ${scrolled 
@@ -118,4 +118,4 @@ export default function Navbar() {
       )}
     </nav>
   );
-}
+} 
