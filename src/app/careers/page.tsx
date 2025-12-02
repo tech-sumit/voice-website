@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 
 export default function CareersPage() {
   const careersData = siteConfig.careers;
-  const positions = careersData.positions;
 
   // Map index to icon component
   const getFeatureIcon = (index: number) => {
@@ -98,7 +97,7 @@ export default function CareersPage() {
               No Active Requisitions
             </h3>
             <p className="text-[var(--hw-text-muted)] max-w-lg mx-auto leading-relaxed mb-8 font-mono text-sm">
-              // SYSTEM NOTICE: All personnel slots are currently filled.
+              {'// SYSTEM NOTICE: All personnel slots are currently filled.'}
               <br/>
               We are not actively hiring at this time. Please check back later for future opportunities.
             </p>
