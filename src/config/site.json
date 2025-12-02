@@ -1,24 +1,25 @@
 {
-  "name": "VoiceAI",
+  "name": "PixPoc",
   "description": "Ultra-realistic AI Phone Calls for Business",
   "url": "https://pixpoc.ai",
   "logo": "/logo.svg",
   "nav": [
     { "name": "Home", "path": "/" },
-    { "name": "Contact", "path": "/contact" }
+    { "name": "Contact", "path": "/contact" },
+    { "name": "Pricing", "path": "/pricing" }
   ],
   "metadata": {
-    "title": "VoiceAI - Ultra-realistic AI Phone Calls for Business",
-    "description": "Voice AI phone agents that sound human, speak any language, and work 24/7. Integrate seamlessly with your CRM and business tools.",
-    "keywords": "voice ai, ai phone calls, ai agents, conversational ai, customer support ai, ai receptionist",
-    "authors": [{ "name": "VoiceAI Team" }],
-    "ogTitle": "VoiceAI - Ultra-realistic AI Phone Calls for Business",
+    "title": "PixPoc - Ultra-realistic AI Phone Calls for Business",
+    "description": "PixPoc phone agents that sound human, speak any language, and work 24/7. Integrate seamlessly with your CRM and business tools.",
+    "keywords": "pixpoc, voice ai, ai phone calls, ai agents, conversational ai, customer support ai, ai receptionist",
+    "authors": [{ "name": "PixPoc Team" }],
+    "ogTitle": "PixPoc - Ultra-realistic AI Phone Calls for Business",
     "ogDescription": "Deploy AI phone agents that sound human and work 24/7",
-    "ogSiteName": "VoiceAI",
+    "ogSiteName": "PixPoc",
     "themeColor": "#6366F1"
   },
   "company": {
-    "name": "VoiceAI Inc.",
+    "name": "PixPoc AI",
     "address": "Pune, Maharashtra, India",
     "email": "founders@pixpoc.ai",
     "phone": "+919172879779",
@@ -57,7 +58,7 @@
   },
   "stats": {
     "title": "Trusted by Businesses Worldwide",
-    "description": "Our AI voice agents are revolutionizing how businesses communicate",
+    "description": "PixPoc agents are revolutionizing how businesses communicate",
     "metrics": [
       {
         "name": "Calls Handled",
@@ -87,12 +88,12 @@
   },
   "howItWorks": {
     "title": "How It Works",
-    "description": "Get started in minutes, not months. Our platform makes it easy to deploy voice AI.",
+    "description": "Get started in minutes, not months. Our platform makes it easy to deploy PixPoc agents.",
     "steps": [
       {
         "number": "01",
         "title": "Design Your Agent",
-        "description": "Create your ideal AI voice agent using our intuitive builder. Choose voices, set guidelines, and define how conversations should flow.",
+        "description": "Create your ideal PixPoc agent using our intuitive builder. Choose voices, set guidelines, and define how conversations should flow.",
         "color": "from-bright-500 to-bright-400"
       },
       {
@@ -104,7 +105,7 @@
       {
         "number": "03",
         "title": "Launch & Scale",
-        "description": "Deploy your AI agents to handle unlimited calls simultaneously. Monitor performance and scale effortlessly as your needs grow.",
+        "description": "Deploy your PixPoc agents to handle unlimited calls simultaneously. Monitor performance and scale effortlessly as your needs grow.",
         "color": "from-accent-500 to-accent-400"
       }
     ]
@@ -186,11 +187,11 @@
   ],
   "testimonials": {
     "title": "What Our Customers Say",
-    "description": "Thousands of companies trust VoiceAI for their critical communications",
+    "description": "Thousands of companies trust PixPoc for their critical communications",
     "items": [
       {
         "id": 1,
-        "content": "VoiceAI has completely transformed our customer support. We're able to handle 4x more calls while maintaining incredibly high satisfaction rates.",
+        "content": "PixPoc has completely transformed our customer support. We're able to handle 4x more calls while maintaining incredibly high satisfaction rates.",
         "author": "Sarah Johnson",
         "title": "Customer Support Director",
         "company": "TechGrowth Solutions",
@@ -208,7 +209,7 @@
       },
       {
         "id": 3,
-        "content": "Setting up AI voice agents was remarkably simple. In just one week, we were handling thousands of appointment bookings automatically.",
+        "content": "Setting up PixPoc agents was remarkably simple. In just one week, we were handling thousands of appointment bookings automatically.",
         "author": "Emily Rodriguez",
         "title": "Operations Manager",
         "company": "HealthFirst",
@@ -217,7 +218,7 @@
       },
       {
         "id": 4,
-        "content": "The ROI speaks for itself – we've reduced our call center costs by 60% while expanding to 24/7 coverage. VoiceAI paid for itself in less than 2 months.",
+        "content": "The ROI speaks for itself – we've reduced our call center costs by 60% while expanding to 24/7 coverage. PixPoc paid for itself in less than 2 months.",
         "author": "David Wilson",
         "title": "CEO",
         "company": "Global Connect",
@@ -228,7 +229,7 @@
   },
   "integrations": {
     "title": "Seamless Integrations",
-    "description": "Connect VoiceAI with your favorite tools to create powerful automated workflows",
+    "description": "Connect PixPoc with your favorite tools to create powerful automated workflows",
     "viewAllUrl": "/integrations",
     "categories": [
       { "id": "all", "name": "All Integrations" },
@@ -258,32 +259,32 @@
   },
   "faq": {
     "title": "Frequently Asked Questions",
-    "description": "Everything you need to know about VoiceAI",
+    "description": "Everything you need to know about PixPoc",
     "contactText": "Don't see your question here?",
     "contactUrl": "/contact",
     "questions": [
       {
-        "question": "How accurate is the AI voice technology?",
+        "question": "How accurate is the PixPoc voice technology?",
         "answer": "Our AI voice technology is remarkably accurate, with a 98.5% success rate in understanding and responding to customer inquiries. The voices sound natural and human-like, with appropriate pauses, intonations, and conversational flow."
       },
       {
-        "question": "Can I customize how the AI voice agents sound?",
-        "answer": "Yes, you can fully customize your AI voice agents. Choose from our library of 50+ voice options across different accents and languages, or work with us to create a custom voice that matches your brand identity."
+        "question": "Can I customize how the PixPoc agents sound?",
+        "answer": "Yes, you can fully customize your PixPoc agents. Choose from our library of 50+ voice options across different accents and languages, or work with us to create a custom voice that matches your brand identity."
       },
       {
-        "question": "How does VoiceAI integrate with my existing systems?",
-        "answer": "VoiceAI offers seamless integration with popular CRMs, calendars, and business tools through our API. We provide pre-built connectors for systems like Salesforce, HubSpot, Google Calendar, and many more. Our team can also help with custom integrations for specialized systems."
+        "question": "How does PixPoc integrate with my existing systems?",
+        "answer": "PixPoc offers seamless integration with popular CRMs, calendars, and business tools through our API. We provide pre-built connectors for systems like Salesforce, HubSpot, Google Calendar, and many more. Our team can also help with custom integrations for specialized systems."
       },
       {
         "question": "What languages do your AI agents support?",
         "answer": "Our AI agents can speak and understand over 100 languages fluently, including English, Spanish, French, German, Japanese, Mandarin, Hindi, Arabic, and many more. Each language maintains natural conversational abilities and accurate pronunciation."
       },
       {
-        "question": "Is my customer data secure with VoiceAI?",
-        "answer": "Absolutely. We implement bank-level encryption and security protocols. VoiceAI is SOC 2 Type II compliant, HIPAA compliant (for healthcare clients), and GDPR compliant. We never sell or share your data, and you retain full ownership of all conversation data."
+        "question": "Is my customer data secure with PixPoc?",
+        "answer": "Absolutely. We implement bank-level encryption and security protocols. PixPoc is SOC 2 Type II compliant, HIPAA compliant (for healthcare clients), and GDPR compliant. We never sell or share your data, and you retain full ownership of all conversation data."
       },
       {
-        "question": "How quickly can I get started with VoiceAI?",
+        "question": "How quickly can I get started with PixPoc?",
         "answer": "Most customers are up and running within 1-2 weeks. Our streamlined implementation process includes setup, integration with your systems, voice selection, conversation flow design, and testing. For simpler use cases, you can be live in as little as 3-5 days."
       }
     ]
@@ -303,14 +304,6 @@
             "tags": ["English"],
             "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
             "phoneNumber": "+918035317400"
-          },
-          {
-            "id": "cart-abandonment",
-            "name": "Cart Abandonment Agent",
-            "category": "Cart Abandonment",
-            "tags": ["English + Hindi"],
-            "description": "Calls customers with abandoned items in carts, recovering sales",
-            "phoneNumber": "+918035317449"
           },
           {
             "id": "cod-confirmation",
@@ -357,14 +350,6 @@
             "tags": ["English"],
             "description": "Conducts personalized guidance calls to warmly onboard users",
             "phoneNumber": "+918035317448"
-          },
-          {
-            "id": "announcements-edtech",
-            "name": "Announcements Agent",
-            "category": "Announcements",
-            "tags": ["English + Hindi"],
-            "description": "Keeps users engaged with all feature upgrades and product launches",
-            "phoneNumber": "+918035317403"
           }
         ]
       },
@@ -372,14 +357,6 @@
         "id": "health-tech",
         "name": "Health Tech",
         "agents": [
-          {
-            "id": "onboarding-health",
-            "name": "Onboarding Agent",
-            "category": "Onboarding",
-            "tags": ["English"],
-            "description": "Conducts personalized guidance calls to warmly onboard users",
-            "phoneNumber": "+918035317448"
-          },
           {
             "id": "customer-support-health",
             "name": "Customer Support Agent",
@@ -433,14 +410,6 @@
             "tags": ["Hindi"],
             "description": "Calls every lead to ask qualifying questions, answer FAQs, and warmly introduces the business",
             "phoneNumber": "+918035317443"
-          },
-          {
-            "id": "announcements-bfsi",
-            "name": "Announcements Agent",
-            "category": "Announcements",
-            "tags": ["English + Hindi"],
-            "description": "Keeps users engaged with all feature upgrades and product launches",
-            "phoneNumber": "+918035317403"
           }
         ]
       },
@@ -471,14 +440,6 @@
             "tags": ["English"],
             "description": "Conducts personalized guidance calls to warmly onboard users",
             "phoneNumber": "+918035317448"
-          },
-          {
-            "id": "announcements-hospitality",
-            "name": "Announcements Agent",
-            "category": "Announcements",
-            "tags": ["English + Hindi"],
-            "description": "Keeps users engaged with all feature upgrades and product launches",
-            "phoneNumber": "+918035317403"
           }
         ]
       }
@@ -486,7 +447,7 @@
   },
   "careers": {
     "title": "Join Our Team",
-    "subtitle": "Help us build the future of AI voice technology. We're looking for passionate individuals who want to make a real impact in the world of conversational AI.",
+    "subtitle": "Help us build the future of PixPoc voice technology. We're looking for passionate individuals who want to make a real impact in the world of conversational AI.",
     "benefits": [
       "Remote-first",
       "Competitive salary",
@@ -494,7 +455,7 @@
       "Health benefits"
     ],
     "whyJoin": {
-      "title": "Why Join VoiceAI?",
+      "title": "Why Join PixPoc?",
       "description": "We're building something revolutionary, and we need talented people to help us get there.",
       "features": [
         {
@@ -575,4 +536,4 @@
       "secondaryButton": "Contact Us"
     }
   }
-} 
+}

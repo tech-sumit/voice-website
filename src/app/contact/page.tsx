@@ -266,7 +266,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-xs font-bold text-[var(--hw-text-muted)] uppercase tracking-wider mb-2">
-                    Comms Link (Phone)
+                    Phone Number
                   </label>
                   <input
                     type="tel"

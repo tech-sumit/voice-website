@@ -75,9 +75,9 @@ export default function FAQSection() {
                     className="overflow-hidden"
                   >
                     <div className="px-6 pb-6 pl-16">
-                      <div className="bg-[var(--hw-panel)] p-4 rounded-sm border-l-2 border-[var(--hw-screen)]">
+                      <div className="bg-[var(--hw-panel)] p-4 rounded-sm border-l-2 border-[var(--hw-screen)] dark:border-[#26A69A]">
                         <p className="text-[var(--hw-text-muted)] text-sm leading-relaxed">
-                          <span className="text-[var(--hw-screen)] font-bold mr-2">[RESPONSE]:</span>
+                          <span className="text-[var(--hw-screen)] dark:text-[#26A69A] font-bold mr-2">[RESPONSE]:</span>
                           {faq.answer}
                         </p>
                       </div>

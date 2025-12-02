@@ -3,8 +3,8 @@ import siteConfig from '@/config/site.json';
 import { CpuChipIcon, GlobeAltIcon, LightBulbIcon } from "@heroicons/react/24/solid";
 
 export const metadata: Metadata = {
-  title: "Careers - VoiceAI",
-  description: "Join our team and help shape the future of AI voice technology. Explore career opportunities at VoiceAI.",
+  title: "Careers - PixPoc",
+  description: "Join our team and help shape the future of AI voice technology. Explore career opportunities at PixPoc.",
 };
 
 export default function CareersPage() {
@@ -14,10 +14,10 @@ export default function CareersPage() {
   // Map index to icon component
   const getFeatureIcon = (index: number) => {
     switch (index) {
-      case 0: return <CpuChipIcon className="w-6 h-6 text-[var(--hw-panel)]" />;
-      case 1: return <GlobeAltIcon className="w-6 h-6 text-[var(--hw-panel)]" />;
-      case 2: return <LightBulbIcon className="w-6 h-6 text-[var(--hw-panel)]" />;
-      default: return <CpuChipIcon className="w-6 h-6 text-[var(--hw-panel)]" />;
+      case 0: return <CpuChipIcon className="w-6 h-6 text-[#E8E4D9]" />;
+      case 1: return <GlobeAltIcon className="w-6 h-6 text-[#E8E4D9]" />;
+      case 2: return <LightBulbIcon className="w-6 h-6 text-[#E8E4D9]" />;
+      default: return <CpuChipIcon className="w-6 h-6 text-[#E8E4D9]" />;
     }
   };
 
