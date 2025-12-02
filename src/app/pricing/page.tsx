@@ -14,12 +14,12 @@ export default function PricingPage() {
       period: '/mo',
       features: [
         'Web Access',
+        '5 Minutes / Month',
         'Community Pool (DID & Channels)',
         'No Dedicated Calling Capacity',
         'Limited Languages',
         'No API Support',
-        'Community Support',
-        '5 Minutes / Month'
+        'Community Support'
       ],
       cta: 'Start Building',
       href: '/contact',
@@ -35,13 +35,15 @@ export default function PricingPage() {
       period: '/mo',
       features: [
         'Web Access',
+        '300 Minutes / Month Included',
         '1 Channel (Parallel Call)',
         '1 DID Included',
+        'All Languages Supported',
         'Incoming / Outgoing Supported',
         'Unlimited Agents',
         'Unlimited Campaigns',
-        'All Languages Supported',
         'Limited Integrations & Tools',
+        'Limited API Access',
         'Support on Email'
       ],
       cta: 'Deploy Unit',
@@ -58,15 +60,16 @@ export default function PricingPage() {
       period: '',
       features: [
         'Web Access',
+        'Custom Volume / Month',
         'Unlimited Channels (Scaled)',
+        'Dedicated DID Inventory',
+        'All Languages Supported',
         'Incoming / Outgoing Supported',
         'Unlimited Agents',
         'Unlimited Campaigns',
-        'All Languages Supported',
+        'Full Integrations & Tools',
         'Full API Access',
-        'Dedicated Account Manager',
-        'Custom LLM Fine-tuning',
-        '99.99% SLA Guarantee'
+        'Dedicated Account Manager'
       ],
       cta: 'Contact Command',
       href: '/contact?plan=enterprise',
