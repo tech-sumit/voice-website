@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-import siteConfig from '@/config/site.json';
-import supportedLanguages from '@/config/languages';
-import { initiateCall, logCallRequest } from '@/lib/call';
+// COMMENTED OUT - Unused imports for disabled endpoint
+// import { Resend } from 'resend';
+// import siteConfig from '@/config/site.json';
+// import supportedLanguages from '@/config/languages';
+// import { initiateCall, logCallRequest } from '@/lib/call';
 
+// ============================================================================
+// ALL CODE BELOW IS COMMENTED OUT - ENDPOINT IS DISABLED
+// ============================================================================
+
+/* COMMENTED OUT - Unused constants and functions for disabled endpoint
 // Do NOT initialize Resend at module scope to avoid build-time errors
 // when RESEND_API_KEY is not set. Initialize within the handler after checks.
 
@@ -182,8 +188,24 @@ function isValidLanguage(language: string): boolean {
   if (!language) return false;
   return supportedLanguages.some(lang => lang.code === language);
 }
+*/
 
-export async function POST(request: Request) {
+// ============================================================================
+// CALLBACK ENDPOINT - DISABLED
+// ============================================================================
+// This endpoint has been disabled. The call functionality is no longer available.
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function POST(_request: Request) {
+  return NextResponse.json(
+    { error: 'This service is currently unavailable. Please contact us at founders@pixpoc.ai for assistance.' },
+    { status: 503 }
+  );
+}
+
+/* COMMENTED OUT - ORIGINAL CALLBACK ENDPOINT IMPLEMENTATION
+export async function POST_ORIGINAL(request: Request) {
   try {
     // Get IP address for rate limiting (using X-Forwarded-For or direct)
     // In production, you'd use a more robust solution depending on your hosting
@@ -510,4 +532,5 @@ Speak in friendly, professional English. Always mention you're calling from Pixp
       { status: 500 }
     );
   }
-} 
+}
+*/ 

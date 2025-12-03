@@ -95,7 +95,7 @@ export default function CareersPage() {
             </div>
             <h3 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">
               No Active Requisitions
-            </h3>
+                    </h3>
             <p className="text-[var(--hw-text-muted)] max-w-lg mx-auto leading-relaxed mb-8 font-mono text-sm">
               {'// SYSTEM NOTICE: All personnel slots are currently filled.'}
               <br/>

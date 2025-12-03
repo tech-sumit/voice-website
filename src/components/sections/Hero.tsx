@@ -1,53 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
-import supportedLanguages from "@/config/languages";
-import callTemplates from "@/config/callTemplates";
 import Script from "next/script";
 
 export default function Hero() {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+91");
-  const [language, setLanguage] = useState("hi-IN");
+  const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   
-  // Template state
-  const [selectedTemplateId, setSelectedTemplateId] = useState("default");
-  const [templateValues, setTemplateValues] = useState<Record<string, string>>({
-    name: "",
-    expectedFlow: "",
-  });
-
-  // Get the current template
-  const selectedTemplate = callTemplates.find(t => t.id === selectedTemplateId) || callTemplates[0];
-
-  // Handle template change
-  const handleTemplateChange = (templateId: string) => {
-    const template = callTemplates.find(t => t.id === templateId);
-    if (!template) return;
-    const initialValues: Record<string, string> = {};
-    template.fields.forEach(field => {
-      initialValues[field.name] = "";
-    });
-    setSelectedTemplateId(templateId);
-    setTemplateValues(initialValues);
-    setIsSubmitted(false);
-  };
-
-  // Handle template field changes
-  const handleTemplateFieldChange = (fieldName: string, value: string) => {
-    setTemplateValues(prev => ({
-      ...prev,
-      [fieldName]: value
-    }));
-  };
-
   // Initialize reCAPTCHA
   const handleRecaptchaLoad = () => {
     setIsRecaptchaLoaded(true);
@@ -57,22 +21,8 @@ export default function Hero() {
     e.preventDefault();
     setError(null);
 
-    const template = callTemplates.find(t => t.id === selectedTemplateId) || callTemplates[0];
-    const expectedFlow = template.generateFlow(templateValues);
-
-    // Validate
-    const missingFields = template.fields
-      .filter(field => field.required && !templateValues[field.name])
-      .map(field => field.label);
-
-    if (missingFields.length > 0) {
-      setError(`Required: ${missingFields.join(', ')}`);
-      return;
-    }
-
-    const phoneDigits = phoneNumber.replace(/\D/g, '');
-    if (phoneDigits.length < 7 || phoneDigits.length > 15) {
-      setError("Invalid phone number");
+    if (!email || !email.includes('@')) {
+      setError("Invalid email address");
       return;
     }
 
@@ -89,9 +39,9 @@ export default function Hero() {
         try {
           const token = await window.grecaptcha.enterprise.execute(
             process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi',
-            { action: 'CALLBACK' }
+            { action: 'CONTACT' }
           );
-          await submitForm(token, expectedFlow, template.id);
+          await submitForm(token);
         } catch (error) {
           console.error('reCAPTCHA error:', error);
           setError("Security check failed");
@@ -105,18 +55,14 @@ export default function Hero() {
     }
   };
   
-  const submitForm = async (token: string, expectedFlow: string, templateId: string) => {
+  const submitForm = async (token: string) => {
     try {
-      const response = await fetch('/api/callback', {
+      const response = await fetch('/api/book-demo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          phoneNumber: `${countryCode}${phoneNumber}`,
-          language: language,
-          name: templateValues.name || '',
-          expectedFlow: expectedFlow,
-          captchaToken: token,
-          templateId: templateId
+          email: email,
+          captchaToken: token
         }),
       });
       
@@ -129,8 +75,8 @@ export default function Hero() {
       }
       
       setIsSubmitted(true);
+      setEmail("");
       setTimeout(() => {
-        setPhoneNumber("");
         setIsSubmitted(false);
       }, 5000);
     } catch {
@@ -139,15 +85,6 @@ export default function Hero() {
       setIsSubmitting(false);
     }
   };
-
-  // Common country codes
-  const countryCodes = [
-    { code: "+91", name: "IN" },
-    { code: "+1", name: "US" },
-    { code: "+44", name: "UK" },
-    { code: "+61", name: "AU" },
-    { code: "+971", name: "AE" },
-  ];
 
   return (
     <section className="relative bg-[#E0DDD5] dark:bg-[#050505] min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
@@ -238,63 +175,28 @@ export default function Hero() {
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-[var(--hw-text-main)] font-bold text-lg sm:text-xl uppercase tracking-wide flex items-center gap-3">
                   <span className="w-3 h-3 rounded-full bg-[var(--hw-text-main)]"></span>
-                  Demo Control
+                  Book a Demo
                 </h2>
-                <button 
-                  type="button"
-                  onClick={() => setShowSettings(true)}
-                  className="group w-10 h-10 rounded-full bg-[var(--hw-border)] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.5)] flex items-center justify-center active:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1)] transition-all text-[var(--hw-text-muted)] hover:text-[#FF5722]"
-                  title="Configure Settings"
-                >
-                  <svg className="w-5 h-5 transition-transform group-hover:rotate-90 duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </button>
-          </div>
+              </div>
 
               {/* Main Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Input Cluster */}
                 <div className="space-y-4">
-                  {/* Phone Input Group */}
                   <div>
-                    <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-2 block ml-1">Target Number</label>
-                    <div className="flex gap-3">
-                      <select 
-                        value={countryCode}
-                        onChange={(e) => setCountryCode(e.target.value)}
-                        className="bg-[var(--hw-panel)] text-[var(--hw-text-main)] font-mono rounded-xl px-3 py-3 border-none shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),1px_1px_0px_rgba(255,255,255,0.1)] outline-none focus:ring-2 focus:ring-[#FF5722]/30 w-24"
-                      >
-                        {countryCodes.map(c => <option key={c.code} value={c.code}>{c.code}</option>)}
-                      </select>
-                      <input 
-                        type="tel" 
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="9876543210"
-                        className="flex-1 bg-[var(--hw-panel)] text-[var(--hw-text-main)] font-mono text-lg rounded-xl px-4 py-3 border-none shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),1px_1px_0px_rgba(255,255,255,0.1)] outline-none focus:ring-2 focus:ring-[#FF5722]/30 placeholder-[var(--hw-text-muted)] min-w-0"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Language Selection */}
-                  <div>
-                    <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-2 block ml-1">Language Module</label>
-                    <div className="relative">
-                      <select 
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                        className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] rounded-xl px-4 py-3 border-none shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),1px_1px_0px_rgba(255,255,255,0.1)] outline-none focus:ring-2 focus:ring-[#FF5722]/30 appearance-none cursor-pointer"
-                      >
-                        {supportedLanguages.map(l => (
-                          <option key={l.code} value={l.code}>{l.name}</option>
-                        ))}
-                      </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--hw-text-muted)]">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                      </div>
-                    </div>
+                    <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-2 block ml-1">
+                      Work Email
+                    </label>
+                    <input 
+                      type="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="name@company.com"
+                      className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] font-mono text-lg rounded-xl px-4 py-3 border-none shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),1px_1px_0px_rgba(255,255,255,0.1)] outline-none focus:ring-2 focus:ring-[#FF5722]/30 placeholder-[var(--hw-text-muted)]"
+                    />
+                    <p className="text-[10px] text-[var(--hw-text-muted)] mt-2 ml-1">
+                      Enter your email to schedule a personalized walkthrough.
+                    </p>
                   </div>
                 </div>
 
@@ -309,7 +211,7 @@ export default function Hero() {
                   {isSubmitted && (
                     <p className="text-[#1A5C54] dark:text-[#69F0AE] text-xs font-mono flex items-center gap-2">
                       <span className="w-2 h-2 bg-[#1A5C54] dark:bg-[#69F0AE] rounded-full animate-pulse"></span>
-                      TRANSMISSION SUCCESSFUL
+                      REQUEST SENT SUCCESSFULLY
                     </p>
                   )}
                 </div>
@@ -329,12 +231,12 @@ export default function Hero() {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      INITIATING...
+                      PROCESSING...
                     </>
                   ) : (
                     <>
                       <span className="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white] animate-pulse"></span>
-                      INITIATE CALL
+                      BOOK DEMO
                     </>
                   )}
                 </motion.button>
@@ -344,7 +246,7 @@ export default function Hero() {
                 </p>
               </form>
             </div>
-                  </div>
+          </div>
 
           {/* Under Deck Label */}
           <div className="mt-4 flex justify-center">
@@ -353,111 +255,8 @@ export default function Hero() {
         </div>
       </div>
       
-      {/* Settings Modal (New Implementation) */}
-      <AnimatePresence>
-        {showSettings && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-            {/* Backdrop */}
-                      <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowSettings(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            />
-            
-            {/* Modal Panel */}
-                      <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-[var(--hw-chassis)] rounded-2xl border-[4px] border-[var(--hw-border)] shadow-2xl overflow-hidden z-10"
-            >
-              {/* Modal Header */}
-              <div className="bg-[var(--hw-border)] px-6 py-4 flex items-center justify-between">
-                <h3 className="text-[var(--hw-text-main)] font-bold tracking-widest uppercase text-sm flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF5722] rounded-full animate-pulse"></span>
-                  System Configuration
-                        </h3>
-                                <button
-                                  onClick={() => setShowSettings(false)}
-                  className="text-[var(--hw-text-muted)] hover:text-[var(--hw-text-main)] transition-colors"
-                                >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                  </svg>
-                                </button>
-              </div>
-                                
-              {/* Modal Body */}
-              <div className="p-6 bg-[var(--hw-chassis)] max-h-[70vh] overflow-y-auto">
-                <div className="space-y-6">
-                  <div>
-                    <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-2 block">Template Selection</label>
-                    <div className="relative">
-                                  <select
-                                    value={selectedTemplateId}
-                                    onChange={(e) => handleTemplateChange(e.target.value)}
-                        className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] font-medium rounded-lg px-4 py-3 border border-[var(--hw-border)] shadow-sm focus:border-[#FF5722] outline-none appearance-none"
-                                  >
-                        {callTemplates.map(t => (
-                          <option key={t.id} value={t.id}>{t.name}</option>
-                                    ))}
-                                  </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--hw-text-muted)]">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                      </div>
-                    </div>
-                    <p className="mt-2 text-xs text-[var(--hw-text-muted)] font-mono bg-[var(--hw-border)] p-2 rounded">
-                                    {selectedTemplate.description}
-                                  </p>
-                                </div>
-                                
-                  {/* Dynamic Fields */}
-                  <div className="space-y-4 border-t border-[var(--hw-border)] pt-4">
-                                  {selectedTemplate.fields.map(field => (
-                       <div key={field.name}>
-                          <label className="text-xs font-bold text-[var(--hw-text-muted)] uppercase mb-1 block">
-                            {field.label} {field.required && <span className="text-[#FF5722]">*</span>}
-                                      </label>
-                                        {field.type === 'text' && field.name === 'expectedFlow' ? (
-                                          <textarea
-                                            value={templateValues[field.name] || ''}
-                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
-                              className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] rounded-lg px-3 py-2 border border-[var(--hw-border)] shadow-sm focus:border-[#FF5722] outline-none min-h-[100px] resize-y text-sm"
-                                            placeholder={field.placeholder}
-                                          />
-                                        ) : (
-                                          <input
-                                            type={field.type}
-                                            value={templateValues[field.name] || ''}
-                                            onChange={(e) => handleTemplateFieldChange(field.name, e.target.value)}
-                              className="w-full bg-[var(--hw-panel)] text-[var(--hw-text-main)] rounded-lg px-3 py-2 border border-[var(--hw-border)] shadow-sm focus:border-[#FF5722] outline-none text-sm"
-                                            placeholder={field.placeholder}
-                                          />
-                                        )}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-              
-              {/* Modal Footer */}
-              <div className="bg-[var(--hw-border)] px-6 py-4 border-t border-[var(--hw-border)] flex justify-end">
-                <button 
-                  onClick={() => setShowSettings(false)}
-                  className="px-6 py-2 bg-[var(--hw-text-main)] text-[var(--hw-panel)] text-xs font-bold uppercase tracking-wider rounded hover:bg-[#FF5722] transition-colors shadow-md"
-                >
-                  Confirm Settings
-                </button>
-                              </div>
-                            </motion.div>
-                          </div>
-        )}
-      </AnimatePresence>
-      
       {/* Background Texture Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-noise mix-blend-overlay"></div>
     </section>
   );
-} 
+}

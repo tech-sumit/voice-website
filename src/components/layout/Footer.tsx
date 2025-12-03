@@ -85,13 +85,17 @@ export default function Footer() {
             <div>
               <h3 className="text-[var(--hw-text-muted)] text-xs font-bold tracking-[0.2em] uppercase mb-6 border-b border-[var(--hw-border)] pb-2 inline-block">Company</h3>
               <ul className="space-y-3">
-                {['Contact', 'Careers'].map((item) => (
-                  <li key={item}>
-                    <Link href={`/${item.toLowerCase()}`} className="text-[var(--hw-text-muted)] hover:text-[#FF5722] text-sm font-mono transition-colors flex items-center gap-2 group">
+                {[
+                  { name: 'Contact', href: '/contact' },
+                  { name: 'Careers', href: '/careers' },
+                  { name: 'Privacy Policy', href: '/privacy-policy' }
+                ].map((item) => (
+                  <li key={item.name}>
+                    <Link href={item.href} className="text-[var(--hw-text-muted)] hover:text-[#FF5722] text-sm font-mono transition-colors flex items-center gap-2 group">
                       <span className="w-1 h-1 bg-[var(--hw-text-main)] group-hover:bg-[#FF5722] transition-colors"></span>
-                      {item}
-                  </Link>
-                </li>
+                      {item.name}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>
