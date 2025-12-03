@@ -272,8 +272,11 @@ async function sendCallCompletionEmail(data: {
   `;
   
   // Send email
+  // Use RESEND_FROM_EMAIL env var if set, otherwise use onboarding domain for testing
+  const fromEmail: string = process.env.RESEND_FROM_EMAIL || `${siteConfig.name} <onboarding@resend.dev>`;
+  
   await resend.emails.send({
-    from: `${siteConfig.name} <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
+    from: fromEmail,
     to: siteConfig.company.email,
     subject: `Call Completed - ${data.callSid}`,
     html: emailHtml,

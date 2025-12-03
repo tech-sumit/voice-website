@@ -345,9 +345,12 @@ export async function POST(request: Request) {
     `;
     
     // Send email using Resend with sanitized data
+    // Use RESEND_FROM_EMAIL env var if set, otherwise use onboarding domain for testing
+    const fromEmail: string = process.env.RESEND_FROM_EMAIL || `Contact Form <onboarding@resend.dev>`;
+    
     const { error } = await resend.emails.send({
-      from: `Contact Form <noreply@${process.env.NEXT_PUBLIC_SITE_DOMAIN || 'example.com'}>`,
-      to: siteConfig.company.email,
+      from: fromEmail,
+      to: 'founders@pixpoc.in',
       subject: `New contact form submission from ${sanitizedData.name}`,
       html: emailHtml,
       replyTo: sanitizedData.email,
