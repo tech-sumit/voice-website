@@ -16,6 +16,7 @@
     "framer-motion": "^11.18.2",
     "jsonwebtoken": "^9.0.2",
     "next": "15.3.1",
+    "posthog-js": "^1.302.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-google-recaptcha": "^3.1.0",

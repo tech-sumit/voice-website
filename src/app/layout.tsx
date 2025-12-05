@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import { PostHogPageView } from "@/lib/analytics";
+import { Suspense } from "react";
 import siteConfig from "@/config/site.json";
 
 const geistSans = Geist({
@@ -59,6 +61,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider>
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
           <Navbar />
           <main className="flex-1">{children}</main>
           <ThemeToggle />
