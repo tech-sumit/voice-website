@@ -53,7 +53,7 @@ This project includes comprehensive analytics using PostHog to track user behavi
 3. Add to `.env.local`:
    ```
    NEXT_PUBLIC_POSTHOG_KEY=phc_your_real_key_here
-   NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+   NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
    ```
 4. For Netlify deployment, add these same variables to your Netlify environment variables
 
@@ -88,7 +88,7 @@ To make the contact form functional and receive emails:
    
    # PostHog Analytics
    NEXT_PUBLIC_POSTHOG_KEY=phc_your_real_key_here
-   NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+   NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
    ```
 4. Replace `re_123456789` with your actual API key from Resend
 5. Replace `yourdomain.com` with your actual domain

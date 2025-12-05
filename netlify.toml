@@ -10,12 +10,12 @@
 
 [[redirects]]
   from = "/ph-data/static/*"
-  to = "https://us-assets.i.posthog.com/static/:splat"
+  to = "https://eu-assets.i.posthog.com/static/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/ph-data/*"
-  to = "https://us.i.posthog.com/:splat"
+  to = "https://eu.i.posthog.com/:splat"
   status = 200
   force = true
