@@ -1,11 +1,23 @@
 import posthog from 'posthog-js'
 
+// Type definition for Navigator Connection API
+interface NavigatorConnection {
+  effectiveType?: string
+  downlink?: number
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NavigatorConnection
+}
+
 /**
  * Get comprehensive user context data
  * Includes timezone, language, screen info, and more
  */
 export function getUserContext() {
   if (typeof window === 'undefined') return {}
+  
+  const nav = navigator as NavigatorWithConnection
   
   return {
     // Timezone and time
@@ -30,8 +42,8 @@ export function getUserContext() {
     vendor: navigator.vendor,
     
     // Connection info (if available)
-    connection_type: (navigator as any).connection?.effectiveType || 'unknown',
-    connection_downlink: (navigator as any).connection?.downlink || 'unknown',
+    connection_type: nav.connection?.effectiveType || 'unknown',
+    connection_downlink: nav.connection?.downlink || 'unknown',
     
     // Other
     cookie_enabled: navigator.cookieEnabled,
@@ -47,7 +59,7 @@ export function getUserContext() {
  * @example
  * trackEvent('button_clicked', { button_name: 'Subscribe' })
  */
-export function trackEvent(eventName: string, properties?: Record<string, any>) {
+export function trackEvent(eventName: string, properties?: Record<string, unknown>) {
   if (typeof window !== 'undefined' && posthog) {
     const context = getUserContext()
     posthog.capture(eventName, {
@@ -65,7 +77,7 @@ export function trackEvent(eventName: string, properties?: Record<string, any>) 
  * @example
  * identifyUser('user_123', { email: 'user@example.com', name: 'John Doe' })
  */
-export function identifyUser(userId: string, properties?: Record<string, any>) {
+export function identifyUser(userId: string, properties?: Record<string, unknown>) {
   if (typeof window !== 'undefined' && posthog) {
     posthog.identify(userId, properties)
   }
@@ -87,7 +99,7 @@ export function resetUser() {
  * @example
  * setUserProperties({ plan: 'premium', company: 'Acme Inc' })
  */
-export function setUserProperties(properties: Record<string, any>) {
+export function setUserProperties(properties: Record<string, unknown>) {
   if (typeof window !== 'undefined' && posthog) {
     posthog.people.set(properties)
   }
