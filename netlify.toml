@@ -1,0 +1,21 @@
+# Netlify Configuration
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+# PostHog Reverse Proxy
+# Using a unique path name to avoid ad blocker filters
+# DO NOT use generic names like /analytics, /tracking, /ingest - they will be blocked!
+
+[[redirects]]
+  from = "/ph-data/static/*"
+  to = "https://us-assets.i.posthog.com/static/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/ph-data/*"
+  to = "https://us.i.posthog.com/:splat"
+  status = 200
+  force = true

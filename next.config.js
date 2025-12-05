@@ -12,26 +12,16 @@ const nextConfig = {
   },
   
   // Reverse proxy for PostHog to bypass ad blockers
+  // Using /ph-data instead of /ingest to avoid ad blocker filters
+  // Note: For Netlify, this is configured in netlify.toml instead
   async rewrites() {
     return [
       {
-        source: '/ingest/static/:path*',
+        source: '/ph-data/static/:path*',
         destination: 'https://us-assets.i.posthog.com/static/:path*',
       },
       {
-        source: '/ingest/decide',
-        destination: 'https://us.i.posthog.com/decide',
-      },
-      {
-        source: '/ingest/array/:path*',
-        destination: 'https://us.i.posthog.com/array/:path*',
-      },
-      {
-        source: '/ingest/flags/:path*',
-        destination: 'https://us.i.posthog.com/flags/:path*',
-      },
-      {
-        source: '/ingest/:path*',
+        source: '/ph-data/:path*',
         destination: 'https://us.i.posthog.com/:path*',
       },
     ];

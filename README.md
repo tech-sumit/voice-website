@@ -42,6 +42,36 @@ RECAPTCHA_SECRET_KEY=your-secret-key-here
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your-site-key-here
 ```
 
+## Analytics Setup (PostHog)
+
+This project includes comprehensive analytics using PostHog to track user behavior, location, device info, and more.
+
+### Quick Setup:
+
+1. Sign up for [PostHog](https://app.posthog.com/signup) (free account, no credit card)
+2. Get your Project API Key from Project Settings
+3. Add to `.env.local`:
+   ```
+   NEXT_PUBLIC_POSTHOG_KEY=phc_your_real_key_here
+   NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+   ```
+4. For Netlify deployment, add these same variables to your Netlify environment variables
+
+### What Gets Tracked:
+- ✅ **Location**: Country, State, City (via IP geolocation)
+- ✅ **Timezone**: User's actual timezone
+- ✅ **Device**: Browser, OS, screen size
+- ✅ **Page Views**: All navigation automatically tracked
+- ✅ **User Interactions**: Clicks, form submissions
+- ✅ **Session Recordings**: Watch actual user sessions
+- ✅ **Performance Metrics**: Page load times, network info
+
+### Deployment Notes:
+- Includes reverse proxy configuration (`netlify.toml`) to bypass ad blockers
+- Uses `/ph-data` path instead of generic paths to avoid blocking
+- See `DEPLOYMENT_CHECKLIST.md` for complete deployment guide
+- See `src/lib/analytics/` for implementation details
+
 ## Contact Form Setup
 
 To make the contact form functional and receive emails:
@@ -55,9 +85,14 @@ To make the contact form functional and receive emails:
 
    # Your website domain (used for the 'from' email address)
    NEXT_PUBLIC_SITE_DOMAIN=yourdomain.com
+   
+   # PostHog Analytics
+   NEXT_PUBLIC_POSTHOG_KEY=phc_your_real_key_here
+   NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
    ```
 4. Replace `re_123456789` with your actual API key from Resend
 5. Replace `yourdomain.com` with your actual domain
+6. Replace `phc_your_real_key_here` with your actual PostHog API key
 
 When the contact form is submitted, you'll receive an email at the address configured in `src/config/site.json` under `company.email`.
 

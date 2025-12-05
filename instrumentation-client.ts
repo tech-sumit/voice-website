@@ -3,8 +3,9 @@ import posthog from 'posthog-js'
 // Determine the API host based on environment
 const getApiHost = () => {
   // In browser, use reverse proxy to bypass ad blockers
+  // Using /ph-data instead of /ingest to avoid ad blocker filters
   if (typeof window !== 'undefined') {
-    return window.location.origin + '/ingest'
+    return window.location.origin + '/ph-data'
   }
   // Fallback to direct PostHog URL (server-side or if window not available)
   return process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com'
