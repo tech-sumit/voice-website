@@ -1,22 +1,26 @@
 {
   "name": "PixPoc",
-  "description": "Ultra-realistic AI Phone Calls for Business",
+  "description": "AI phone agents for enterprise support & sales",
+  "tagline": "AI phone agents for enterprise support & sales",
   "url": "https://pixpoc.ai",
   "logo": "/logo.svg",
+  "languages": [
+    "English", "Arabic", "Chinese", "Dutch", "French", "German", "Hindi", "Indonesian", "Italian", "Japanese", "Korean", "Polish", "Portuguese", "Russian", "Spanish", "Swedish", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Punjabi", "Tamil"
+  ],
   "nav": [
     { "name": "Home", "path": "/" },
     { "name": "Contact", "path": "/contact" },
     { "name": "Pricing", "path": "/pricing" }
   ],
   "metadata": {
-    "title": "PixPoc - Ultra-realistic AI Phone Calls for Business",
-    "description": "PixPoc phone agents that sound human, speak any language, and work 24/7. Integrate seamlessly with your CRM and business tools.",
-    "keywords": "pixpoc, voice ai, ai phone calls, ai agents, conversational ai, customer support ai, ai receptionist",
+    "title": "PixPoc - AI Phone Agents for Enterprise Support & Sales",
+    "description": "AI phone agents for enterprise support & sales. Ultra-realistic conversations, 30 languages, 24/7 availability. Seamlessly integrate with your CRM.",
+    "keywords": "pixpoc, voice ai, ai phone agents, enterprise support, sales automation, conversational ai, customer support ai, ai receptionist",
     "authors": [{ "name": "PixPoc Team" }],
-    "ogTitle": "PixPoc - Ultra-realistic AI Phone Calls for Business",
-    "ogDescription": "Deploy AI phone agents that sound human and work 24/7",
+    "ogTitle": "PixPoc - AI Phone Agents for Enterprise Support & Sales",
+    "ogDescription": "AI phone agents for enterprise support & sales. Ultra-realistic, 30+ languages, 24/7.",
     "ogSiteName": "PixPoc",
-    "themeColor": "#6366F1"
+    "themeColor": "#1A5C54"
   },
   "company": {
     "name": "PixPoc AI",
@@ -26,7 +30,7 @@
     "social": {
       "twitter": "https://x.com/pixpoc",
       "linkedin": "https://www.linkedin.com/company/pixpoc-ai/",
-      "github": ""
+      "instagram": "https://www.instagram.com/pixpoc.ai/"
     }
   },
   "cta": {

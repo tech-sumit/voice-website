@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin or internal pages if you have any
+# Disallow: /admin/
+# Disallow: /api/
+
+# Sitemap location
+Sitemap: https://pixpoc.ai/sitemap.xml

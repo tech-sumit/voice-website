@@ -1,12 +1,12 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-# VoiceAI Website
+# PixPoc Website
 
-Ultra-realistic AI Phone Calls for Business
+AI phone agents for enterprise support & sales
 
 ## Overview
 
-This website showcases VoiceAI, a platform for creating realistic AI phone agents that work 24/7, speak multiple languages, and integrate with existing business tools.
+This website showcases PixPoc - AI phone agents for enterprise support & sales. Our platform delivers ultra-realistic AI phone conversations in 30+ languages, works 24/7, and seamlessly integrates with your existing CRM and business tools.
 
 ## Getting Started
 
@@ -42,6 +42,56 @@ RECAPTCHA_SECRET_KEY=your-secret-key-here
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your-site-key-here
 ```
 
+## SEO Optimization
+
+This website is fully optimized for search engines with comprehensive SEO features.
+
+### What's Implemented:
+
+**Structured Data (Schema Markup):**
+- ✅ Organization schema (company info + 40 languages)
+- ✅ Website schema
+- ✅ FAQ schema (rich snippets in Google)
+- ✅ SoftwareApplication schema (all features from config)
+
+**Technical SEO:**
+- ✅ Dynamic XML sitemap (`/sitemap.xml`)
+- ✅ robots.txt configuration
+- ✅ Canonical URLs
+- ✅ Meta tags optimized for "AI phone agents for enterprise"
+- ✅ Open Graph tags (Facebook, LinkedIn)
+- ✅ Twitter Cards
+- ✅ Web App Manifest (PWA ready)
+- ✅ Google Search Console verification
+
+**Performance:**
+- ✅ Next.js automatic optimizations
+- ✅ Font optimization
+- ✅ Code splitting
+- ✅ PostHog with reverse proxy
+
+### Quick Setup:
+
+1. **Create OG Image:**
+   - Create `/public/og-image.png` (1200 x 630 pixels)
+   - Use Canva or similar tool
+   - See `SEO_GUIDE.md` for details
+
+2. **Google Search Console:**
+   - Sign up at https://search.google.com/search-console
+   - Add your site and verify
+   - Submit sitemap: `https://pixpoc.ai/sitemap.xml`
+
+3. **Deploy:**
+   ```bash
+   git push origin main
+   ```
+
+**Documentation:**
+- `SEO_GUIDE.md` - Comprehensive SEO guide
+- `SEO_CHECKLIST.md` - Step-by-step checklist
+- `src/lib/seo/structuredData.ts` - Schema utilities
+
 ## Analytics Setup (PostHog)
 
 This project includes comprehensive analytics using PostHog to track user behavior, location, device info, and more.
@@ -65,6 +115,7 @@ This project includes comprehensive analytics using PostHog to track user behavi
 - ✅ **User Interactions**: Clicks, form submissions
 - ✅ **Session Recordings**: Watch actual user sessions
 - ✅ **Performance Metrics**: Page load times, network info
+- ✅ **Language**: Support for 30+ languages tracked
 
 ### Deployment Notes:
 - Includes reverse proxy configuration (`netlify.toml`) to bypass ad blockers
