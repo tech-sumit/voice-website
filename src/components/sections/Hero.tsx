@@ -87,7 +87,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative bg-[#E0DDD5] dark:bg-[#050505] min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
+    <section className="relative bg-[var(--hw-panel)] min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
       {/* Load reCAPTCHA */}
       <Script
         src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdSPC8rAAAAALSdtGhM_cj4t-HHu2040PI3zGbi'}`}

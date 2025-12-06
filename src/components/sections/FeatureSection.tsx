@@ -21,19 +21,16 @@ import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
 import { ForwardRefExoticComponent, SVGProps, RefAttributes } from "react";
 
-// Define icon type
 type IconComponent = ForwardRefExoticComponent<Omit<SVGProps<SVGSVGElement>, "ref"> & { 
   title?: string | undefined; 
   titleId?: string | undefined; 
 } & RefAttributes<SVGSVGElement>>;
 
-// Define icon map type
 type IconMap = {
   [key: string]: IconComponent;
 };
 
 export default function FeatureSection() {
-  // Map icon strings from config to actual icon components
   const getIconComponent = (iconName: string): IconComponent => {
     const iconMap: IconMap = {
       "microphone": MicrophoneIcon,
@@ -59,9 +56,7 @@ export default function FeatureSection() {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+      transition: { staggerChildren: 0.08 }
     }
   };
 
@@ -71,26 +66,34 @@ export default function FeatureSection() {
   };
 
   return (
-    <section id="features" className="py-20 bg-[var(--hw-chassis)] relative overflow-hidden">
+    <section id="features" className="py-24 bg-[var(--hw-chassis)] relative overflow-hidden border-t border-[var(--hw-border)]">
+      {/* Grid Background */}
+      <div className="absolute inset-0 opacity-[0.05]" 
+           style={{ 
+             backgroundImage: 'linear-gradient(var(--hw-text-main) 1px, transparent 1px), linear-gradient(90deg, var(--hw-text-main) 1px, transparent 1px)', 
+             backgroundSize: '40px 40px' 
+           }}>
+      </div>
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-noise mix-blend-overlay"></div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Hardware Header */}
-        <div className="flex justify-between items-end mb-16 border-b-4 border-[var(--hw-border)] pb-6">
+        {/* Consistent Header Pattern */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b-4 border-[var(--hw-border)] pb-6 gap-6">
            <div>
-              <div className="text-[var(--hw-text-muted)] text-xs font-bold tracking-[0.2em] uppercase mb-2">System Capabilities</div>
-              <h2 className="text-4xl md:text-5xl font-bold text-[var(--hw-text-main)] tracking-tight">
+              <div className="text-[var(--hw-text-muted)] text-xs font-bold tracking-[0.2em] uppercase mb-2 flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#FF5722] rounded-full animate-pulse"></span>
+                System Capabilities
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold text-[var(--hw-text-main)] tracking-tight">
                 Core <span className="text-[#FF5722]">Modules</span>
               </h2>
            </div>
-           <div className="hidden md:block text-right">
-              <div className="flex gap-1 justify-end mb-2">
-                 {[...Array(4)].map((_, i) => (
-                   <div key={i} className="w-8 h-2 bg-[var(--hw-border)] rounded-sm"></div>
-                 ))}
-              </div>
-              <div className="font-mono text-[var(--hw-text-muted)] text-sm">SPECIFICATION_SHEET_V1</div>
-            </div>
+           <div className="flex items-center gap-3 bg-[var(--hw-panel)] px-4 py-2 rounded border border-[var(--hw-border)] shadow-sm whitespace-nowrap">
+              <BoltIcon className="w-5 h-5 text-[#FF5722]" />
+              <span className="font-mono text-sm font-bold text-[var(--hw-text-main)]">
+                POWERFUL CAPABILITIES
+              </span>
+           </div>
         </div>
         
         {/* Features Grid - Keypad Style */}
@@ -118,7 +121,7 @@ export default function FeatureSection() {
                     <div className="w-1.5 h-0.5 bg-[#A09890] rotate-45"></div>
                   </div>
 
-                  {/* Icon Area - "Printed" on the key */}
+                  {/* Icon Area */}
                   <div className="mb-6 w-14 h-14 bg-[var(--hw-chassis)] rounded-xl flex items-center justify-center shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05)] group-hover:bg-[#FF5722] transition-colors duration-200">
                     <IconComponent className="h-7 w-7 text-[var(--hw-text-muted)] group-hover:text-white transition-colors duration-200" />
                     </div>

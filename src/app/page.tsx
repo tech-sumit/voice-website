@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Hero from "@/components/sections/Hero";
 import FeatureSection from "@/components/sections/FeatureSection";
+import GlobalReachSection from "@/components/sections/GlobalReachSection";
+import IntegrationsSection from "@/components/sections/IntegrationsSection";
 import AgentShowcase from "@/components/sections/AgentShowcase";
 import HowItWorks from "@/components/sections/HowItWorks";
 import FAQSection from "@/components/sections/FAQSection";
@@ -82,27 +84,33 @@ export default function Home() {
         }}
       />
       
-      <div className="min-h-screen">
-        {/* 1. Hero - First impression and value proposition */}
-        <Hero />
-        
-        {/* 2. Features - What we offer (technical capabilities) */}
-        <FeatureSection />
-        
-        {/* 3. How It Works - Process explanation (builds trust) */}
-        <HowItWorks />
-        
-        {/* 4. Agent Showcase - Real examples and use cases (proof) */}
-        <AgentShowcase />
-        
-        {/* 5. FAQ - Address final concerns */}
-        <FAQSection />
-        
-        {/* 6. Final CTA - Convert visitors */}
-        <CTASection />
-        
-        <Footer />
-      </div>
+    <div className="min-h-screen">
+      {/* 1. Hero - First impression and value proposition */}
+      <Hero />
+      
+      {/* 2. Features - What we offer (technical capabilities) */}
+      <FeatureSection />
+
+      {/* 2.1 Global Reach - Languages */}
+      <GlobalReachSection />
+
+      {/* 2.2 Integrations - MCP */}
+      <IntegrationsSection />
+      
+      {/* 3. How It Works - Process explanation (builds trust) */}
+      <HowItWorks />
+      
+      {/* 4. Agent Showcase - Real examples and use cases (proof) */}
+      <AgentShowcase />
+      
+      {/* 5. FAQ - Address final concerns */}
+      <FAQSection />
+      
+      {/* 6. Final CTA - Convert visitors */}
+      <CTASection />
+      
+      <Footer />
+    </div>
     </>
   );
 } 

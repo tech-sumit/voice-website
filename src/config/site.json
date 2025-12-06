@@ -235,30 +235,22 @@
     "title": "Seamless Integrations",
     "description": "Connect PixPoc with your favorite tools to create powerful automated workflows",
     "viewAllUrl": "/integrations",
-    "categories": [
-      { "id": "all", "name": "All Integrations" },
-      { "id": "crm", "name": "CRM" },
-      { "id": "calendar", "name": "Calendar" },
-      { "id": "communication", "name": "Communication" },
-      { "id": "ai", "name": "AI Models" },
-      { "id": "automation", "name": "Automation" }
-    ],
     "tools": [
       { "name": "Salesforce", "category": "CRM", "icon": "salesforce.svg" },
       { "name": "HubSpot", "category": "CRM", "icon": "hubspot.svg" },
       { "name": "Zoho", "category": "CRM", "icon": "zoho.svg" },
-      { "name": "Google Calendar", "category": "Calendar", "icon": "google-calendar.svg" },
+      { "name": "Pipedrive", "category": "CRM", "icon": "pipedrive.svg" },
+      { "name": "Google Calendar", "category": "Calendar", "icon": "googlecalendar.svg" },
       { "name": "Calendly", "category": "Calendar", "icon": "calendly.svg" },
-      { "name": "Microsoft Outlook", "category": "Calendar", "icon": "outlook.svg" },
-      { "name": "Twilio", "category": "Communication", "icon": "twilio.svg" },
+      { "name": "Google Sheets", "category": "Productivity", "icon": "googlesheets.svg" },
+      { "name": "Notion", "category": "Productivity", "icon": "notion.svg" },
       { "name": "Slack", "category": "Communication", "icon": "slack.svg" },
-      { "name": "SendGrid", "category": "Communication", "icon": "sendgrid.svg" },
-      { "name": "OpenAI", "category": "AI", "icon": "openai.svg" },
-      { "name": "Anthropic", "category": "AI", "icon": "anthropic.svg" },
-      { "name": "ElevenLabs", "category": "AI", "icon": "elevenlabs.svg" },
-      { "name": "Zapier", "category": "Automation", "icon": "zapier.svg" },
-      { "name": "Make", "category": "Automation", "icon": "make.svg" },
-      { "name": "Stripe", "category": "Payment", "icon": "stripe.svg" }
+      { "name": "Zendesk", "category": "Support", "icon": "zendesk.svg" },
+      { "name": "Freshdesk", "category": "Support", "icon": "freshdesk.svg" },
+      { "name": "Intercom", "category": "Support", "icon": "intercom.svg" },
+      { "name": "Dynamics 365", "category": "CRM", "icon": "dynamics365.svg" },
+      { "name": "WATI", "category": "Communication", "icon": "wati-logo.jpeg" },
+      { "name": "Brex", "category": "Finance", "icon": "brex-staging-logo.png" }
     ]
   },
   "faq": {
