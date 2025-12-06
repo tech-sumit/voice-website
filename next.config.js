@@ -1,15 +1,10 @@
 /** @type {import('next').NextConfig} */
-const path = require('path');
-
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      '@': path.resolve(__dirname, 'src'),
-    };
-    return config;
-  },
+  
+  // Enable Turbopack (default in Next.js 16+)
+  // Path aliases are handled by tsconfig.json
+  turbopack: {},
   
   // Reverse proxy for PostHog to bypass ad blockers
   // Using /ph-data instead of /ingest to avoid ad blocker filters
