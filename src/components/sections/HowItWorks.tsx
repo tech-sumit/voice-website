@@ -37,7 +37,7 @@ export default function HowItWorks() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 border-b-4 border-[var(--hw-border)] pb-6 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b-4 border-[var(--hw-border)] pb-6 gap-4">
            <div className="flex-1">
               <div className="text-[var(--hw-text-muted)] text-xs font-bold tracking-[0.2em] uppercase mb-2 flex items-center gap-2">
                 <span className="w-2 h-2 bg-[#FF5722] rounded-full animate-pulse"></span>
