@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
             <section className="mb-10">
               <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">1. Introduction</h2>
               <p className="mb-4 leading-relaxed">
-                At PIXPOC AI TECHNOLOGIES PVT LTD (&quot;Whatsapp AI Automation Messenger&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), we understand the importance of privacy in the digital environment. Protecting your personal data is not just a legal requirement — it is an essential part of our commitment to earning and maintaining your trust.
+                At PIXPOC AI TECHNOLOGIES PVT LTD (&quot;AI Calling Agents Platform&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), we understand the importance of privacy in the digital environment. Protecting your personal data is not just a legal requirement — it is an essential part of our commitment to earning and maintaining your trust.
               </p>
               <p className="leading-relaxed">
                 This Privacy Policy explains how we collect, use, process, store, and safeguard information when you interact with our website, mobile application, APIs, and other related services. By choosing to use our Service, you acknowledge that you have read, understood, and agreed to the practices described herein.
@@ -44,9 +44,9 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section className="mb-10">
-              <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">3. About Whatsapp AI Automation Messenger</h2>
+              <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">3. About AI Calling Agents Platform</h2>
               <p className="mb-4 leading-relaxed">
-                Whatsapp AI Automation Messenger is a sophisticated cloud-based conversational automation platform. It enables businesses to streamline communications, provide faster customer service, enhance lead management, automate chat workflows, and make data-driven decisions using conversational insights.
+                The AI Calling Agents Platform is a sophisticated cloud-based conversational automation solution focused on automated AI-driven voice calling. It enables businesses to automate outbound and inbound calls, conduct customer outreach, follow-ups, lead qualification, appointment reminders, surveys, and support interactions through intelligent voice agents.
               </p>
               <p className="leading-relaxed">
                 We are deeply committed to ensuring that every layer of the platform — from infrastructure to user interface — adheres to strict privacy, reliability, and security standards.
@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
                 If you use paid features, we process necessary billing information, including payment details and transaction records, through secure and compliant systems.
               </p>
               <p className="mb-4 leading-relaxed">
-                Additionally, the content you share while using our platform — such as messages, files, or media — may be processed as part of delivering the communication features you request.
+                Additionally, the content you share or process while using our platform — such as call recordings, call metadata, transcripts, audio files, or related media — may be processed as part of delivering the automated calling features you request.
               </p>
               <p className="leading-relaxed">
                 For employment purposes, we may handle resumes, qualifications, and related background information. All data collected aligns with the principles of necessity, relevance, and lawful processing.
@@ -75,20 +75,24 @@ export default function PrivacyPolicyPage() {
             <section className="mb-10">
               <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">5. Purpose of Processing</h2>
               <p className="mb-4 leading-relaxed">
-                We process information to provide, support, and continuously improve our Service. Your data helps us create and maintain user accounts, authenticate access, deliver automated communication features, and enable a smooth operational experience.
+                We process information to provide, support, and continuously improve our Service. Your data helps us create and maintain user accounts, authenticate access, deliver automated calling and conversational features, and enable a smooth operational experience.
               </p>
-              <ul className="list-disc pl-6 space-y-2 mb-4">
-                <li>Certain information ensures accurate billing, fraud prevention, and smooth financial transactions.</li>
-                <li>Your interactions with our support team allow us to address issues, assist with troubleshooting, and deliver timely customer care.</li>
-                <li>We also use certain data to enhance platform features, refine workflows, advance system performance, and introduce improvements that make our Service more intuitive and valuable to users.</li>
-              </ul>
+              <p className="mb-4 leading-relaxed">
+                Certain information ensures accurate billing, fraud prevention, and smooth financial transactions.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                Your interactions with our support team allow us to address issues, assist with troubleshooting, and deliver timely customer care.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                We also use certain data to enhance platform features, refine workflows, advance system performance, and introduce improvements that make our Service more intuitive and valuable to users.
+              </p>
               <p className="leading-relaxed">
                 Where appropriate, and only with your consent, we may communicate updates, newsletters, or promotional content. These communications are entirely optional and can be withdrawn at any time.
               </p>
             </section>
 
             <section className="mb-10">
-              <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">6. Understanding and Improving Our Services</h2>
+              <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">6. Understanding and Improving Our Services and Website</h2>
               <p className="mb-4 leading-relaxed">
                 To build a superior and evolving product, we study how users interact with our platform. We analyze aggregated usage data to understand navigation patterns, identify areas where users face friction, and detect opportunities for performance optimization.
               </p>
@@ -98,8 +102,11 @@ export default function PrivacyPolicyPage() {
               <p className="mb-4 leading-relaxed">
                 We may use methods such as analytics, heatmaps, A/B testing, and trend analysis to determine which functionalities users value most. These insights guide our decisions about design, development, and prioritization.
               </p>
+              <p className="mb-4 leading-relaxed">
+                Personalization may also play a role—for instance, adapting recommendations or tailoring dashboards—to ensure that each user receives a more relevant and intuitive experience.
+              </p>
               <p className="leading-relaxed">
-                Personalization may also play a role—for instance, adapting recommendations or tailoring dashboard elements—to ensure that each user receives a more relevant and intuitive experience. Whenever possible, the data used for analysis is aggregated or anonymized, ensuring that your personal identity remains protected.
+                Whenever possible, the data used for analysis is aggregated or anonymized, ensuring that your personal identity remains protected.
               </p>
             </section>
 
@@ -122,7 +129,7 @@ export default function PrivacyPolicyPage() {
                 When processing data on behalf of Customers, we perform the role of a Processor. We handle Service Data strictly according to Customer instructions and contractual terms.
               </p>
               <p className="mb-4 leading-relaxed">
-                Customers are responsible for ensuring that the data they submit is lawfully collected and compliant with privacy laws.
+                Customers are responsible for ensuring that the data they submit, including call data, is lawfully collected and compliant with privacy laws.
               </p>
               <p className="leading-relaxed">
                 All Service Data is stored securely, protected with encryption, and deleted or anonymized upon account termination unless retention is legally mandated.
@@ -134,11 +141,15 @@ export default function PrivacyPolicyPage() {
               <p className="mb-4 leading-relaxed">
                 We do not sell or rent your Personal Data. However, certain circumstances may require us to share information responsibly and securely.
               </p>
-              <ul className="list-disc pl-6 space-y-2 mb-4">
-                <li>We may work with trusted service providers — such as hosting partners, analytics platforms, payment processors, and customer support tools — who assist in operating and improving our Service. These partners only receive the data necessary to perform their functions and must adhere to strict confidentiality and security obligations.</li>
-                <li>In situations involving mergers, acquisitions, restructuring, or asset transfers, Personal Data may be shared as part of the business transition, ensuring continuity of service and compliance with legal requirements.</li>
-                <li>We may also share information when required by law, court orders, or valid government authorities, or when necessary to protect the rights, safety, and integrity of our users, our platform, or the public.</li>
-              </ul>
+              <p className="mb-4 leading-relaxed">
+                We may work with trusted service providers — such as hosting partners, analytics platforms, telephony providers, payment processors, and customer support tools — who assist in operating and improving our Service. These partners only receive the data necessary to perform their functions and must adhere to strict confidentiality and security obligations.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                In situations involving mergers, acquisitions, restructuring, or asset transfers, Personal Data may be shared as part of the business transition, ensuring continuity of service and compliance with legal requirements.
+              </p>
+              <p className="leading-relaxed">
+                We may also share information when required by law, court orders, or valid government authorities, or when necessary to protect the rights, safety, and integrity of our users, our platform, or the public.
+              </p>
             </section>
 
             <section className="mb-10">
@@ -174,7 +185,7 @@ export default function PrivacyPolicyPage() {
             <section className="mb-10">
               <h2 className="text-xl font-bold text-[var(--hw-text-main)] mb-4 uppercase tracking-wide">13. Mobile Application Privacy</h2>
               <p className="mb-4 leading-relaxed">
-                When using our mobile application, we may request access to features such as contacts, media files, storage, or the device camera. Such permissions help enable specific functionalities like uploading files or managing conversations.
+                When using our mobile application, we may request access to features such as contacts, media files, storage, microphone, or call-related permissions. Such permissions help enable specific functionalities related to automated calling and audio processing.
               </p>
               <p className="leading-relaxed">
                 All permissions are optional, and features that depend on them function only when access is granted.
@@ -211,12 +222,15 @@ export default function PrivacyPolicyPage() {
                 <div className="space-y-2 text-[var(--hw-text-muted)] font-mono text-sm">
                   <p><span className="font-bold text-[var(--hw-text-main)]">Company:</span> PIXPOC AI TECHNOLOGIES PVT LTD</p>
                   <p><span className="font-bold text-[var(--hw-text-main)]">Email:</span> admin@pixpoc.in</p>
-                  <p><span className="font-bold text-[var(--hw-text-main)]">Address:</span> Sadanand Business Centre, Building No.: 9th, 10th, 11th, 12th Floor, Nyati Emporius, Baner, Pune, Maharashtra-411045</p>
+                  <p><span className="font-bold text-[var(--hw-text-main)]">Address:</span> Sadanand Business Centre, Building No.: 9th, 10th, 11th, 12th Floor, Nyati Emporius, Baner, Pune, Maharashtra – 411045</p>
                   <p><span className="font-bold text-[var(--hw-text-main)]">Website:</span> pixpoc.ai</p>
                 </div>
               </div>
               <p className="mt-8 text-xs text-[var(--hw-text-muted)] text-center">
-                All rights reserved © 2025
+                © 2025 PIXPOC AI TECHNOLOGIES PVT LTD. All rights reserved.
+              </p>
+              <p className="mt-4 text-sm text-[var(--hw-text-muted)] leading-relaxed">
+                We will make every effort to respond promptly and address your concerns.
               </p>
             </section>
           </div>
