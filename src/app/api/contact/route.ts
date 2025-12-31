@@ -350,7 +350,7 @@ export async function POST(request: Request) {
     
     const { error } = await resend.emails.send({
       from: fromEmail,
-      to: 'founders@pixpoc.in',
+      to: siteConfig.company.email,
       subject: `New contact form submission from ${sanitizedData.name}`,
       html: emailHtml,
       replyTo: sanitizedData.email,
