@@ -17,30 +17,38 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    // Set initial theme immediately to prevent flash
-    document.documentElement.classList.add('light');
-    document.documentElement.setAttribute('data-theme', 'light');
-    
-    // Force light theme by default, but allow user to override with dark
     const storedPreference = localStorage.getItem('theme');
-    
-    if (storedPreference === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      // Default to light theme (even if no preference stored)
-      setIsDarkMode(false);
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-      document.documentElement.setAttribute('data-theme', 'light');
-      
-      // If no preference is stored, set light as the default
-      if (!storedPreference) {
-        localStorage.setItem('theme', 'light');
+    const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyTheme = (isDark: boolean) => {
+      setIsDarkMode(isDark);
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        document.documentElement.setAttribute('data-theme', 'light');
       }
+    };
+
+    // Initial application
+    if (storedPreference) {
+      applyTheme(storedPreference === 'dark');
+    } else {
+      applyTheme(systemDarkMode.matches);
     }
+
+    // Listen for system changes
+    const listener = (e: MediaQueryListEvent) => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches);
+      }
+    };
+
+    systemDarkMode.addEventListener('change', listener);
+    return () => systemDarkMode.removeEventListener('change', listener);
   }, []);
 
   const toggleTheme = () => {

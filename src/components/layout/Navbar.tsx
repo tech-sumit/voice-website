@@ -30,16 +30,17 @@ export default function Navbar() {
     { name: "Agents", path: "#agents", isAnchor: true, hasArrow: false },
     { name: "Pricing", path: "/pricing", isAnchor: false, hasArrow: false },
     { name: "FAQ", path: "#faq", isAnchor: true, hasArrow: false },
+    { name: "Book Demo", path: "/book", isAnchor: false, hasArrow: true },
     { name: "Contact", path: "/contact", isAnchor: false, hasArrow: true },
     { name: "Careers", path: "/careers", isAnchor: false, hasArrow: true },
   ];
 
   return (
-    <nav 
+    <nav
       className={`sticky top-0 z-50 transition-all duration-300 border-b-[4px] border-[var(--hw-border)]
-      ${scrolled 
-        ? "bg-[var(--hw-border)] shadow-md py-2" 
-        : "bg-[var(--hw-chassis)] py-4"}`}
+      ${scrolled
+          ? "bg-[var(--hw-border)] shadow-md py-2"
+          : "bg-[var(--hw-chassis)] py-4"}`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -50,16 +51,16 @@ export default function Navbar() {
               <Logo className="h-10 w-auto text-[var(--hw-text-main)] transition-transform duration-300 group-hover:scale-105" />
             </Link>
           </div>
-          
+
           {/* Desktop Control Array */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-3 bg-[var(--hw-border)] p-1 rounded-lg shadow-[inset_1px_1px_3px_rgba(0,0,0,0.1)]">
             {navItems.map((item) => (
-              <Link 
-                key={item.path} 
+              <Link
+                key={item.path}
                 href={item.isAnchor ? `/${item.path}` : item.path}
                 className={`px-4 py-2 rounded-md text-sm font-bold uppercase tracking-wider transition-all duration-150 flex items-center gap-1
-                  ${item.name === 'Contact' || item.name === 'Careers' 
-                    ? 'bg-[var(--hw-text-main)] text-[var(--hw-panel)] shadow-[0_2px_0_rgba(0,0,0,0.2)] hover:bg-[#FF5722] hover:shadow-none hover:translate-y-[2px]' 
+                  ${item.name === 'Contact' || item.name === 'Careers' || item.name === 'Book Demo'
+                    ? 'bg-[var(--hw-text-main)] text-[var(--hw-panel)] shadow-[0_2px_0_rgba(0,0,0,0.2)] hover:bg-[#FF5722] hover:shadow-none hover:translate-y-[2px]'
                     : 'text-[var(--hw-text-muted)] hover:text-[var(--hw-text-main)] hover:bg-[var(--hw-chassis)] hover:shadow-[0_1px_2px_rgba(0,0,0,0.1)] active:translate-y-[1px] active:shadow-none'
                   }`}
               >
@@ -70,7 +71,7 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-          
+
           <div className="flex items-center space-x-2 sm:space-x-4 md:hidden">
             {/* Mobile Toggle Switch */}
             <motion.button
@@ -89,10 +90,10 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Control Panel */}
       {mobileMenuOpen && (
-        <motion.div 
+        <motion.div
           className="md:hidden bg-[var(--hw-chassis)] border-b-4 border-[var(--hw-border)]"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}

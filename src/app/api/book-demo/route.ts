@@ -158,8 +158,8 @@ export async function POST(request: Request) {
             .info-item:last-child { border-bottom: none; }
             .label { font-size: 10px; font-weight: 800; color: #75B7AB; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 6px; }
             .value { font-size: 16px; color: #171410; font-weight: 600; }
-            .logo-container { text-align: center; margin-bottom: 32px; }
-            .logo-img { height: 60px; width: auto; }
+            .logo-container { text-align: center; margin-bottom: 48px; }
+            .logo-img { height: 220px; width: auto; max-width: 100%; }
             .status-tag { display: inline-block; border: 1px solid #FF5722; color: #FF5722; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
             .button { display: inline-block; background-color: #1A5C54; color: #F5F1E8 !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 700; margin-top: 30px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.05em; border-bottom: 4px solid #103732; }
           </style>
@@ -215,8 +215,8 @@ export async function POST(request: Request) {
             .container { max-width: 600px; margin: 40px auto; background-color: #ffffff; border: 2px solid #C8C4B8; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.06); }
             .content { padding: 48px; }
             .footer { background-color: #F5F1E8; padding: 32px; text-align: center; font-size: 13px; color: #A09890; border-top: 1px solid #E7E3DF; }
-            .logo-container { margin-bottom: 40px; }
-            .logo-img { height: 60px; width: auto; }
+            .logo-container { margin-bottom: 56px; text-align: center; }
+            .logo-img { height: 280px; width: auto; max-width: 100%; }
             .button-container { text-align: center; margin: 40px 0; }
             .button { display: inline-block; background-color: #FF5722; color: #ffffff !important; text-decoration: none; padding: 18px 36px; border-radius: 14px; font-weight: 800; font-size: 16px; box-shadow: 0 6px 0 #CC3D1A; text-transform: uppercase; letter-spacing: 0.05em; }
             .button:hover { background-color: #FF6D3F; transform: translateY(-1px); }
@@ -238,7 +238,7 @@ export async function POST(request: Request) {
               <p>The next step is simple: <strong>schedule a 15-minute discovery call</strong> so we can tailor a live demo to your specific use case.</p>
               
               <div class="button-container">
-                <a href="https://calendly.com/pixpoc" class="button">BOOK YOUR DEMO SLOT</a>
+                <a href="https://cal.com/pixpoc-ai" class="button">BOOK YOUR DEMO SLOT</a>
               </div>
               
               <p>If you need anything else in the meantime, just reply to this email.</p>
@@ -257,20 +257,20 @@ export async function POST(request: Request) {
       </html>
     `;
 
-    // Internal notification email
-    const fromEmail: string = process.env.RESEND_FROM_EMAIL || `PixPoc Demo <onboarding@resend.dev>`;
+    // Use the branded founders email for both internal and external notifications
+    // to ensure successful delivery through verified domains.
+    const fromEmail: string = process.env.RESEND_FROM_EMAIL || `PixPoc Demo <founders@pixpoc.ai>`;
 
     // Send to founders
     const teamEmailPromise = resend.emails.send({
       from: fromEmail,
-      to: siteConfig.company.email,
+      to: [siteConfig.company.email],
       subject: `🚀 New Demo Request from ${sanitizedEmail}`,
       html: teamEmailHtml,
       replyTo: sanitizedEmail,
     });
 
     // Send to customer
-    // The user explicitly requested it from founders@pixpoc.ai
     const customerEmailPromise = resend.emails.send({
       from: `PixPoc Founders <founders@pixpoc.ai>`,
       to: [sanitizedEmail],
@@ -283,18 +283,18 @@ export async function POST(request: Request) {
       customerEmailPromise
     ]);
 
-    if (teamResult.error || customerResult.error) {
-      if (teamResult.error) console.error('Team email error:', teamResult.error);
-      if (customerResult.error) console.error('Customer email error:', customerResult.error);
+    // Log any errors that occurred
+    if (teamResult.error) console.error('❌ Team email failed:', teamResult.error);
+    if (customerResult.error) console.error('❌ Customer email failed:', customerResult.error);
 
-      // If at least one worked, we might want to return success but log the error
-      // For now, let's be strict if the team notification fails
-      if (teamResult.error) {
-        return NextResponse.json(
-          { error: 'Unable to process your request at this time' },
-          { status: 500 }
-        );
-      }
+    // Consider it a success if at least the customer received their confirmation
+    // or if the team notification worked. We don't want to show an error to the user
+    // if the main action (booking/notification) partially succeeded.
+    if (teamResult.error && customerResult.error) {
+      return NextResponse.json(
+        { error: 'Unable to process your request at this time' },
+        { status: 500 }
+      );
     }
 
     // Return success
