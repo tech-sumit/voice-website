@@ -137,7 +137,9 @@ export async function POST(request: Request) {
     // Initialize Resend only when the API key is present
     const resend = new Resend(process.env.RESEND_API_KEY as string);
 
-    // 1. Notification Template (To Team)
+    const logoUrl = `${siteConfig.url}/logo.png`;
+
+    // 1. Notification Template (To Team - Founders)
     const teamEmailHtml = `
       <!DOCTYPE html>
       <html>
@@ -146,40 +148,53 @@ export async function POST(request: Request) {
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <title>New Demo Request</title>
           <style type="text/css">
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; margin: 0; padding: 0; }
-            .container { max-width: 600px; margin: 0 auto; }
-            .header { background-color: #1A5C54; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background-color: #ffffff; padding: 20px; border: 1px solid #e5e7eb; border-top: none; }
-            .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb; border-top: none; }
-            .info-item { padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; margin: 0; padding: 0; background-color: #F5F1E8; color: #3D3935; }
+            .container { max-width: 600px; margin: 40px auto; background-color: #ffffff; border: 2px solid #C8C4B8; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(26, 92, 84, 0.1); }
+            .header-strip { background-color: #1A5C54; height: 6px; width: 100%; }
+            .content { padding: 40px; }
+            .footer { background-color: #F5F1E8; padding: 24px; text-align: center; font-size: 11px; color: #A09890; border-top: 1px solid #E7E3DF; font-family: ui-monospace, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+            .info-item { padding: 16px 0; border-bottom: 1px solid #F3F1EF; }
             .info-item:last-child { border-bottom: none; }
-            .label { font-weight: bold; color: #374151; }
-            .logo { font-size: 24px; font-weight: bold; color: white; margin-bottom: 10px; }
-            .button { display: inline-block; background-color: #1A5C54; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; margin-top: 15px; }
+            .label { font-size: 10px; font-weight: 800; color: #75B7AB; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 6px; }
+            .value { font-size: 16px; color: #171410; font-weight: 600; }
+            .logo-container { text-align: center; margin-bottom: 32px; }
+            .logo-img { height: 40px; width: auto; }
+            .status-tag { display: inline-block; border: 1px solid #FF5722; color: #FF5722; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+            .button { display: inline-block; background-color: #1A5C54; color: #F5F1E8 !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 700; margin-top: 30px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.05em; border-bottom: 4px solid #103732; }
           </style>
         </head>
         <body>
           <div class="container">
-            <div class="header">
-              <div class="logo">${siteConfig.name}</div>
-              <div style="font-weight: bold;">🚀 New Demo Request</div>
-            </div>
+            <div class="header-strip"></div>
             <div class="content">
-              <p>You've received a new demo request:</p>
+              <div class="logo-container">
+                <img src="${logoUrl}" alt="${siteConfig.name}" class="logo-img">
+              </div>
+              
+              <div style="text-align: center;">
+                <span class="status-tag">Inbound Signal</span>
+                <h1 style="font-size: 22px; margin: 0 0 32px 0; font-weight: 800; color: #1A5C54; letter-spacing: -0.01em;">New Demo Request Detected</h1>
+              </div>
+              
               <div class="info-item">
-                <span class="label">Email:</span> <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a>
+                <span class="label">Primary Identifier</span>
+                <span class="value"><a href="mailto:${sanitizedEmail}" style="color: #FF5722; text-decoration: none;">${sanitizedEmail}</a></span>
               </div>
               <div class="info-item">
-                <span class="label">Source:</span> Homepage Hero Section
+                <span class="label">Traffic Source</span>
+                <span class="value">Homepage Hero Section</span>
               </div>
               <div class="info-item">
-                <span class="label">Requested on:</span> ${new Date().toLocaleString()}
+                <span class="label">Timestamp (local)</span>
+                <span class="value">${new Date().toLocaleString()}</span>
               </div>
-              <p style="margin-top: 20px;">Please reach out promptly to schedule a demo.</p>
-              <a href="mailto:${sanitizedEmail}" class="button">Reply to Prospect</a>
+              
+              <div style="text-align: center;">
+                <a href="mailto:${sanitizedEmail}" class="button">Initialize Response</a>
+              </div>
             </div>
             <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
+              SYSTEM_NOTIFICATION :: ${siteConfig.company.name} :: v2.0
             </div>
           </div>
         </body>
@@ -195,34 +210,46 @@ export async function POST(request: Request) {
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <title>Your PixPoc Demo</title>
           <style type="text/css">
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
-            .container { max-width: 600px; margin: 0 auto; }
-            .header { background-color: #1A5C54; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background-color: #ffffff; padding: 30px 20px; border: 1px solid #e5e7eb; border-top: none; }
-            .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb; border-top: none; }
-            .logo { font-size: 26px; font-weight: bold; color: white; }
-            .button { display: inline-block; background-color: #1A5C54; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; margin-top: 20px; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #F5F1E8; color: #3D3935; }
+            .container { max-width: 600px; margin: 40px auto; background-color: #ffffff; border: 2px solid #C8C4B8; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.06); }
+            .content { padding: 48px; }
+            .footer { background-color: #F5F1E8; padding: 32px; text-align: center; font-size: 13px; color: #A09890; border-top: 1px solid #E7E3DF; }
+            .logo-container { margin-bottom: 40px; }
+            .logo-img { height: 44px; width: auto; }
+            .button-container { text-align: center; margin: 40px 0; }
+            .button { display: inline-block; background-color: #FF5722; color: #ffffff !important; text-decoration: none; padding: 18px 36px; border-radius: 14px; font-weight: 800; font-size: 16px; box-shadow: 0 6px 0 #CC3D1A; text-transform: uppercase; letter-spacing: 0.05em; }
+            .button:hover { background-color: #FF6D3F; transform: translateY(-1px); }
+            h2 { font-size: 32px; font-weight: 800; color: #1A5C54; margin-top: 0; letter-spacing: -0.03em; line-height: 1.1; }
+            p { margin-bottom: 24px; font-size: 17px; color: #3D3935; }
+            .highlight { color: #FF5722; font-weight: 700; }
+            .founder-signoff { margin-top: 48px; padding-top: 24px; border-top: 2px solid #F5F1E8; font-weight: 700; color: #1A5C54; font-size: 16px; }
           </style>
         </head>
         <body>
           <div class="container">
-            <div class="header">
-              <div class="logo">${siteConfig.name}</div>
-            </div>
             <div class="content">
-              <h2>Thanks for your interest in ${siteConfig.name}!</h2>
-              <p>Hi there,</p>
-              <p>We've received your request for a demo of our AI phone agents. Our founders would love to show you how we can help automate your support and sales calls with ultra-realistic AI.</p>
-              <p><strong>The next step is to schedule a quick 15-minute discovery call.</strong> During this call, we'll understand your specific needs and show you a live demo tailored to your use case.</p>
-              // <div style="text-align: center;">
-              //   <a href="https://calendly.com/pixpoc" class="button">Book Your Demo Slot</a>
-              // </div>
-              <p style="margin-top: 30px;">If you have any immediate questions, feel free to reply to this email!</p>
-              <p>Best regards,<br>The PixPoc Founders</p>
+              <div class="logo-container">
+                <img src="${logoUrl}" alt="${siteConfig.name}" class="logo-img">
+              </div>
+              <h2>Ready to see the future of voice?</h2>
+              <p>Hello,</p>
+              <p>We've received your request for a demo of our AI phone agents. Our founders are excited to show you how <span class="highlight">${siteConfig.name}</span> can automate your support and sales with ultra-realistic, low-latency AI conversations.</p>
+              <p>The next step is simple: <strong>schedule a 15-minute discovery call</strong> so we can tailor a live demo to your specific use case.</p>
+              
+              <div class="button-container">
+                <a href="https://calendly.com/pixpoc" class="button">BOOK YOUR DEMO SLOT</a>
+              </div>
+              
+              <p>If you need anything else in the meantime, just reply to this email.</p>
+              
+              <div class="founder-signoff">
+                Best regards,<br>
+                The PixPoc Founders
+              </div>
             </div>
             <div class="footer">
-              <p>You received this email because you requested a demo on <a href="${siteConfig.url}">${siteConfig.url}</a>.</p>
-              <p>&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
+              <p>Sent via <a href="${siteConfig.url}" style="color: #1A5C54; text-decoration: none; font-weight: 700;">${siteConfig.name}</a> • Built for Enterprise Scale</p>
+              <p style="margin-top: 12px; font-size: 11px; opacity: 0.7;">&copy; ${new Date().getFullYear()} ${siteConfig.company.name}. All rights reserved.</p>
             </div>
           </div>
         </body>
