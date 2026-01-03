@@ -159,7 +159,7 @@ export async function POST(request: Request) {
             .label { font-size: 10px; font-weight: 800; color: #75B7AB; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 6px; }
             .value { font-size: 16px; color: #171410; font-weight: 600; }
             .logo-container { text-align: center; margin-bottom: 32px; }
-            .logo-img { height: 40px; width: auto; }
+            .logo-img { height: 60px; width: auto; }
             .status-tag { display: inline-block; border: 1px solid #FF5722; color: #FF5722; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
             .button { display: inline-block; background-color: #1A5C54; color: #F5F1E8 !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 700; margin-top: 30px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.05em; border-bottom: 4px solid #103732; }
           </style>
@@ -216,7 +216,7 @@ export async function POST(request: Request) {
             .content { padding: 48px; }
             .footer { background-color: #F5F1E8; padding: 32px; text-align: center; font-size: 13px; color: #A09890; border-top: 1px solid #E7E3DF; }
             .logo-container { margin-bottom: 40px; }
-            .logo-img { height: 44px; width: auto; }
+            .logo-img { height: 60px; width: auto; }
             .button-container { text-align: center; margin: 40px 0; }
             .button { display: inline-block; background-color: #FF5722; color: #ffffff !important; text-decoration: none; padding: 18px 36px; border-radius: 14px; font-weight: 800; font-size: 16px; box-shadow: 0 6px 0 #CC3D1A; text-transform: uppercase; letter-spacing: 0.05em; }
             .button:hover { background-color: #FF6D3F; transform: translateY(-1px); }
