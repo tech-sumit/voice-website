@@ -137,7 +137,8 @@ export async function POST(request: Request) {
     // Initialize Resend only when the API key is present
     const resend = new Resend(process.env.RESEND_API_KEY as string);
 
-    const logoUrl = `${siteConfig.url}/logo.png`;
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || siteConfig.url;
+    const logoUrl = `${baseUrl.replace(/\/$/, '')}/logo.png`;
 
     // 1. Notification Template (To Team - Founders)
     const teamEmailHtml = `
