@@ -3,14 +3,14 @@
 import { motion } from "framer-motion";
 import siteConfig from "@/config/site.json";
 import Link from "next/link";
-import { ArrowRightIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon, SparklesIcon, PhoneIcon } from "@heroicons/react/24/solid";
 
 export default function Hero() {
   return (
     <section id="hero" className="relative bg-[var(--hw-panel)] min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
 
       {/* Main Device Chassis */}
-      <div className="relative w-full max-w-6xl bg-[var(--hw-chassis)] rounded-[30px] sm:rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.15),inset_0_-10px_20px_rgba(0,0,0,0.05)] border-b-[8px] sm:border-b-[12px] border-r-[8px] sm:border-r-[12px] border-[var(--hw-border)] p-6 sm:p-10 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-16 z-10">
+      <div className="relative w-full max-w-6xl bg-[var(--hw-chassis)] rounded-[30px] sm:rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.15),inset_0_-10px_20px_rgba(0,0,0,0.05)] border-b-[8px] sm:border-b-[12px] border-r-[8px] sm:border-r-[12px] border-[var(--hw-border)] p-6 sm:p-10 lg:p-12 flex flex-col-reverse lg:flex-row gap-8 lg:gap-16 z-10">
 
         {/* Decorative Screws (Hidden on small mobile) */}
         <div className="hidden sm:flex absolute top-6 left-6 w-4 h-4 rounded-full bg-[#B0ACA0] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] items-center justify-center">
@@ -110,6 +110,23 @@ export default function Hero() {
                       <span className="text-white font-bold text-xl uppercase tracking-wider">Book Demo</span>
                     </div>
                     <ArrowRightIcon className="w-6 h-6 text-white group-hover:translate-x-1 transition-transform" />
+
+                    {/* Glossy overlay */}
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+                  </motion.div>
+                </Link>
+
+                <Link href={`tel:${siteConfig.company.phone}`} className="block group">
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full h-20 bg-[#2A7A6F] rounded-2xl flex items-center justify-between px-8 shadow-[0_8px_0_#154A43,0_15px_30px_rgba(42,122,111,0.3)] group-hover:bg-[#3B8B80] transition-all cursor-pointer relative overflow-hidden"
+                  >
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-white/60 font-mono text-[9px] uppercase tracking-widest mb-1">Direct Connection</span>
+                      <span className="text-white font-bold text-xl uppercase tracking-wider">Get Call</span>
+                    </div>
+                    <PhoneIcon className="w-6 h-6 text-white group-hover:rotate-12 transition-transform" />
 
                     {/* Glossy overlay */}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>

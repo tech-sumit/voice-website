@@ -5,18 +5,58 @@
   "url": "https://pixpoc.ai",
   "logo": "/logo.svg",
   "languages": [
-    "English", "Arabic", "Chinese", "Dutch", "French", "German", "Hindi", "Indonesian", "Italian", "Japanese", "Korean", "Polish", "Portuguese", "Russian", "Spanish", "Swedish", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Punjabi", "Tamil"
+    "English",
+    "Arabic",
+    "Chinese",
+    "Dutch",
+    "French",
+    "German",
+    "Hindi",
+    "Indonesian",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Polish",
+    "Portuguese",
+    "Russian",
+    "Spanish",
+    "Swedish",
+    "Thai",
+    "Turkish",
+    "Ukrainian",
+    "Urdu",
+    "Vietnamese",
+    "Bengali",
+    "Gujarati",
+    "Kannada",
+    "Malayalam",
+    "Marathi",
+    "Punjabi",
+    "Tamil"
   ],
   "nav": [
-    { "name": "Home", "path": "/" },
-    { "name": "Contact", "path": "/contact" },
-    { "name": "Pricing", "path": "/pricing" }
+    {
+      "name": "Home",
+      "path": "/"
+    },
+    {
+      "name": "Contact",
+      "path": "/contact"
+    },
+    {
+      "name": "Pricing",
+      "path": "/pricing"
+    }
   ],
   "metadata": {
     "title": "PixPoc - AI Phone Agents for Enterprise Support & Sales",
     "description": "AI phone agents for enterprise support & sales. Ultra-realistic conversations, 30 languages, 24/7 availability. Seamlessly integrate with your CRM.",
     "keywords": "pixpoc, voice ai, ai phone agents, enterprise support, sales automation, conversational ai, customer support ai, ai receptionist",
-    "authors": [{ "name": "PixPoc Team" }],
+    "authors": [
+      {
+        "name": "PixPoc Team"
+      }
+    ],
     "ogTitle": "PixPoc - AI Phone Agents for Enterprise Support & Sales",
     "ogDescription": "AI phone agents for enterprise support & sales. Ultra-realistic, 30+ languages, 24/7.",
     "ogSiteName": "PixPoc",
@@ -26,7 +66,7 @@
     "name": "PixPoc AI",
     "address": "Pune, Maharashtra, India",
     "email": "founders@pixpoc.ai",
-    "phone": "+919172879779",
+    "phone": "+918040363331",
     "social": {
       "twitter": "https://x.com/pixpoc",
       "linkedin": "https://www.linkedin.com/company/pixpoc-ai/",
@@ -50,14 +90,38 @@
   "logos": {
     "title": "TRUSTED BY INNOVATIVE COMPANIES",
     "companies": [
-      { "name": "Acme Corp", "logo": "/logos/logo1.svg" },
-      { "name": "Global Tech", "logo": "/logos/logo2.svg" },
-      { "name": "Future Systems", "logo": "/logos/logo3.svg" },
-      { "name": "Innovate AI", "logo": "/logos/logo4.svg" },
-      { "name": "CloudScale", "logo": "/logos/logo5.svg" },
-      { "name": "DataFlow", "logo": "/logos/logo6.svg" },
-      { "name": "SmartSync", "logo": "/logos/logo7.svg" },
-      { "name": "Quantum Inc", "logo": "/logos/logo8.svg" }
+      {
+        "name": "Acme Corp",
+        "logo": "/logos/logo1.svg"
+      },
+      {
+        "name": "Global Tech",
+        "logo": "/logos/logo2.svg"
+      },
+      {
+        "name": "Future Systems",
+        "logo": "/logos/logo3.svg"
+      },
+      {
+        "name": "Innovate AI",
+        "logo": "/logos/logo4.svg"
+      },
+      {
+        "name": "CloudScale",
+        "logo": "/logos/logo5.svg"
+      },
+      {
+        "name": "DataFlow",
+        "logo": "/logos/logo6.svg"
+      },
+      {
+        "name": "SmartSync",
+        "logo": "/logos/logo7.svg"
+      },
+      {
+        "name": "Quantum Inc",
+        "logo": "/logos/logo8.svg"
+      }
     ]
   },
   "stats": {
@@ -139,7 +203,7 @@
     {
       "title": "Call Analysis",
       "description": "Analyze conversations in real-time to extract insights, sentiment, and key metrics as per your requirements.",
-      "icon": "brain",  
+      "icon": "brain",
       "color": "from-primary-500 to-accent-500",
       "bgColor": "bg-primary-50 dark:bg-primary-900/20"
     },
@@ -236,21 +300,81 @@
     "description": "Connect PixPoc with your favorite tools to create powerful automated workflows",
     "viewAllUrl": "/integrations",
     "tools": [
-      { "name": "Salesforce", "category": "CRM", "icon": "salesforce.svg" },
-      { "name": "HubSpot", "category": "CRM", "icon": "hubspot.svg" },
-      { "name": "Zoho", "category": "CRM", "icon": "zoho.svg" },
-      { "name": "Pipedrive", "category": "CRM", "icon": "pipedrive.svg" },
-      { "name": "Google Calendar", "category": "Calendar", "icon": "googlecalendar.svg" },
-      { "name": "Calendly", "category": "Calendar", "icon": "calendly.svg" },
-      { "name": "Google Sheets", "category": "Productivity", "icon": "googlesheets.svg" },
-      { "name": "Notion", "category": "Productivity", "icon": "notion.svg" },
-      { "name": "Slack", "category": "Communication", "icon": "slack.svg" },
-      { "name": "Zendesk", "category": "Support", "icon": "zendesk.svg" },
-      { "name": "Freshdesk", "category": "Support", "icon": "freshdesk.svg" },
-      { "name": "Intercom", "category": "Support", "icon": "intercom.svg" },
-      { "name": "Dynamics 365", "category": "CRM", "icon": "dynamics365.svg" },
-      { "name": "WATI", "category": "Communication", "icon": "wati-logo.jpeg" },
-      { "name": "Brex", "category": "Finance", "icon": "brex-staging-logo.png" }
+      {
+        "name": "Salesforce",
+        "category": "CRM",
+        "icon": "salesforce.svg"
+      },
+      {
+        "name": "HubSpot",
+        "category": "CRM",
+        "icon": "hubspot.svg"
+      },
+      {
+        "name": "Zoho",
+        "category": "CRM",
+        "icon": "zoho.svg"
+      },
+      {
+        "name": "Pipedrive",
+        "category": "CRM",
+        "icon": "pipedrive.svg"
+      },
+      {
+        "name": "Google Calendar",
+        "category": "Calendar",
+        "icon": "googlecalendar.svg"
+      },
+      {
+        "name": "Calendly",
+        "category": "Calendar",
+        "icon": "calendly.svg"
+      },
+      {
+        "name": "Google Sheets",
+        "category": "Productivity",
+        "icon": "googlesheets.svg"
+      },
+      {
+        "name": "Notion",
+        "category": "Productivity",
+        "icon": "notion.svg"
+      },
+      {
+        "name": "Slack",
+        "category": "Communication",
+        "icon": "slack.svg"
+      },
+      {
+        "name": "Zendesk",
+        "category": "Support",
+        "icon": "zendesk.svg"
+      },
+      {
+        "name": "Freshdesk",
+        "category": "Support",
+        "icon": "freshdesk.svg"
+      },
+      {
+        "name": "Intercom",
+        "category": "Support",
+        "icon": "intercom.svg"
+      },
+      {
+        "name": "Dynamics 365",
+        "category": "CRM",
+        "icon": "dynamics365.svg"
+      },
+      {
+        "name": "WATI",
+        "category": "Communication",
+        "icon": "wati-logo.jpeg"
+      },
+      {
+        "name": "Brex",
+        "category": "Finance",
+        "icon": "brex-staging-logo.png"
+      }
     ]
   },
   "faq": {
@@ -297,7 +421,9 @@
             "id": "customer-support",
             "name": "Customer Support Agent",
             "category": "Customer Support",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
             "phoneNumber": "+918035317400"
           },
@@ -305,7 +431,9 @@
             "id": "cod-confirmation",
             "name": "COD Confirmation Agent",
             "category": "COD Confirmation",
-            "tags": ["English + Hindi"],
+            "tags": [
+              "English + Hindi"
+            ],
             "description": "Handles a variety of last mile logistics tasks, saving human effort",
             "phoneNumber": "+918035317450"
           },
@@ -313,7 +441,9 @@
             "id": "recruitment-ecom",
             "name": "Recruitment Agent",
             "category": "Recruitment",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "AI agents that screen, interview, and onboard candidates at scale",
             "phoneNumber": "+918035317441"
           }
@@ -327,7 +457,9 @@
             "id": "recruitment-edtech",
             "name": "Recruitment Agent",
             "category": "Recruitment",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "AI agents that screen, interview, and onboard candidates at scale",
             "phoneNumber": "+918035317441"
           },
@@ -335,7 +467,9 @@
             "id": "lead-qualification",
             "name": "Lead Qualification Agent",
             "category": "Lead Qualification",
-            "tags": ["Hindi"],
+            "tags": [
+              "Hindi"
+            ],
             "description": "Calls every lead to ask qualifying questions, answer FAQs, and warmly introduce the business",
             "phoneNumber": "+918035317443"
           },
@@ -343,7 +477,9 @@
             "id": "onboarding-edtech",
             "name": "Onboarding Agent",
             "category": "Onboarding",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Conducts personalized guidance calls to warmly onboard users",
             "phoneNumber": "+918035317448"
           }
@@ -357,7 +493,9 @@
             "id": "customer-support-health",
             "name": "Customer Support Agent",
             "category": "Customer Support",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
             "phoneNumber": "+918035317400"
           },
@@ -365,7 +503,9 @@
             "id": "reminders-health",
             "name": "Reminders Agent",
             "category": "Reminders",
-            "tags": ["English + Hindi"],
+            "tags": [
+              "English + Hindi"
+            ],
             "description": "Automates all reminders, from EMIs and collections to form filling deadlines",
             "phoneNumber": "+918035317402"
           },
@@ -373,7 +513,9 @@
             "id": "front-desk-health",
             "name": "Front Desk Agent",
             "category": "Front Desk",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Answers every call to handle clinic, hotel, and office scheduling",
             "phoneNumber": "+918035317405"
           }
@@ -387,7 +529,9 @@
             "id": "reminders-bfsi",
             "name": "Reminders Agent",
             "category": "Reminders",
-            "tags": ["English + Hindi"],
+            "tags": [
+              "English + Hindi"
+            ],
             "description": "Automates all reminders, from EMIs and collections to form filling deadlines",
             "phoneNumber": "+918035317402"
           },
@@ -395,7 +539,9 @@
             "id": "customer-support-bfsi",
             "name": "Customer Support Agent",
             "category": "Customer Support",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Provides 24/7 inbound call answering for FAQs and customer triage",
             "phoneNumber": "+918035317400"
           },
@@ -403,7 +549,9 @@
             "id": "lead-qualification-bfsi",
             "name": "Lead Qualification Agent",
             "category": "Lead Qualification",
-            "tags": ["Hindi"],
+            "tags": [
+              "Hindi"
+            ],
             "description": "Calls every lead to ask qualifying questions, answer FAQs, and warmly introduces the business",
             "phoneNumber": "+918035317443"
           }
@@ -417,7 +565,9 @@
             "id": "front-desk-hospitality",
             "name": "Front Desk Agent",
             "category": "Front Desk",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Answers every call to handle clinic, hotel, and office scheduling",
             "phoneNumber": "+918035317405"
           },
@@ -425,7 +575,9 @@
             "id": "surveys-hospitality",
             "name": "Surveys Agent",
             "category": "Surveys",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Automated NPS, feedback & product surveys with detailed personalised questioning",
             "phoneNumber": "+918035317408"
           },
@@ -433,7 +585,9 @@
             "id": "onboarding-hospitality",
             "name": "Onboarding Agent",
             "category": "Onboarding",
-            "tags": ["English"],
+            "tags": [
+              "English"
+            ],
             "description": "Conducts personalized guidance calls to warmly onboard users",
             "phoneNumber": "+918035317448"
           }
