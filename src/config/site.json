@@ -180,8 +180,8 @@
   },
   "features": [
     {
-      "title": "24/7 Availability",
-      "description": "Operate around the clock with the ability to train or manage a team of agents.",
+      "title": "Contact Memory",
+      "description": "Agents recall specific details from past conversations to provide personalized, context-aware support.",
       "icon": "clock",
       "color": "from-primary-500 to-secondary-500",
       "bgColor": "bg-primary-50 dark:bg-primary-900/20"
@@ -229,9 +229,9 @@
       "bgColor": "bg-bright-50 dark:bg-bright-900/20"
     },
     {
-      "title": "Natural Conversation",
-      "description": "Agents understand interruptions and context switches, responding with ultra-low <300ms latency for human-like interactions.",
-      "icon": "human",
+      "title": "Knowledge Base",
+      "description": "Connect your documents and FAQs. Agents instantly access your knowledge base to answer complex queries.",
+      "icon": "book",
       "color": "from-primary-500 to-accent-500",
       "bgColor": "bg-primary-50 dark:bg-primary-900/20"
     }
