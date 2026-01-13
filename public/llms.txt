@@ -1,0 +1,64 @@
+# llms.txt for PixPoc
+
+website: https://pixpoc.ai
+name: PixPoc
+description: PixPoc provides ultra-realistic AI phone agents designed for enterprise support, sales, and operations. Our agents operate 24/7, speak 30+ languages, and integrate seamlessly with your existing CRM and business tools.
+
+## Core Offerings
+- **Hyper-Realistic AI Agents**: Indistinguishable from humans, capable of complex reasoning and context retention.
+- **Global & Local**: Native support for 100+ languages including detailed regional accents (English, Hindi, Spanish, etc.).
+- **Omnichannel**: Deploy on Phone (PSTN/SIP), Web, and integrate with SMS/Chat.
+- **Enterprise Grade**: ISO/SOC2 compliant security, high concurrency, and <300ms latency.
+
+## Pricing: Pay As You Go
+Simple, transparent pricing. No fixed monthly platform fees for the standard plan.
+
+### Base Rates
+- **India**: ₹3 / minute
+- **Global**: $0.05 / minute
+
+### Included Features
+- Unlimited Agents & Concurrent Calls
+- Unlimited Campaigns
+- Bring Your Own Carrier (BYOC) - Twilio / KooKoo
+- Full API Access & Integrations
+- Real-time Analytics & Call Recording
+- **Contact Memory**: Agents recall past conversations.
+- **Knowledge Base**: RAG-powered answers from your docs.
+
+### Expansion Modules (Add-ons)
+- **Channel Expansion**: ₹800/mo (IN) / $15/mo (Global) - For PixPoc provided numbers.
+- **Additional Mobile Number**: ₹600/mo (IN) / $10/mo (Global).
+- **Volume Discounts**: Available for >10k mins/month.
+
+## Key Features & Capabilities
+- **Contact Memory**: Agents remember context across calls for personalized experiences.
+- **Knowledge Base**: Connect documents/FAQs for instant, accurate answers.
+- **Call Analysis**: Real-time sentiment analysis, extraction of key metrics, and automated tagging.
+- **Custom API Triggers**: Fetch data or trigger workflows (e.g., "Check Order Status") mid-call.
+- **MCP Integration**: Extend agent capabilities via Model Context Protocol.
+- **Human-Like Behavior**: Handles interruptions, varying speaking rates, and filler words naturally.
+
+## Use Cases
+- **Customer Support**: 24/7 FAQ handling, ticket creation, and triage.
+- **Sales & Leads**: Lead qualification, outbound sales, and follow-ups.
+- **Operations**: Appointment scheduling, COD confirmation (Ecommerce), and reminders.
+- **Recruitment**: Candidate screening and interview scheduling.
+- **Healthcare**: Patient appointment booking and front-desk automation.
+
+## Integrations
+Seamlessly connects with your stack:
+- **CRM**: Salesforce, HubSpot, Zoho, Pipedrive, Dynamics 365.
+- **Calendar**: Google Calendar, Calendly.
+- **Support**: Zendesk, Freshdesk, Intercom.
+- **Productivity**: Google Sheets, Notion, Slack.
+- **Communication**: WATI (WhatsApp), Twilio.
+
+## Key Links
+- **Home**: https://pixpoc.ai
+- **Pricing**: https://pixpoc.ai/pricing
+- **Contact**: https://pixpoc.ai/contact
+- **Login**: https://app.pixpoc.ai
+
+## Contact
+- **Email**: founders@pixpoc.ai
