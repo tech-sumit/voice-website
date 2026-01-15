@@ -1,0 +1,384 @@
+openapi: 3.0.3
+info:
+  title: TTS API
+  version: 1.0.0
+  description: |
+    Multi-lingual Text-to-Speech API for Indian languages powered by VITS models.
+    
+    ## Features
+    - 11 Indian languages + English
+    - Male and Female voices
+    - Base64-encoded WAV audio output
+    - Real-time synthesis with queue management
+    - GPU-accelerated inference
+    
+    ## Supported Languages
+    Hindi, Bengali, Marathi, Gujarati, Telugu, Kannada, English, Chhattisgarhi, Maithili, Bhojpuri, Magahi
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+tags:
+  - name: synthesis
+    description: Text-to-speech synthesis operations
+  - name: system
+    description: System information and health checks
+
+paths:
+  /synthesize:
+    post:
+      tags:
+        - synthesis
+      summary: Synthesize speech from text
+      description: |
+        Convert text to speech using the specified language and gender voice.
+        Returns base64-encoded WAV audio along with processing metrics.
+      operationId: synthesize_speech
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynthesizeRequest'
+            examples:
+              hindi_male:
+                summary: Hindi Male voice
+                value:
+                  language: Hindi
+                  gender: Male
+                  text: "नमस्ते, आप कैसे हैं?"
+              english_female:
+                summary: English Female voice
+                value:
+                  language: English
+                  gender: Female
+                  text: "Hello, how are you?"
+              marathi_male:
+                summary: Marathi Male voice
+                value:
+                  language: Marathi
+                  gender: Male
+                  text: "नमस्कार, तुम्ही कसे आहात?"
+      responses:
+        '200':
+          description: Successful synthesis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynthesizeResponse'
+              example:
+                audio: "UklGRiQAAABXQVZFZm10IBAAAAABAAEAIRYA..."
+                tokens: 22
+                time_cost: 0.068
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_language:
+                  summary: Unsupported language
+                  value:
+                    error: MODEL_NOT_AVAILABLE
+                    message: "Unsupported language. Please use a supported language."
+                text_too_long:
+                  summary: Text exceeds limit
+                  value:
+                    error: TEXT_TOO_LONG
+                    message: "Text exceeds maximum allowed length"
+                invalid_text:
+                  summary: Invalid characters
+                  value:
+                    error: INVALID_TEXT
+                    message: "Text contains invalid characters"
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                server_busy:
+                  summary: Server busy
+                  value:
+                    error: SERVER_BUSY
+                    message: "Server is currently busy. Please try again in a few moments."
+                model_unavailable:
+                  summary: Model unavailable
+                  value:
+                    error: MODEL_NOT_AVAILABLE
+                    message: "The selected model is temporarily unavailable."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: PROCESSING_FAILED
+                message: "Speech synthesis failed. Please try again."
+
+  /languages:
+    get:
+      tags:
+        - system
+      summary: List supported languages
+      description: Returns a list of all supported languages and available genders
+      operationId: list_languages
+      responses:
+        '200':
+          description: List of supported languages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LanguagesResponse'
+              example:
+                languages:
+                  - language: Hindi
+                    genders:
+                      - Male
+                      - Female
+                  - language: Bengali
+                    genders:
+                      - Male
+                      - Female
+                  - language: Marathi
+                    genders:
+                      - Male
+                      - Female
+
+  /health:
+    get:
+      tags:
+        - system
+      summary: Health check
+      description: Returns server health status, GPU availability, and queue information
+      operationId: health_check
+      responses:
+        '200':
+          description: Server health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: healthy
+                gpu_available: true
+                models_loaded: 12
+                queue_size: 45
+                queue_limit: 300
+
+  /:
+    get:
+      tags:
+        - system
+      summary: API information
+      description: Returns basic API information and available endpoints
+      operationId: root
+      responses:
+        '200':
+          description: API information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                  version:
+                    type: string
+                  status:
+                    type: string
+                  endpoints:
+                    type: object
+              example:
+                service: Syspin TTS Server
+                version: "1.0.0"
+                status: running
+                endpoints:
+                  synthesize: "POST /synthesize"
+                  languages: "GET /languages"
+                  health: "GET /health"
+                  docs: "GET /docs"
+
+components:
+  schemas:
+    SynthesizeRequest:
+      type: object
+      required:
+        - language
+        - gender
+        - text
+      properties:
+        language:
+          type: string
+          enum:
+            - Hindi
+            - Bengali
+            - Marathi
+            - Gujarati
+            - Telugu
+            - Kannada
+            - English
+            - Chhattisgarhi
+            - Maithili
+            - Bhojpuri
+            - Magahi
+          description: Language name for TTS synthesis
+          example: Hindi
+        gender:
+          type: string
+          enum:
+            - Male
+            - Female
+          description: Speaker gender
+          example: Male
+        text:
+          type: string
+          minLength: 1
+          maxLength: 5000
+          description: Text to synthesize (1-5000 characters)
+          example: "नमस्ते, आप कैसे हैं?"
+
+    SynthesizeResponse:
+      type: object
+      required:
+        - audio
+        - tokens
+        - time_cost
+      properties:
+        audio:
+          type: string
+          format: byte
+          description: Base64-encoded WAV audio file (22050 Hz, 16-bit PCM, mono)
+          example: "UklGRiQAAABXQVZFZm10IBAAAAABAAEAIRYA..."
+        tokens:
+          type: integer
+          minimum: 0
+          description: Number of characters processed
+          example: 22
+        time_cost:
+          type: number
+          format: float
+          minimum: 0
+          description: GPU inference time in seconds
+          example: 0.068
+
+    ModelInfo:
+      type: object
+      required:
+        - language
+        - genders
+      properties:
+        language:
+          type: string
+          description: Language name
+          example: Hindi
+        genders:
+          type: array
+          items:
+            type: string
+            enum:
+              - Male
+              - Female
+          description: Available genders for this language
+          example:
+            - Male
+            - Female
+
+    LanguagesResponse:
+      type: object
+      required:
+        - languages
+      properties:
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelInfo'
+          description: List of supported languages and their available genders
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - gpu_available
+        - models_loaded
+      properties:
+        status:
+          type: string
+          enum:
+            - healthy
+            - degraded
+          description: Server health status
+          example: healthy
+        gpu_available:
+          type: boolean
+          description: Whether GPU is available for inference
+          example: true
+        models_loaded:
+          type: integer
+          minimum: 0
+          description: Number of models currently loaded in memory
+          example: 12
+        queue_size:
+          type: integer
+          minimum: 0
+          description: Current number of tasks in queue
+          example: 45
+          default: 0
+        queue_limit:
+          type: integer
+          minimum: 0
+          description: Maximum queue size
+          example: 300
+          default: 300
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          enum:
+            - INVALID_REQUEST
+            - MODEL_NOT_AVAILABLE
+            - TEXT_TOO_LONG
+            - INVALID_TEXT
+            - SERVER_BUSY
+            - PROCESSING_FAILED
+            - INTERNAL_ERROR
+          description: Standardized error code
+          example: TEXT_TOO_LONG
+        message:
+          type: string
+          description: User-friendly error message
+          example: "Text exceeds maximum allowed length"
+
+  examples:
+    HindiMaleRequest:
+      value:
+        language: Hindi
+        gender: Male
+        text: "नमस्ते, आप कैसे हैं?"
+    
+    EnglishFemaleRequest:
+      value:
+        language: English
+        gender: Female
+        text: "Hello, how are you today?"
+    
+    MarathiMaleRequest:
+      value:
+        language: Marathi
+        gender: Male
+        text: "नमस्कार, तुम्ही कसे आहात?"
+
+x-tagGroups:
+  - name: API Operations
+    tags:
+      - synthesis
+      - system

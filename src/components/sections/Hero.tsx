@@ -9,6 +9,20 @@ export default function Hero() {
   return (
     <section id="hero" className="relative bg-[var(--hw-panel)] min-h-[90vh] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-hidden py-12 lg:py-0">
 
+      {/* TTS Announcement Banner */}
+      <Link href="/tts" className="absolute top-4 left-1/2 -translate-x-1/2 z-50 group">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-2 bg-gradient-to-r from-[#FF5722] to-[#FF7043] text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+        >
+          <SparklesIcon className="w-4 h-4 animate-pulse" />
+          <span className="text-sm font-bold tracking-wide">Try PixPoc TTS Now</span>
+          <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </motion.div>
+      </Link>
+
       {/* Main Device Chassis */}
       <div className="relative w-full max-w-6xl bg-[var(--hw-chassis)] rounded-[30px] sm:rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.15),inset_0_-10px_20px_rgba(0,0,0,0.05)] border-b-[8px] sm:border-b-[12px] border-r-[8px] sm:border-r-[12px] border-[var(--hw-border)] p-6 sm:p-10 lg:p-12 flex flex-col-reverse lg:flex-row gap-8 lg:gap-16 z-10">
 

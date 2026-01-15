@@ -32,7 +32,6 @@ export default function Navbar() {
     { name: "FAQ", path: "#faq", isAnchor: true, hasArrow: false },
     { name: "Book Demo", path: "/book", isAnchor: false, hasArrow: true },
     { name: "Contact", path: "/contact", isAnchor: false, hasArrow: true },
-    { name: "Careers", path: "/careers", isAnchor: false, hasArrow: true },
   ];
 
   return (
