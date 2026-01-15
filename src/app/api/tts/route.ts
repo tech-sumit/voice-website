@@ -1,7 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Simple in-memory rate limiting (reset on server restart)
+const ipRequestCounts = new Map<string, { count: number; timestamp: number }>();
+const RATE_LIMIT_MAX = 15; // Max requests per window
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
+
+// Check rate limit for an IP address
+function checkRateLimit(ip: string): boolean {
+    const now = Date.now();
+    const record = ipRequestCounts.get(ip);
+
+    if (!record) {
+        ipRequestCounts.set(ip, { count: 1, timestamp: now });
+        return true;
+    }
+
+    // Reset if window has passed
+    if (now - record.timestamp > RATE_LIMIT_WINDOW_MS) {
+        ipRequestCounts.set(ip, { count: 1, timestamp: now });
+        return true;
+    }
+
+    // Check if limit exceeded
+    if (record.count >= RATE_LIMIT_MAX) {
+        return false;
+    }
+
+    // Increment count
+    record.count += 1;
+    ipRequestCounts.set(ip, record);
+    return true;
+}
+
 export async function POST(request: NextRequest) {
     try {
+        // Get IP address for rate limiting
+        const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+            request.headers.get('x-real-ip') ||
+            'unknown-ip';
+
+        // Check rate limit
+        if (!checkRateLimit(ip)) {
+            return NextResponse.json(
+                { error: 'Rate limit exceeded. Please try again later.' },
+                { status: 429 }
+            );
+        }
+
         const body = await request.json();
         const { language, gender, text } = body;
 
