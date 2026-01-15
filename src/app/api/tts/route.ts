@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Simple in-memory rate limiting (reset on server restart)
 const ipRequestCounts = new Map<string, { count: number; timestamp: number }>();
-const RATE_LIMIT_MAX = 15; // Max requests per window
+const RATE_LIMIT_MAX = 100; // Max requests per window
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
 
 // Check rate limit for an IP address
