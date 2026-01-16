@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Call internal TTS API
-        const ttsApiUrl = 'https://9e0c3f58f8de.ngrok-free.app';
+        const ttsApiUrl = 'https://150c8e17efbc.ngrok-free.app';
         const response = await fetch(`${ttsApiUrl}/synthesize`, {
             method: 'POST',
             headers: {
