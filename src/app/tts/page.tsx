@@ -361,7 +361,7 @@ export default function TTSPage() {
                             },
                             {
                                 icon: CodeBracketIcon,
-                                title: 'Latency below 100ms',
+                                title: 'Latency below 200ms',
                                 description: 'Ultra-fast synthesis optimized for real-time applications. Perfect for live conversations and interactive experiences.'
                             }
                         ].map((feature, i) => (
