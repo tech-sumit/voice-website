@@ -1,11 +1,12 @@
 import { MetadataRoute } from 'next'
 import siteConfig from '@/config/site.json'
 
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url
 
-  // Get current date for lastModified
-  const currentDate = new Date()
+  const currentDate = new Date('2026-03-13')
 
   return [
     {
